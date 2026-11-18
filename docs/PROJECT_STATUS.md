@@ -13,15 +13,15 @@
 - Real Canvas side-view prototype, active HUD, local development HTTP preview, browser-safe Ludory Core lifecycle/save and save/reload.
 - Portrait overlay suspends simulation; returning to mobile landscape resumes correctly.
 - GitHub Actions Node 22 runs Core+game tests, WFA ephemeral project-scoped Skill installation, and headless Chromium CDP browser checks.
-- [CI **SUCCESS** at `12ca3b9`](https://github.com/m-amirov/Norkavel/actions/runs/44373983332): mouse click, hero skill, manual pause/resume, portrait/landscape gate, stage-1 win, save/reload, reward idempotency, repeat clear, stage-2 boss telegraph and interrupt.
-- [Screenshot artifact at that run](https://github.com/m-amirov/Norkavel/actions/runs/44373983332): setup, fight, portrait, landscape, boss. Reviewed source/screenshots are not independent human playtest evidence.
+- [CI **SUCCESS** at `ac1cdf2`](https://github.com/m-amirov/Norkavel/actions/runs/44374853507): mouse click, hero skill, manual pause/resume, portrait/landscape gate (including 1024×1366 portrait tablet), stage-1 win, save/reload, reward idempotency, repeat clear, stage-2 boss telegraph and interrupt.
+- [Screenshot artifact at final run](https://github.com/m-amirov/Norkavel/actions/runs/44374853507): setup, fight, portrait, landscape, boss. Reviewed source/screenshots are not independent human playtest evidence.
 
 ## Gate status
 | Gate | Status | Boundary |
 |---|---|---|
 | G0 | CONFIRMED | genre/party/PvP/orientation |
 | G1 | DESIGN_DRAFT | pending owner acceptance |
-| G2 | **TECHNICAL_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | real first playable, but browser defeat path and wider mobile coverage still to verify |
+| G2 | **TECHNICAL_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | real first playable, but browser defeat path and additional landscape viewports/real-device coverage still to verify |
 | G3 | BLOCKED_ART_PRODUCTION | replace temporary procedural actor geometry with production-quality characters, backgrounds, VFX and animations; rights/visual review |
 | G4 | NOT_STARTED | full content and trusted server PvP |
 | G5–G7 | NOT_STARTED | real users, SDK/platform, rights, release approval |

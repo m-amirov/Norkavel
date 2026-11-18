@@ -25,7 +25,7 @@
 | NKV-018 | Optional rewarded / cosmetics без PvP pay-to-win | G6 | trusted payment/ads integration evidence if enabled | BLOCKED |
 | NKV-019 | Production 2D art, лицензии, анимации, адаптивность | G3/G6 | source/rights + visual reviews + device QA | BLOCKED |
 | NKV-020 | Yandex local candidate / platform approval | G6/G7 | ZIP receipt, source hash, live SDK, real moderation, owner approval | BLOCKED |
-| NKV-021 | Вся мобильная игра только landscape; portrait — экран поворота | G2/G3 | real browser orientation change tests, screen capture, no hidden inputs, state/reward invariants, fallback when orientation lock unavailable | PARTIAL: 390×844/844×390_BROWSER_PASS; OTHER_VIEWPORTS_NOT_RUN |
+| NKV-021 | Вся мобильная игра только landscape; portrait — экран поворота | G2/G3 | real browser orientation change tests, screen capture, no hidden inputs, state/reward invariants, fallback when orientation lock unavailable | PARTIAL: 390×844 + 1024×1366 PORTRAIT / 844×390 LANDSCAPE_BROWSER_PASS; OTHER_VIEWPORTS_NOT_RUN |
 
 ## Набор оставшихся проверок (выполненное отделено от плана)
 - Domain: damage, statuses, AI target priority, critical PRNG, seed replay determinism, save migration, cooldown, idle duplicate grants.
@@ -44,5 +44,5 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - [GitHub Actions success on 38d3a606](https://github.com/m-amirov/Norkavel/actions/runs/44368140239): clean checkout, pinned submodules, Node 22 tests/Core smoke, WFA project-scoped 11 Skills install, WFA manifest check. Установка ephemeral, не в пользовательском HOME.
 
 ## G2 Browser receipt (actual)
-- [GitHub Actions 44373983332, commit 12ca3b9](https://github.com/m-amirov/Norkavel/actions/runs/44373983332): Chromium mouse click, two active skill wiring, manual pause, portrait-block/resume, first clear, real Core snapshot reload, duplicate reward prevention, retry, boss warning+interrupt. Screenshot artifact uploaded.
+- [GitHub Actions 44374853507, commit ac1cdf2](https://github.com/m-amirov/Norkavel/actions/runs/44374853507): Chromium mouse click, two active skill wiring, manual pause, portrait-block/resume including 1024×1366 tablet, first clear, real Core snapshot reload, duplicate reward prevention, retry, boss warning+interrupt. Screenshot artifact uploaded.
 - [G2 visual audit](qa/G2-visual-audit-2026-11-18.md): placeholder art is not accepted as production art.
