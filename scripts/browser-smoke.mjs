@@ -65,7 +65,17 @@ async function main(){
     assert.equal(await js('window.__norkavelDebug.snapshot().state.phase'),'fight');
     await js('document.getElementById("skill-2").click()');
     await until(()=>js('window.__norkavelDebug.snapshot().state.events.some(e=>e.type==="barrier")'),4000,'skill activation');
+    await send('Input.dispatchMouseEvent',{type:'mousePressed',x:807,y:530,button:'left',clickCount:1});
+    await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:807,y:530,button:'left',clickCount:1});
+    await until(()=>js('window.__norkavelDebug.snapshot().state.events.some(e=>e.detail==="click")'),5000,'manual click damage');
     await screenshot('02-battle');
+    await js('document.getElementById("pause-button").click()');
+    await until(()=>js('window.__norkavelDebug.getStatus()==="paused"'),2000,'manual pause');
+    const manualTick=await js('window.__norkavelDebug.snapshot().state.tick');
+    await delay(250);
+    assert.equal(await js('window.__norkavelDebug.snapshot().state.tick'),manualTick,'manual pause freezes combat');
+    await js('document.getElementById("pause-curtain").click()');
+    await until(()=>js('window.__norkavelDebug.getStatus()==="running"'),2000,'manual resume');
     await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true,screenOrientation:{type:'portraitPrimary',angle:0}});
     await until(()=>js('document.getElementById("turn-device").hidden===false && window.__norkavelDebug.getStatus()==="paused"'),5000,'portrait gate');
     const tick=await js('window.__norkavelDebug.snapshot().state.tick');
@@ -77,13 +87,24 @@ async function main(){
     await screenshot('04-landscape');
     await until(()=>js('window.__norkavelDebug.snapshot().state.phase==="victory"'),45000,'stage one victory');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.gold'),45);
+    // Reload from an actual Core snapshot; the already-claimed reward must not be granted twice.
+    await send('Page.reload',{ignoreCache:true});
+    await until(()=>js('Boolean(window.__norkavelDebug) && window.__norkavelDebug.snapshot().state.phase==="victory"'),12000,'saved victory after reload');
+    assert.equal(await js('window.__norkavelDebug.snapshot().state.gold'),45);
+    await js('document.querySelector("[data-action=retry]").click()');
+    await until(()=>js('Boolean(document.querySelector("[data-action=start]"))'),3000,'retry setup');
+    await js('document.querySelector("[data-action=start]").click()');
+    await until(()=>js('window.__norkavelDebug.snapshot().state.phase==="victory"'),45000,'retry victory');
+    assert.equal(await js('window.__norkavelDebug.snapshot().state.gold'),45,'reward idempotency after reload/retry');
     await js('document.querySelector("[data-action=next]").click()');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.stage'),2);
     await js('document.querySelector("[data-action=start]").click()');
     await until(()=>js('window.__norkavelDebug.snapshot().state.events.some(e=>e.type==="warning")'),19000,'boss warning');
     await screenshot('05-boss');
+    await js('document.getElementById("skill-1").click()');
+    await until(()=>js('window.__norkavelDebug.snapshot().state.events.some(e=>e.type==="interrupt")'),4500,'boss windup interrupt');
     assert.deepEqual(errors,[],'unexpected browser exceptions');
-    console.log('G2_BROWSER_SMOKE_PASS: gameplay, squad, skill, rotate/recover, reward and boss warning');
+    console.log('G2_BROWSER_SMOKE_PASS: gameplay, click, skills, manual pause, rotate/recover, save/reload, reward idempotency, retry, boss telegraph/interrupt');
   }finally{
     try{socket?.close();}catch{}
     chrome?.kill('SIGKILL');
