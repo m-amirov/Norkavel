@@ -1,0 +1,31 @@
+name: Norkavel Bootstrap
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pinned Ludory and WFA
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source pins
+        shell: bash
+        run: |
+          test "$(git -C vendor/ludory rev-parse HEAD)" = "933c73b195eaf3bfffd12a31ab1cbadb27989eea"
+          test "$(git -C vendor/workflow-for-agents rev-parse HEAD)" = "6c8d80d15155cd8ccfbd245fce9450f61b5133f3"
+          test -f vendor/ludory/packages/core/src/index.mjs
+          test -f vendor/workflow-for-agents/skills/domain/gameplay-design/SKILL.md
+      - name: Static, metadata, and Core lifecycle checks
+        run: npm run check
