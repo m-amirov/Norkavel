@@ -257,15 +257,22 @@ function drawFigure(u,x,y,t,s) {
   else{ctx.moveTo(14,-h*.7);ctx.lineTo(37,-h*1.19);ctx.stroke();ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(30,-h*1.15);ctx.lineTo(45,-h*1.22);ctx.stroke();}
   ctx.restore();
   if(boss){polygon([[-19,-h*1.11],[-42,-h*1.48],[-13,-h*1.30],[0,-h*1.18]],'#332936','#cf8a827e');polygon([[9,-h*1.17],[36,-h*1.55],[24,-h*1.20]],'#312936','#cf8a827e');}
-  // Health bars are part of HUD, not arbitrary impact numbers.
-  ctx.globalAlpha=1;const bw=boss?130:76,bh=7,barY=-h*scale-43;
-  ctx.fillStyle='#102124df';ctx.fillRect(-bw/2,barY,bw,bh);ctx.fillStyle=isEnemy?'#d7a07a':'#94c9a6';ctx.fillRect(-bw/2+1,barY+1,Math.max(0,(bw-2)*u.hp/u.maxHp),bh-2);
+  // Local bar position uses the already-scaled actor coordinates; do not multiply height twice.
+  ctx.globalAlpha=1;
+  const bw=boss?130:76,bh=7,barY=boss?-h*1.55-24:-h*1.23-22;
+  ctx.fillStyle='#102124df';ctx.fillRect(-bw/2,barY,bw,bh);
+  ctx.fillStyle=isEnemy?'#d7a07a':'#94c9a6';ctx.fillRect(-bw/2+1,barY+1,Math.max(0,(bw-2)*u.hp/u.maxHp),bh-2);
   ctx.strokeStyle='#d1cab47a';ctx.lineWidth=1;ctx.strokeRect(-bw/2,barY,bw,bh);
   if(u.shield>0){ctx.strokeStyle='#a0d1d8';ctx.lineWidth=1.5;ctx.strokeRect(-bw/2-2,barY-2,bw+4,bh+4);}
   if(u.burnTicks>0)ellipse(bw*.5,barY,5,5,'#fb8f4e');
   if(boss && u.windup>0){ctx.strokeStyle='#ff6666';ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,-h*.5,65+(20-u.windup)*2.4,0,Math.PI*2);ctx.stroke();}
   ctx.restore();
-  ctx.save();ctx.font=boss?'bold 16px Georgia':'12px Arial';ctx.textAlign='center';ctx.fillStyle='#faf0d6';ctx.shadowColor='#061013';ctx.shadowBlur=5;ctx.fillText(u.name,x,y-h*scale-38+(boss?-18:0));ctx.restore();
+  // Short battlefield labels avoid overlap; full names remain in squad/game data.
+  const shortName={hero:'Воин',sentinel:'Ард',ember:'Мира',healer:'Элира',ash:'Кайр',
+    crawler:'Скиталец',wisp:'Дух',raider:'Осквернитель',boss:'Хранитель Разлома'}[kind]||u.name;
+  ctx.save();ctx.font=boss?'bold 14px Georgia':'bold 12px Arial';ctx.textAlign='center';
+  ctx.fillStyle='#faf0d6';ctx.shadowColor='#061013';ctx.shadowBlur=5;
+  ctx.fillText(shortName,x,y+barY*scale-14);ctx.restore();
 }
 function draw(s,time) {
   ctx.clearRect(0,0,1280,720);
