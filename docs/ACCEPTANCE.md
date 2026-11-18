@@ -5,8 +5,8 @@
 
 | ID | Требование | Gate | Обязательное доказательство | Текущий статус |
 |---|---|---|---|---|
-| NKV-001 | Ludory Core metadata + lifecycle + snapshot | bootstrap | Node 22 smoke exact source SHA | NOT_RUN |
-| NKV-002 | WFA project Skill routing и activation | bootstrap | dry-run/installed receipts, positive/negative Codex calls | NOT_RUN |
+| NKV-001 | Ludory Core metadata + lifecycle + snapshot | bootstrap | Node 22 smoke exact source SHA | PASS_BOOTSTRAP_CI |
+| NKV-002 | WFA project Skill routing и activation | bootstrap | dry-run/installed receipts, positive/negative Codex calls | PARTIAL_CI_INSTALL; CODEX_ACTIVATION_NOT_RUN |
 | NKV-003 | Один главный герой + 3 спутника участвуют в бою | G2 | runtime state + browser playback | SPECIFIED |
 | NKV-004 | 2D бой с видом сбоку | G2/G3 | реальная запись экрана + independent pixel review | SPECIFIED |
 | NKV-005 | Deterministic fixed-tick simulation и replay | G2 | seeded equality + 1000+ scenario tests | SPECIFIED |
@@ -38,3 +38,6 @@
 
 ## Release gates
 G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus asset rights; G7 real Yandex approval and explicit owner authorization. Всегда releaseReady=false и publicationAllowed=false, пока gates фактически не закрыты.
+
+## Проверенный bootstrap receipt
+- [GitHub Actions success on 38d3a606](https://github.com/m-amirov/Norkavel/actions/runs/44368140239): clean checkout, pinned submodules, Node 22 tests/Core smoke, WFA project-scoped 11 Skills install, WFA manifest check. Установка ephemeral, не в пользовательском HOME.

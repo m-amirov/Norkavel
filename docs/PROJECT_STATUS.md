@@ -4,8 +4,8 @@ Date: 2026-11-18.
 
 - **G0 concept**: decisions confirmed in owner conversation (2D side view; one selectable main hero and 3 active companions; auto combat + clicker; asynchronous-only PvP; Yandex Games target). Brief written.
 - **G1 design / GDD 1.0**: authored draft, **PENDING_OWNER_REVIEW**. Numerical balance, lore, user experience and technical details remain hypotheses.
-- **Ludory**: source pinned and Core smoke contract provided; not yet exercised on a fresh checkout, Studio origin not established.
-- **WFA**: source pinned and a selectable project-scoped installation script supplied; not yet executed or activation-tested.
+- **Ludory**: source pinned; Node 22 Core metadata/session/save-restore smoke verified by clean GitHub Actions checkout on 38d3a606ee56eacacb8ddfa92b1c97e1d7f4b910; Studio origin is NOT established.
+- **WFA**: source pinned; selected project-scoped Skills successfully installed in **ephemeral GitHub Actions** on 38d3a606ee56eacacb8ddfa92b1c97e1d7f4b910. Local user installation and real Codex positive/negative activation are NOT_RUN.
 - **G2**: NOT_STARTED. No playable combat, art, backend or Yandex SDK.
 - **G3–G7**: NOT_STARTED. publicationAllowed=false; releaseReady=false.
 
@@ -21,4 +21,7 @@ No runtime/CI/asset-rights claims are made until exact revision evidence is avai
 
 ## Verified vs unverified
 Verified from repositories: Ludory Core game definition/session and versions; WFA project-scope installer, source G0–G7 pipeline and Ludory compatibility constraints.
-Unverified in this game: installation, Core smoke, agent activation, playable runtime, official Yandex integration, backend/PvP, art rights, release.
+Verified in CI on pinned source: submodule resolution, Core smoke, WFA project-scoped Skills installation and manifest. Unverified: local user install and Codex activation, Studio-origin, playable runtime, official Yandex integration, backend/PvP, art rights, release.
+
+## Current technical evidence
+- [Bootstrap CI success (Ludory Core + WFA install), exact code SHA 38d3a606](https://github.com/m-amirov/Norkavel/actions/runs/44368140239). Это не G2 и не реальный платформенный smoke.

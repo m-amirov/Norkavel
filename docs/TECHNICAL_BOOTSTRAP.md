@@ -1,6 +1,6 @@
 # Norkavel — Technical Bootstrap 0.1
 
-Status: **SOURCE-BOUND BOOTSTRAP / NOT G2** (2026-11-18).
+Status: **CI-VERIFIED CORE + PROJECT-SCOPED WFA INSTALL / NOT G2** (2026-11-18).
 
 ## Integration topology
 
@@ -23,7 +23,7 @@ From Norkavel checkout (Node.js 22+, Git):
 3. npm run smoke:ludory
 4. npm run check
 
-On Windows PowerShell, run scripts/bootstrap.ps1 (dry-run of WFA Skills + smoke) or scripts/bootstrap.ps1 -ApplySkills (explicit project install after dry-run). No global Codex configuration changes. WFA Skills are **not installed by adding a submodule**; actual project installation and Codex activation must be measured on a real checkout. The game-specific AGENTS.md provides persistent instructions.
+On Windows PowerShell, run scripts/bootstrap.ps1 (dry-run of WFA Skills + smoke) or scripts/bootstrap.ps1 -ApplySkills (explicit project install after dry-run). No global Codex configuration changes. WFA Skills are **not installed by adding a submodule**. Project-scoped installation was verified on an ephemeral CI checkout [run 44368140239](https://github.com/m-amirov/Norkavel/actions/runs/44368140239); the user's local install and actual Codex activation remain unverified. The game-specific AGENTS.md provides persistent instructions.
 
 ## WFA skill selection
 
