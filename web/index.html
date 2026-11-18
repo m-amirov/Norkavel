@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101d26">
+  <meta name="description" content="Норкавель — первый играбельный срез 2D-фэнтези автобатлера.">
+  <title>Норкавель — первый играбельный срез</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="stage" id="stage">
+    <div class="game" id="game">
+      <canvas id="scene" width="1280" height="720" aria-label="Боковая арена: союзники слева, враги справа"></canvas>
+      <div class="vignette" aria-hidden="true"></div>
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark">✦</span><div><strong>НОРКАВЕЛЬ</strong><small>ЗЕМЛИ РАЗЛОМА <span class="tag">G2</span></small></div></div>
+        <div class="top-right"><div class="chapter" id="chapter">01 / Пепельный тракт</div><div class="currency" id="currency">◈ 0</div><button class="small-button" id="pause-button" type="button" aria-label="Пауза" title="Пауза">Ⅱ</button></div>
+      </header>
+      <div class="side-pill" id="synergy">Синергия: не активна</div>
+      <div class="battle-readout" id="battle-readout" aria-live="polite"></div>
+      <section class="panel" id="panel" aria-label="Отряд и результат боя"></section>
+      <footer class="hotbar" id="hotbar" hidden>
+        <div class="battle-label"><strong id="phase-label">СРАЖЕНИЕ</strong><span id="seconds">00:00</span><span class="helper">Нажмите на врага — вспомогательный удар</span></div>
+        <div class="abilities">
+          <button type="button" id="skill-1" class="ability" aria-label="Щитовой удар, клавиша 1"><span class="ability-icon">✦</span><span class="ability-name">Щитовой удар<small id="cd-1">1</small></span></button>
+          <button type="button" id="skill-2" class="ability" aria-label="Барьер, клавиша 2"><span class="ability-icon">⬡</span><span class="ability-name">Барьер<small id="cd-2">2</small></span></button>
+          <button type="button" id="auto-button" class="auto-button" aria-pressed="false">АВТО: ВЫКЛ</button>
+        </div>
+      </footer>
+      <div class="notice" id="notice" role="status" aria-live="polite"></div>
+      <div class="pause-curtain" id="pause-curtain" hidden><div>ПАУЗА <span>Продолжить — нажмите Ⅱ</span></div></div>
+    </div>
+  </main>
+  <div id="turn-device" class="turn-device" role="dialog" aria-modal="true" aria-label="Поверните устройство" hidden>
+    <div class="turn-symbol" aria-hidden="true">↻</div>
+    <h1>Поверните устройство</h1><p>Норкавель работает на телефоне только в альбомной ориентации.</p>
+  </div>
+  <script type="module" src="/main.mjs"></script>
+</body>
+</html>
