@@ -29,5 +29,5 @@ test('GDD preserves hard PvP and party requirements', () => {
   assert.match(text, /асинхронн/iu);
   assert.match(text, /один главн/iu);
   assert.match(text, /тр[её]х (?:активных )?спутник/iu);
-  assert.match(text, /вид сбоку/iu);
+  assert.match(text, /вид(?:ом)? сбоку/iu);
 });
