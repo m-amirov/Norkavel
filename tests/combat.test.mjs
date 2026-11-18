@@ -86,3 +86,22 @@ test('G2: auto-cast is only an opt-in PvE control',()=>{
   assert.equal(validateState(next),true);
   assert.equal(setAutoCast({...s,phase:'victory'},false).autoCast,true);
 });
+
+test('G2: boss can defeat the team; retry returns to a playable setup without rewards',()=>{
+  const stage1=run(startFight(initialState(),81));
+  assert.equal(stage1.phase,'victory');
+  const stage2=nextStage(stage1);
+  let fight=startFight(stage2,91);
+  for(const ally of fight.units.filter(u=>u.team==='ally'))ally.hp=1;
+  const boss=fight.units.find(u=>u.id==='boss-0');
+  boss.windup=1; // deterministic setup of a lethal boss attack, not a false UI outcome
+  fight=stepCombat(fight);
+  assert.equal(fight.phase,'defeat');
+  assert.equal(fight.reward,0);
+  assert.equal(fight.gold,45);
+  assert.deepEqual(fight.claimed,[1]);
+  const prepared=retryStage(fight);
+  assert.equal(prepared.phase,'setup');
+  assert.equal(prepared.stage,2);
+  assert.equal(startFight(prepared,91).phase,'fight');
+});
