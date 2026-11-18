@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "norkavel",
+  "version": "0.1.0",
+  "title": {
+    "ru": "Норкавель",
+    "en": "Norkavel"
+  },
+  "engine": "phaser",
+  "targets": [
+    "yandex-games"
+  ]
+}

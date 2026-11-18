@@ -1,0 +1,14 @@
+{
+  "name": "norkavel",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "smoke:ludory": "node scripts/smoke-ludory.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check scripts/smoke-ludory.mjs && node --check tests/bootstrap.test.mjs && node --test tests/*.test.mjs && node scripts/smoke-ludory.mjs"
+  }
+}

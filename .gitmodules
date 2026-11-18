@@ -1,0 +1,6 @@
+[submodule "vendor/ludory"]
+	path = vendor/ludory
+	url = https://github.com/m-amirov/ludory.git
+[submodule "vendor/workflow-for-agents"]
+	path = vendor/workflow-for-agents
+	url = https://github.com/m-amirov/workflow-for-agents.git
