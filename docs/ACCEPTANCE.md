@@ -7,13 +7,13 @@
 |---|---|---|---|---|
 | NKV-001 | Ludory Core metadata + lifecycle + snapshot | bootstrap | Node 22 smoke exact source SHA | PASS_BOOTSTRAP_CI |
 | NKV-002 | WFA project Skill routing и activation | bootstrap | dry-run/installed receipts, positive/negative Codex calls | PARTIAL_CI_INSTALL; CODEX_ACTIVATION_NOT_RUN |
-| NKV-003 | Один главный герой + 3 спутника участвуют в бою | G2 | runtime state + browser playback | SPECIFIED |
-| NKV-004 | 2D бой с видом сбоку | G2/G3 | реальная запись экрана + independent pixel review | SPECIFIED |
-| NKV-005 | Deterministic fixed-tick simulation и replay | G2 | seeded equality + 1000+ scenario tests | SPECIFIED |
-| NKV-006 | PvE autoattack, click cap и 2 активных скилла | G2 | script input, cooldown cap tests | SPECIFIED |
-| NKV-007 | Замена спутника/позиции/синергии влияет на исход | G2 | deterministic A/B outcome | SPECIFIED |
-| NKV-008 | Boss telegraph, victory/defeat/retry | G2 | browser smoke обоих исходов | SPECIFIED |
-| NKV-009 | Сохранение и корректное восстановление PvE | G2/G4 | valid/corrupt/old save tests | SPECIFIED |
+| NKV-003 | Один главный герой + 3 спутника участвуют в бою | G2 | runtime state + browser playback | PASS_G2_BROWSER |
+| NKV-004 | 2D бой с видом сбоку | G2/G3 | реальная запись экрана + independent pixel review | G2_SIDEVIEW_PASS / G3_ART_BLOCKED |
+| NKV-005 | Deterministic fixed-tick simulation и replay | G2 | seeded equality + 1000+ scenario tests | PARTIAL_UNIT_DETERMINISM / BULK_SCENARIOS_NOT_RUN |
+| NKV-006 | PvE autoattack, click cap и 2 активных скилла | G2 | script input, cooldown cap tests | PASS_G2_BROWSER_AND_UNIT |
+| NKV-007 | Замена спутника/позиции/синергии влияет на исход | G2 | deterministic A/B outcome | PASS_G2_UNIT |
+| NKV-008 | Boss telegraph, victory/defeat/retry | G2 | browser smoke обоих исходов | PARTIAL: WIN/BOSS_BROWSER_PASS; DEFEAT_UNIT_ONLY |
+| NKV-009 | Сохранение и корректное восстановление PvE | G2/G4 | valid/corrupt/old save tests | PARTIAL: RELOAD_BROWSER_PASS; INVALID/OLD_NOT_RUN |
 | NKV-010 | Кампания: 5 глав, 50 этапов, 5 боссов | G4 | level coverage, reachable stages | SPECIFIED |
 | NKV-011 | 4 стартовых класса героя и их навыки | G4 | combat balance + class coverage | SPECIFIED |
 | NKV-012 | 12 спутников, 6 синергий, экипировка | G4 | manifest + use-site + tests | SPECIFIED |
@@ -25,9 +25,9 @@
 | NKV-018 | Optional rewarded / cosmetics без PvP pay-to-win | G6 | trusted payment/ads integration evidence if enabled | BLOCKED |
 | NKV-019 | Production 2D art, лицензии, анимации, адаптивность | G3/G6 | source/rights + visual reviews + device QA | BLOCKED |
 | NKV-020 | Yandex local candidate / platform approval | G6/G7 | ZIP receipt, source hash, live SDK, real moderation, owner approval | BLOCKED |
-| NKV-021 | Вся мобильная игра только landscape; portrait — экран поворота | G2/G3 | real browser orientation change tests, screen capture, no hidden inputs, state/reward invariants, fallback when orientation lock unavailable | SPECIFIED |
+| NKV-021 | Вся мобильная игра только landscape; portrait — экран поворота | G2/G3 | real browser orientation change tests, screen capture, no hidden inputs, state/reward invariants, fallback when orientation lock unavailable | PARTIAL: 390×844/844×390_BROWSER_PASS; OTHER_VIEWPORTS_NOT_RUN |
 
-## Набор будущих тестов (ещё не выполнялись)
+## Набор оставшихся проверок (выполненное отделено от плана)
 - Domain: damage, statuses, AI target priority, critical PRNG, seed replay determinism, save migration, cooldown, idle duplicate grants.
 - Balance: 1000+ seeded team compositions; win-rate targets are hypotheses, not human enjoyment evidence.
 - UI: альбомные мобильные размеры 640×360, 667×375, 844×390, 915×412; landscape планшет и desktop 1280×720/1440×900; портретные 360×640, 390×844, 768×1024 — **только** полноэкранный экран «Поверните устройство». Проверить portrait → landscape → portrait при активном бою, touch/keyboard, safe areas, отсутствие скрытых нажатий и двойных наград, pause/resume, background tab, reload, fallback без доступного orientation lock API.
@@ -42,3 +42,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 
 ## Проверенный bootstrap receipt
 - [GitHub Actions success on 38d3a606](https://github.com/m-amirov/Norkavel/actions/runs/44368140239): clean checkout, pinned submodules, Node 22 tests/Core smoke, WFA project-scoped 11 Skills install, WFA manifest check. Установка ephemeral, не в пользовательском HOME.
+
+## G2 Browser receipt (actual)
+- [GitHub Actions 44373983332, commit 12ca3b9](https://github.com/m-amirov/Norkavel/actions/runs/44373983332): Chromium mouse click, two active skill wiring, manual pause, portrait-block/resume, first clear, real Core snapshot reload, duplicate reward prevention, retry, boss warning+interrupt. Screenshot artifact uploaded.
+- [G2 visual audit](qa/G2-visual-audit-2026-11-18.md): placeholder art is not accepted as production art.

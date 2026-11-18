@@ -1,27 +1,36 @@
-# Norkavel — current status
+# Norkavel — project status
 
-Date: 2026-11-18.
+**Дата:** 2026-11-18. Current boundary: **G2 TECHNICAL PLAYABLE / G3 ART NOT ACCEPTED**.
 
-- **G0 concept**: decisions confirmed in owner conversation (2D side view; one selectable main hero and 3 active companions; auto combat + clicker; asynchronous-only PvP; Yandex Games target; **mobile landscape-only on every screen, portrait rotation gate**). Brief written.
-- **G1 design / GDD 1.0**: authored draft, **PENDING_OWNER_REVIEW**. Numerical balance, lore, user experience and technical details remain hypotheses.
-- **Ludory**: source pinned; Node 22 Core metadata/session/save-restore smoke verified by clean GitHub Actions checkout on 38d3a606ee56eacacb8ddfa92b1c97e1d7f4b910; Studio origin is NOT established.
-- **WFA**: source pinned; selected project-scoped Skills successfully installed in **ephemeral GitHub Actions** on 38d3a606ee56eacacb8ddfa92b1c97e1d7f4b910. Local user installation and real Codex positive/negative activation are NOT_RUN.
-- **G2**: NOT_STARTED. No playable combat, art, backend or Yandex SDK.
-- **G3–G7**: NOT_STARTED. publicationAllowed=false; releaseReady=false.
+## Decisions and design
+- G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, one chosen main hero + three companions, async-only PvP, **landscape-only** across mobile game.
+- G1: [GDD 1.0](GDD-1.0.md) drafted; class swapping, art atmosphere, PvP backend, monetization and numeric content scope remain proposals or OPEN. **PENDING_OWNER_REVIEW**.
+- Ludory Core pinned at `933c73b195eaf3bfffd12a31ab1cbadb27989eea`; WFA pinned at `6c8d80d15155cd8ccfbd245fce9450f61b5133f3`.
 
-No runtime/CI/asset-rights claims are made until exact revision evidence is available.
+## Verified implementation
+- Deterministic fixed-tick local PvE simulation, initial warrior + 3 companions, third-slot swap, frontline switch, 2 hero skills, manual click cap, companion fire/ash synergy.
+- Two linked battles (wave and boss), boss windup + interrupt, victory/defeat/retry, no repeated first-clear reward.
+- Real Canvas side-view prototype, active HUD, local development HTTP preview, browser-safe Ludory Core lifecycle/save and save/reload.
+- Portrait overlay suspends simulation; returning to mobile landscape resumes correctly.
+- GitHub Actions Node 22 runs Core+game tests, WFA ephemeral project-scoped Skill installation, and headless Chromium CDP browser checks.
+- [CI **SUCCESS** at `12ca3b9`](https://github.com/m-amirov/Norkavel/actions/runs/44373983332): mouse click, hero skill, manual pause/resume, portrait/landscape gate, stage-1 win, save/reload, reward idempotency, repeat clear, stage-2 boss telegraph and interrupt.
+- [Screenshot artifact at that run](https://github.com/m-amirov/Norkavel/actions/runs/44373983332): setup, fight, portrait, landscape, boss. Reviewed source/screenshots are not independent human playtest evidence.
 
-## Current blockers / next steps
+## Gate status
+| Gate | Status | Boundary |
+|---|---|---|
+| G0 | CONFIRMED | genre/party/PvP/orientation |
+| G1 | DESIGN_DRAFT | pending owner acceptance |
+| G2 | **TECHNICAL_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | real first playable, but browser defeat path and wider mobile coverage still to verify |
+| G3 | BLOCKED_ART_PRODUCTION | replace temporary procedural actor geometry with production-quality characters, backgrounds, VFX and animations; rights/visual review |
+| G4 | NOT_STARTED | full content and trusted server PvP |
+| G5–G7 | NOT_STARTED | real users, SDK/platform, rights, release approval |
 
-1. Review GDD 1.0 and settle proposed mechanics/visual direction.
-2. On a real checked-out project: init submodules, install selected WFA Skills, run Node 22 tests/smoke and check Codex activation.
-3. Complete Ludory Studio provenance/compatibility decision for a non-narrative real-time 2D action autobattler.
-4. G2 first playable: deterministic battle, main hero, 3 companions, enemy waves, first boss, PvE skill activation, retry, real 2D battle rendering; browser smoke.
-5. PvP backend design before any claims of functioning online arena.
+## Remaining work (ordered)
+1. Close G2 acceptance gaps: browser defeat/retry, corrupt/old save recovery, more landscape viewports, touch input/console diagnostics, gameplay balance sampling and screenshot QA.
+2. Art Direction owner approval, character bible and art production of 1 main hero, 3 companions, 3 enemies, 1 boss and 1 painted environment. No primitives can be accepted as G3 art.
+3. Determine Ludory Studio trust/origin and host boundaries for non-narrative 2D runtime; Core alone is real, Studio/Connect is not authorized by a hand-written manifest.
+4. Build an authenticated server-authoritative asynchronous PvP backend **only after** separate architecture decision; do not fake online arena.
+5. Actual Codex activation test is NOT_RUN (CI installs WFA Skills but is not Codex runtime).
 
-## Verified vs unverified
-Verified from repositories: Ludory Core game definition/session and versions; WFA project-scope installer, source G0–G7 pipeline and Ludory compatibility constraints.
-Verified in CI on pinned source: submodule resolution, Core smoke, WFA project-scoped Skills installation and manifest. Unverified: local user install and Codex activation, Studio-origin, playable runtime, official Yandex integration, backend/PvP, art rights, release.
-
-## Current technical evidence
-- [Bootstrap CI success (Ludory Core + WFA install), exact code SHA 38d3a606](https://github.com/m-amirov/Norkavel/actions/runs/44368140239). Это не G2 и не реальный платформенный smoke.
+**Release flags:** releaseReady=false; publicationAllowed=false. No Yandex moderation, money/ads or official platform acceptance performed.
