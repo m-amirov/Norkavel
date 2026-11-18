@@ -42,3 +42,13 @@ jobs:
               throw "Required project Skill missing: $name"
             }
           }
+      - name: Browser G2 smoke in headless Chrome
+        run: node scripts/browser-smoke.mjs
+      - name: Archive captured browser scenes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: norkavel-g2-browser
+          path: artifacts/g2-browser/*.png
+          if-no-files-found: ignore
+          retention-days: 7

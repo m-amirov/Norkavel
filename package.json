@@ -9,7 +9,8 @@
   "scripts": {
     "smoke:ludory": "node scripts/smoke-ludory.mjs",
     "test": "node --test tests/*.test.mjs",
-    "check": "node --check scripts/serve.mjs && node --check scripts/smoke-ludory.mjs && node --check src/combat.mjs && node --check web/main.mjs && node --check tests/bootstrap.test.mjs && node --check tests/combat.test.mjs && node --check tests/web.test.mjs && node --test tests/*.test.mjs && node scripts/smoke-ludory.mjs",
-    "preview": "node scripts/serve.mjs --host 127.0.0.1 --port 4173"
+    "check": "node --check scripts/serve.mjs && node --check scripts/browser-smoke.mjs && node --check scripts/smoke-ludory.mjs && node --check src/combat.mjs && node --check web/main.mjs && node --check tests/bootstrap.test.mjs && node --check tests/combat.test.mjs && node --check tests/web.test.mjs && node --test tests/*.test.mjs && node scripts/smoke-ludory.mjs",
+    "preview": "node scripts/serve.mjs --host 127.0.0.1 --port 4173",
+    "test:browser": "node scripts/browser-smoke.mjs"
   }
 }
