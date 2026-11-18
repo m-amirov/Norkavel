@@ -82,6 +82,10 @@ async function main(){
     await screenshot('03-portrait');
     await delay(400);
     assert.equal(await js('window.__norkavelDebug.snapshot().state.tick'),tick,'simulation must be paused in portrait');
+    // Large portrait tablets must also be blocked; width=1024 must not bypass the rule.
+    await send('Emulation.setDeviceMetricsOverride',{width:1024,height:1366,deviceScaleFactor:1,mobile:true,screenOrientation:{type:'portraitPrimary',angle:0}});
+    await until(()=>js('document.getElementById("turn-device").hidden===false && window.__norkavelDebug.getStatus()==="paused"'),5000,'tablet portrait gate');
+    assert.equal(await js('window.__norkavelDebug.snapshot().state.tick'),tick);
     await send('Emulation.setDeviceMetricsOverride',{width:844,height:390,deviceScaleFactor:1,mobile:true,screenOrientation:{type:'landscapePrimary',angle:90}});
     await until(()=>js('document.getElementById("turn-device").hidden===true && window.__norkavelDebug.getStatus()==="running"'),6000,'landscape resume');
     await screenshot('04-landscape');

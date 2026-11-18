@@ -42,7 +42,7 @@ session.start();
 function persist(){
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(session.snapshot())); } catch { /* storage may be disabled */ }
 }
-function isMobilePortrait() { return innerHeight > innerWidth && innerWidth < 1024; }
+function isMobilePortrait() { return innerHeight > innerWidth; }
 function reevaluatePause() {
   const portrait = isMobilePortrait();
   gate.hidden = !portrait;
