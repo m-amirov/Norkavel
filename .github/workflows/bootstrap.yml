@@ -29,3 +29,16 @@ jobs:
           test -f vendor/workflow-for-agents/skills/domain/gameplay-design/SKILL.md
       - name: Static, metadata, and Core lifecycle checks
         run: npm run check
+      - name: Install WFA Skills in ephemeral project checkout
+        shell: pwsh
+        run: |
+          ./scripts/bootstrap.ps1 -ApplySkills
+          $manifest = Get-Content '.agents/skills/.workflow-for-agents.manifest.json' -Raw | ConvertFrom-Json
+          if ($manifest.schema -ne 1 -or $manifest.source -ne 'workflow-for-agents') {
+            throw 'WFA install manifest invalid'
+          }
+          foreach ($name in @('game-docs','gameplay-design','game-content-qa','browser-qa','git-workflow')) {
+            if (-not (Test-Path (Join-Path '.agents/skills' "$name/SKILL.md"))) {
+              throw "Required project Skill missing: $name"
+            }
+          }
