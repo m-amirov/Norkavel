@@ -31,14 +31,14 @@ Current stage: G2 browser-playable legacy slice; G2-R needed for new owner-confi
 
 ## G2-R design-first boundary (2026-11-19)
 - Confirmed roster quantities remain in GDD 1.1. Full gameplay mechanics are proposed, NOT owner-approved, in docs/GAMEPLAY-SYSTEM-2.0.md; technical implementation design in docs/G2-R-CHARACTER-SYSTEM-0.1.md.
-- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, fifth NAME/ART/EXACT SKILLS, boss stage number, currency sinks and migration details are PROPOSED until owner review. Fifth ice-controller ROLE (slow and dangerous-attack weakening) is OWNER CONFIRMED. **Fifth companion unlock after first STORY boss first victory is CONFIRMED**; avoid granting from the legacy technical G2 stage-2 boss. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
+- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, fifth NAME/ART/EXACT SKILLS, first boss mechanics, currency sinks and migration details are PROPOSED until owner review. Fifth ice-controller ROLE (slow and dangerous-attack weakening) is OWNER CONFIRMED. **Fifth companion unlock after first STORY boss first victory is CONFIRMED**; avoid granting from the legacy technical G2 stage-2 boss. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
 - Existing legacy green G2 tests do not establish new G2-R implementation or owner approval; G3 remains BLOCKED.
 
 ## 2026-11-19 owner variant B
 The active main hero is selected once and remains permanent for that playthrough. Free hero switching was REJECTED. See docs/GAMEPLAY-DESIGN-2.2.md. Never use the old Gameplay 2.0/2.1 free-switch proposal as requirements; never silently assign a permanent hero to legacy G2 saves.
 
 ## Owner decision 2026-11-19 — fifth companion gate
-The fifth companion must unlock only on first **story-boss victory**, not before. Store a semantic `first_story_boss_first_clear` award and make it idempotent in future G2-R; do NOT assume provisional chapter stage 10 is approved, and do NOT map legacy G2 stage-2 boss rewards automatically. Every permanent hero must be able to clear that boss with pre-boss companions. See docs/GDD-1.1.md and docs/GAMEPLAY-DESIGN-2.2.md.
+The fifth companion must unlock only on first **story-boss victory**, not before. Store a semantic `first_story_boss_first_clear` award and make it idempotent in future G2-R; first story boss is now CONFIRMED at chapter 1 stage 10; still do NOT reuse technical G2 stage-2 boss, and do NOT map legacy G2 stage-2 boss rewards automatically. Every permanent hero must be able to clear that boss with pre-boss companions. See docs/GDD-1.1.md and docs/GAMEPLAY-DESIGN-2.2.md.
 
 ## Owner decision 2026-11-19 — initial companion party
 - For new profiles, exactly `sentinel` (Ard), `ember` (Mira), `healer` (Elira) unlocked and in three active slots after permanent hero selection. This is CONFIRMED. `ash` (Kair) and fifth start locked; Kair unlock after first successful stage-3 clear is OWNER CONFIRMED.
@@ -50,3 +50,8 @@ The fifth companion must unlock only on first **story-boss victory**, not before
 ## Fifth-companion ice-control owner decision (19.11.2026)
 - Companion #5 must have distinct role `ice_controller`: enemy slowdown and dangerous-attack weakening. It unlocks only after first story-boss first clear, **never as a requirement for beating that boss**. New official name, art, final skills, stacking/caps, numerical balance still OPEN. Provisional catalog ID `control` does not count as approved name.
 - Consult docs/FIFTH-COMPANION-ICE-CONTROL-0.1.md; reject infinite freeze/boss lockdown, require deterministic event proof and G2-R browser regression. G3 art production is BLOCKED, not implemented by this decision.
+
+## Campaign maps & WFA agent routing (owner 2026-11-19)
+- Campaign: **5 chapters × 10 stages**, linear **single path** per chapter, boss on stages 10/20/30/40/50, user moves between connected nodes. Exactly **50 different original battle backgrounds** (including 5 boss backgrounds) plus **5 separate chapter map artworks**. See docs/CAMPAIGN-MAP-2.3.md and docs/CAMPAIGN-ENVIRONMENT-ART-0.1.md; neither is a generated art proof.
+- When an actual agent orchestrator (e.g. a Codex session capable of independent delegation) is available, route work using docs/AGENT-EXECUTION-G2-R.md and pinned WFA playbooks + minimal `gameplay-design`, `level-design`, `game-docs`, `production-art`, `browser-qa` and `game-content-qa` skills as appropriate. WFA submodule ≠ running agents; NEVER report an agent review or skills activation unless actual run evidence exists. Current session has **NO agent executor / NO independent agent run**.
+- A staged design or CI on the old G2 does not meet new G2-R/50-background/G3 acceptance. No publication or irreversible save migration without owner/gate review.
