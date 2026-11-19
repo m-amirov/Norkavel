@@ -79,7 +79,7 @@
 ## Owner correction (19.11.2026) — precedence over historical G2/G3 reports
 - [GDD 1.1](GDD-1.1.md) confirms **4 selectable main heroes**, **5 companions available through gradual unlock**, **1 hero + 3 companions active**. Existing G2 uses one fixed hero, a four-companion catalog and a third-slot switch, without hero selection or unlock logic. Therefore historical 28/28 green CI does NOT verify this new requirement.
 - Current art includes **1 candidate hero master** and **4 candidate companion masters** (the latter still external conversation ZIP). Still missing **3 hero masters** and **the fifth companion**, plus 3 enemies, boss, animation and art review. G3 remains BLOCKED; do not relabel existing companion images as selectable heroes.
-- Next implementation gate: G2-R roster + save migration + headless Chrome with both hero choice and unlock/party invariants; then revised G3 visual/animation production. First story boss stage ID remains OPEN; Kair after stage-3 first clear CONFIRMED; starter trio Ard/Mira/Elira CONFIRMED; **fifth unlock after first story-boss victory is CONFIRMED**.
+- Next implementation gate: G2-R roster + save migration + headless Chrome with both hero choice and unlock/party invariants; then revised G3 visual/animation production. First story boss stage ID is OWNER_CONFIRMED at 10; Kair after stage-3 first clear CONFIRMED; starter trio Ard/Mira/Elira CONFIRMED; **fifth unlock after first story-boss victory is CONFIRMED**.
 
 - [G3 corrected production matrix 0.4](G3-ART-PRODUCTION-0.4.md): 4 main hero masters + 5 companion masters (4 active in battle: 1+3), plus 3 enemies and 1 boss. This plan is NOT art completion.
 
