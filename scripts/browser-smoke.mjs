@@ -108,6 +108,19 @@ async function main(){
     await js('document.querySelector("[data-action=start]").click()');
     await until(()=>js('window.__norkavelDebug.snapshot().state.events.some(e=>e.type==="warning")'),19000,'boss warning');
     await screenshot('05-boss');
+    // Multi-size mobile landscape acceptance checks. Actual pixels are uploaded as receipts.
+    for(const [width,height] of [[640,360],[667,375],[915,412]]) {
+      await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:true,
+        screenOrientation:{type:'landscapePrimary',angle:90}});
+      await until(()=>js('document.getElementById("turn-device").hidden===true'),3000,'landscape viewport '+width);
+      assert.equal(await js('window.__norkavelDebug.getOrientation().portrait'),false);
+      const geometry=await js('({w:innerWidth,h:innerHeight,overflowX:document.documentElement.scrollWidth>innerWidth+1,overflowY:document.documentElement.scrollHeight>innerHeight+1,bar:document.getElementById("hotbar").getBoundingClientRect().toJSON()})');
+      assert.equal(geometry.overflowX,false,'horizontal overflow '+width);
+      assert.equal(geometry.overflowY,false,'vertical overflow '+width);
+      assert.ok(geometry.bar.left>=0 && geometry.bar.right<=geometry.w+1,'action bar inside '+width);
+      await screenshot('06-landscape-'+width);
+    }
+
     await js('document.getElementById("skill-1").click()');
     await until(()=>js('window.__norkavelDebug.snapshot().state.events.some(e=>e.type==="interrupt")'),4500,'boss windup interrupt');
     assert.deepEqual(errors,[],'unexpected browser exceptions');
