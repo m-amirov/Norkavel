@@ -39,7 +39,7 @@ Player:
 State invariants:
 - phase=fight requires selectedHeroId != null, exactly 3 distinct unlocked party IDs and exactly 4 allied units.
 - On onboarding phase=hero_selection the game cannot start a battle until a hero is selected. Party may already be a prepared three-companion selection.
-- In setup the user may switch hero if and only if post-selection swapping is approved; otherwise a blocked action must visibly explain why.
+- OWNER CONFIRMED variant B: after initial explicit confirmation selectedHeroId is immutable in **all phases**, including setup; no player hero-switching or premium switch is supported. Invalid attempts are rejected at domain API and do not mutate progress.
 - Invalid companion choice, swap during fight, duplicate characters and unearned unlock have no state mutation or reward.
 - Hero card selection must update selectedHeroId; the first allied combat unit can retain technical id=hero while its definition/properties/art are chosen by selectedHeroId. Future PvP snapshots must carry selectedHeroId explicitly.
 - New fifth companion cannot remain a nameless placeholder in release. During technical integration it can use provisional id and geometry only as G2 test content; G3 needs a real master.
@@ -48,7 +48,7 @@ State invariants:
 
 Proposed API; exact naming may vary after repository investigation:
 - createInitialState / initialStateV2: explicit hero-selection state.
-- selectMainHero(state, heroId): allowed phase and progress policy, no second hero.
+- selectMainHero(state, heroId): **one-time irreversible confirmation** in hero_selection state, with mandatory explicit warning; after commitment any different heroId returns unchanged state even in setup/retry, and duplicate confirmation of the same id is idempotent.
 - unlockedCompanions(state): read-only canonical ordered subset.
 - assignCompanion(state, slotIndex 0..2, companionId): only unlocked, no duplicates; swaps existing assigned unit atomically rather than dropping it.
 - unlockCompanionFromProgress(state, milestoneEvent): no direct user unlock action; first-clear milestone + idempotent reward claim.
@@ -63,9 +63,9 @@ Use no DOM, timers or Math.random in pure domain; deterministic serializable sta
 ## 4. Legacy migration contract (critical)
 
 Previous schema=1 save has no selectedHeroId; do NOT silently bind user forever to a warrior. For valid legacy save:
-1. Read/validate the full v1 payload using v1 validator before migrating.
+1. Read/validate the full v1 payload using v1 validator before migrating. A legacy G2 generic warrior is **not** an approved permanent selection; send user to explicit confirmation of one of four hero identities.
 2. Preserve gold, level, claimed stage rewards, progress, seed and the exact old selected party if valid. Preserve save meta and gameplay completion; do not re-grant first-clear awards.
-3. Set selectedHeroId=null and require one-time explicit selection in an onboarding/migration UI. During that flow the old battle snapshot should be quiescent (no hidden simulation); if user was mid-fight, safely resume or store a restorable legacy checkpoint. Do not claim battle win/lose from migration.
+3. Set selectedHeroId=null and require **one-time explicitly irreversible** selection in an onboarding/migration UI. During that flow the old battle snapshot should be quiescent (no hidden simulation); if user was mid-fight, safely resume or store a restorable legacy checkpoint. Do not claim battle win/lose from migration.
 4. Legacy users had access to sentinel, ember, healer and ash. To avoid retroactively confiscating previously available characters, mark those four unlocked for migrated accounts, with a LEGACY_ACCESS provenance marker. The new fifth companion remains milestone-locked.
 5. Translate prior stage identifiers to a versioned prologue or leave legacy completion as a separately keyed history record; the old stage 2 boss was prototype-only and must not accidentally grant a new campaign chapter/boss first-clear.
 6. Atomic save: write validated schema=2 to a NEW key only once fully prepared, mark migration complete after verification, keep old key as recovery evidence until next safe release/migration policy.
@@ -88,7 +88,7 @@ Unlock must not be purchasable-only. When unlocking, validate new companion defi
 ## 6. UI contract
 
 States:
-- hero_selection: four unique hero cards and one unambiguous selected hero; button Continue; portrait orientation is blocked.
+- hero_selection: four unique hero cards; pre-confirm preview must not persist heroId, final explicit warning + confirm persists immutable selectedHeroId; portrait orientation is blocked. Optional trial fight before confirm has no rewards/progression.
 - squad/collection: prominent selected hero card (read-only in battle), three active companion slots, exactly five collectible cards (locked/unlocked), formation and synergy preview.
 - fight: 1 selected lead + 3 companions, 2 hero-specific action buttons, HP/status, boss windup, no companion selection while ongoing.
 - result: current stage, correct gold reward, new companion unlock when milestone, retry/next.
@@ -124,6 +124,9 @@ Require consistent reward contracts, seed replay and non-dominant clicker; measu
 | G2R-12 | All mobile UI states only landscape, portrait no hidden actions or combat progress | CDP screenshots/touch |
 | G2R-13 | Ludory lifecycle/Core save/restore compatibility, exact Git SHA all checks PASS | CI |
 | G2R-14 | No fake G3 art integration, no releaseReady/publicationAllowed claims | art manifest + docs |
+| G2R-15 | After explicit choice heroId is immutable through setup/fight/victory/retry/reload; legacy v1 hero choice remains pending until confirmation | negative domain + atomic save + Chromium |
+| G2R-16 | Four fixed-hero profiles remain playable without swapping class; boss counters reachable with unlocked companions | 4 profiles × selected team seeds |
+| G2R-17 | Trial fight, if owner approves, does not persist hero choice, spend/gain currency or first-clear a mission | isolated fixture + browser |
 
 New screenshot evidence must include four hero cards, early 3/5 unlocked state, post-milestone 4/5 and 5/5, all active 4 combat sprites and both victory/defeat. Browser screenshot alone is not human visual signoff.
 
@@ -137,3 +140,9 @@ Phase E: art pipeline for four heroes + five companions + enemies/boss; G3.
 Phase F: server-backed async PvP, monetization, live SDK; later G4–G7.
 
 Do not declare G2-R complete when only data structures or mock buttons exist. A green legacy G2 browser test does not pass new roster contract. Never publish game or enable IAP during this work.
+
+## Permanent main hero: owner confirmation (19.11.2026)
+- Variant B is confirmed. An earlier conditional-switch description is superseded: **no hero switch ever after first confirmation**. This is a profile invariant, not merely a hidden UI button.
+- Persisted v2 player profile requires an immutable committed heroId, confirmedOnce marker/provenance, and a recovery-safe legacy migration that never silently binds a generic v1 warrior to permanent identity. Cloud synchronization/async PvP later require server-authoritative profile identity; client validation alone is not security.
+- All class-specific encounter design must be beatable for each of the four **fixed** heroes, without relying on switching to a different main hero.
+- [Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md) contains owner confirmed permanent rule and proposed companion unlock milestone alternatives.
