@@ -89,3 +89,9 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - Historical G2 boss, browser and G3 art tests do **not** prove NKV-031–035. Any new PASS requires direct validation on the new code and exact commit SHA.
 
 - Current [G3 scope correction 0.4](G3-ART-PRODUCTION-0.4.md) is **PLAN_ONLY**, not a proof of actual nine ally masters or animations.
+
+### 2026-11-19 — G2-R design-first records
+- [Gameplay Design 2.0](GAMEPLAY-SYSTEM-2.0.md) supplies a complete high-level game-system proposal. **DESIGN_DRAFT / OWNER_REVIEW_REQUIRED**, not gameplay implementation.
+- [G2-R Character System 0.1](G2-R-CHARACTER-SYSTEM-0.1.md) specifies Save v2, v1 migration and G2R-01..G2R-14 verifiable acceptance criteria. **IMPLEMENTATION_NOT_STARTED / TESTS_NOT_RUN**.
+- Approval still needed for hero-swapping policy, character identities and skill kits, 3 initial companions, milestone/5th role, campaign length and economy. Confirmed roster quantities are not pending.
+- Historical 28/28 test PASS must not be counted as proof that player can select 4 distinct heroes or unlock 5 companions.

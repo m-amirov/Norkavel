@@ -29,3 +29,16 @@
 | D-025 | Четыре рисунка спутников из G3 0.3 — не четыре выбираемых главных героя | CONFIRMED 19.11.2026 |
 
 CONFIRMED нельзя изменять без владельца. PROPOSED и ASSUMPTION проверяются на G2/G3 и утверждаются отдельно.
+
+## 2026-11-19 — Gameplay 2.0 design proposals (NOT owner-confirmed)
+| ID | Предложение | Статус |
+|---|---|---|
+| D-026 | Архетипы четырёх главных героев: защитник, стихийный маг, дуэлянт, следопыт | PROPOSED |
+| D-027 | Бесплатная смена единственного активного героя только между боями | PROPOSED / OWNER_REVIEW |
+| D-028 | На старте Ард/Мира/Элира, Кайр после этапа 3, пятый спутник после этапа 7 | PROPOSED / OWNER_REVIEW |
+| D-029 | Пятый спутник в роли контролёра/льда | PROPOSED / OWNER_REVIEW |
+| D-030 | 5 глав × 10 этапов, главный босс на каждом десятом | PROPOSED / OWNER_REVIEW |
+| D-031 | MVP экономика золота, first-clear/repeatable rewards, PvE idle-cap до 8 часов | PROPOSED / OWNER_REVIEW |
+| D-032 | Не менять runtime и существующие сохранения, пока не согласован gameplay contract | DESIGN-FIRST WORKFLOW (OWNER REQUEST) |
+
+См. [Gameplay Design 2.0](GAMEPLAY-SYSTEM-2.0.md) и [G2-R implementation contract](G2-R-CHARACTER-SYSTEM-0.1.md).

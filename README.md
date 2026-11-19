@@ -29,6 +29,8 @@ npm run test:browser
 ## Документация
 
 - [GDD 1.1](docs/GDD-1.1.md) — **актуальные подтверждённые правила состава**.
+- [Gameplay Design 2.0](docs/GAMEPLAY-SYSTEM-2.0.md) — проект полной игровой системы, OWNER_REVIEW.
+- [G2-R Character System](docs/G2-R-CHARACTER-SYSTEM-0.1.md) — технический план до начала реализации.
 - [GDD 1.0](docs/GDD-1.0.md) — архив прежней модели.
 - [GDD index](GDD.md) — короткая карта утверждённых систем.
 - [Статус и проверки](docs/PROJECT_STATUS.md).

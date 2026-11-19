@@ -28,3 +28,8 @@ workflow-for-agents: git=direct-main
 4. For optional project Skills run scripts/bootstrap.ps1 -ApplySkills after dry-run and inspecting changes.
 
 Current stage: G2 browser-playable legacy slice; G2-R needed for new owner-confirmed 4 selectable heroes + 5 progressively unlocked companions + 3-slot selection and save migration. G3 art BLOCKED; async PvP/backend/Yandex Connect not implemented. Four old companion art candidates must not be relabeled as selectable main heroes.
+
+## G2-R design-first boundary (2026-11-19)
+- Confirmed roster quantities remain in GDD 1.1. Full gameplay mechanics are proposed, NOT owner-approved, in docs/GAMEPLAY-SYSTEM-2.0.md; technical implementation design in docs/G2-R-CHARACTER-SYSTEM-0.1.md.
+- User asked to work through the gameplay system before moving to further production; do NOT implement irreversible hero selection, unlock milestones, currency sinks, or schema migration from unapproved proposal values.
+- Existing legacy green G2 tests do not establish new G2-R implementation or owner approval; G3 remains BLOCKED.

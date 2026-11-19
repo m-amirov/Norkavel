@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Дата обновления:** 2026-11-19. Current boundary: **G2 LEGACY_PLAYABLE / ROSTER_CONTRACT_G2-R_BLOCKED / G3 NOT ACCEPTED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2-R DESIGN_DRAFT / FUNCTIONAL_G2-R_NOT_IMPLEMENTED / G3 BLOCKED**.
 
 ## Decisions and design
 - G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, **4 distinct main heroes to choose from (exactly one selected), 5 progressively unlockable companions (3 active), 1+3=4 in combat**, async-only PvP, **landscape-only**. See [GDD 1.1](GDD-1.1.md).
@@ -82,3 +82,9 @@
 - Next implementation gate: G2-R roster + save migration + headless Chrome with both hero choice and unlock/party invariants; then revised G3 visual/animation production. Initial unlock counts and unlock milestones are OPEN; do not hardcode guesses as canon.
 
 - [G3 corrected production matrix 0.4](G3-ART-PRODUCTION-0.4.md): 4 main hero masters + 5 companion masters (4 active in battle: 1+3), plus 3 enemies and 1 boss. This plan is NOT art completion.
+
+## G2-R gameplay design-first phase (2026-11-19)
+- [Gameplay Design 2.0](GAMEPLAY-SYSTEM-2.0.md): a coherent **proposal**, not a confirmed final game, for hero roles, 5-companion unlock, 3-slot squads, combat, campaign, economy, idle, daily/achievements, PvP, monetization boundaries and landscape UI.
+- [G2-R implementation contract](G2-R-CHARACTER-SYSTEM-0.1.md): source audit, target Save v2, legacy save protection and 14 required test scenarios. No runtime code changed in this design step.
+- Gameplay choices not owner-approved: active-hero switching, exact four hero kits, starter three and milestones, fifth companion identity, 50-stage structure, economy/idle numbers. The confirmed 4 hero choices / 5 companion collection / active 1+3 and portrait restriction remain mandatory.
+- Prior G2 tests verify the old prototype only, not actual G2-R. Implementation NOT_STARTED; G3 BLOCKED; releaseReady=false, publicationAllowed=false.
