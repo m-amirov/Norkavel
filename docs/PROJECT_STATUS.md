@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02a AWAITING_CI; NEXT READY после его exact-SHA/CI: G2R-F02b.** Four archetypes and four 3+ultimate hero kits OWNER_CONFIRMED (names, art and numerical balance OPEN). G2R-S01 persistence foundation complete; F02 battle/UI NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02a DONE_VERIFIED; NEXT READY: G2R-F02b.** Four archetypes and four 3+ultimate hero kits OWNER_CONFIRMED (names, art and numerical balance OPEN). G2R-S01 persistence foundation complete; F02 battle/UI NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
 **Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01+E01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
@@ -252,4 +252,4 @@
 
 - Новый изолированный `src/hero-kits-v1.mjs` связывает `hero_slot_1..4` с четырьмя подтверждёнными ролями и всеми 16 подтверждёнными навыками. Рабочие имена явно остаются `provisional`; production numbers не зашиты и поступают только через versioned injected policy.
 - Resolver проверяет полный Profile v2, принадлежность навыка выбранному постоянному герою, level-5 gate ultimate, enemy target и exact battle/policy shape; возвращает детерминированные bounded records для damage, protection, control, combos, counters и marked priority. Invalid/non-finite/duplicate input возвращает `null` без мутации.
-- Локально `npm run check` PASS: 82/82 Node tests и Ludory Core smoke. Exact commit/CI ожидаются. Legacy combat/UI/save не изменены; F02b–F02d, production balance, boss viability и browser acceptance остаются NOT_IMPLEMENTED.
+- Exact `6aedbfe3dbee5b0335603aedd069aac5c2c927a1`, [CI 44591621250](https://github.com/m-amirov/Norkavel/actions/runs/44591621250) SUCCESS: 82/82 Node, Ludory Core, WFA bootstrap, legacy G2 Chromium и Save v2 transactional Chromium PASS. Legacy combat/UI/save не изменены; F02b–F02d, production balance, boss viability и G2-R browser acceptance остаются NOT_IMPLEMENTED.
