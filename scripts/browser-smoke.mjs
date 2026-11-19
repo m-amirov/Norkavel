@@ -180,9 +180,14 @@ async function main(){
     console.log('G2_BROWSER_SMOKE_PASS: gameplay, mouse and touch, skills, pause, portrait gates, landscape, saves, invalid/legacy recovery, no duplicate awards, boss, browser defeat/retry');
   }finally{
     try{socket?.close();}catch{}
-    chrome?.kill('SIGKILL');
+    if(chrome){
+      const closed=(chrome.exitCode===null && chrome.signalCode===null)
+        ? new Promise(resolve=>chrome.once('close',resolve)) : Promise.resolve();
+      chrome.kill('SIGKILL');
+      await Promise.race([closed,delay(2000)]);
+    }
     await new Promise(resolve=>server.close(resolve));
-    await rm(temp,{recursive:true,force:true});
+    await rm(temp,{recursive:true,force:true,maxRetries:10,retryDelay:150});
   }
 }
 main().catch(error=>{console.error('G2_BROWSER_SMOKE_FAIL',error);process.exitCode=1;});
