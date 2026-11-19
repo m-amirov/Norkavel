@@ -1,6 +1,6 @@
 import { defineGame, createGameSession } from '../vendor/ludory/packages/core/src/browser.mjs';
 import { TICK_MS, ROSTER, initialState, validateState, startFight, stepCombat, nextStage, retryStage,
-  chooseCompanion, changeFront, upgradeHero, setAutoCast, selectTarget } from '../src/combat.mjs';
+  chooseCompanion, changeFront, upgradeHero, setAutoCast, selectTarget, nextEncounterSeed } from '../src/combat.mjs';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('scene'), ctx = canvas.getContext('2d', {alpha:false});
@@ -106,7 +106,7 @@ panel.addEventListener('click',e=>{
   if(action==='choose')result=chooseCompanion(state,button.dataset.id);
   if(action==='front')result=changeFront(state);
   if(action==='upgrade')result=upgradeHero(state);
-  if(action==='start')result=startFight(state, state.seed);
+  if(action==='start')result=startFight(state, nextEncounterSeed(state));
   if(action==='next')result=nextStage(state);
   if(action==='retry')result=retryStage(state);
   if(result!==state){session.setState(result);persist();renderUI(result);}
