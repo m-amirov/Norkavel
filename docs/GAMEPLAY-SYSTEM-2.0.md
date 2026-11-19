@@ -277,3 +277,9 @@ Release flags остаются false. Ни одна предложенная м�
 ## Hero max level 16 — owner confirmed 2026-11-19
 - The single permanent main hero starts at **level 1** and stops at **level 16**. Exactly **15 level-ups** on 2..16 grant 15 user-directed upgrades: 12 regular (three skills×four), three ultimate (unlocked on level 5). The level-5 unlock grants no extra point or automatic ultimate rank.
 - After level16 hero XP cannot create new levels or upgrade choices, but PvE replay, reduced repeat gold, and manual companion gold upgrades remain available. Already earned pending choices remain usable at cap. XP threshold table 2..16 and post-cap XP accounting remain OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.
+
+## Nonlinear hero XP pacing — OWNER CONFIRMED 2026-11-19
+- 15 transitions from heroLevel 1→2 to 15→16 follow **progressively increasing XP-to-next thresholds**, with noticeably faster early level-ups and more XP per late level-up; hero cap 16 unchanged. Four permanent hero choices use the same approved qualitative curve unless independently revised.
+- **Qualitative shape CONFIRMED; numeric values and formula OPEN**. The 50-stage campaign, first boss stage 10, and repeatable cleared-stage battles require simulated level-vs-stage pacing before production XP values can be approved. Player shouldn't cap during early main campaign or need forced farming solely to access the first boss.
+- First-clear XP regular, replay-win XP positive but reduced, defeat XP 0; companions get no XP and are upgraded for gold only. No new level/skill point after hero lvl16. Store thresholds/reward revisions in versioned balance data and verify idempotency on XP settlement.
+- [Hero XP Pacing 2.5](HERO-XP-PACING-2.5.md). **G2-R_NOT_IMPLEMENTED / BALANCE_NOT_RUN**, old green G2 CI not proof.

@@ -162,3 +162,8 @@
 - New profile heroLevel starts **1**, caps at **16**. 15 level-ups at hero levels 2–16 create exactly 15 user-selected upgrade choices (3 regular skills × 4 = 12 + 3 ultimate). Ultimate unlock on level 5 is free and does not auto-spend. Pending upgrades persist at cap; level 17 and 16th choice forbidden.
 - Existing 50-stage replay and reduced gold rewards remain usable after hero reaches max. XP thresholds and storage/display at cap remain balance/UX OPEN; companion levels still bought with gold individually. This is documented contract, not production game behavior.
 - [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md), [G2-R contract](G2-R-CHARACTER-SYSTEM-0.1.md). **G2-R NOT_IMPLEMENTED; no independent WFA agent test has run.**
+
+## Rising hero XP curve approved — 2026-11-19
+- **OWNER_CONFIRMED:** early hero levels gain faster, later levels require progressively more XP. Hero starts lvl1, capped lvl16, with 15 level-up choices across regular skills 3×4 + ultimate×3 (unlocks at lvl5). The exact XP table/function and replay XP multiplier remain OPEN.
+- **G2-R balance gate:** tune against all 50 main stages plus low/medium/high replay-farming trajectories, not a simple isolated threshold; check that hero lvl16 isn't reached too early and stage10 boss requires no forced farm. First-clear XP usual, replay victories reduced, losses 0; companions never receive XP.
+- [Hero XP Pacing 2.5](HERO-XP-PACING-2.5.md). This is **DOCUMENTED_DECISION**, not numeric balance PASS. No independent WFA agent has executed work; runtime G2-R and XP curves NOT_IMPLEMENTED.
