@@ -92,6 +92,12 @@ Each executed role must produce a receipt:
 
 ## Hero XP owner decision — 2026-11-19
 - Main hero earns XP on verified battle victory, levels at XP thresholds, and receives a player-controlled choice after **each** levelup among three 4-tier skills and eligible ultimate. Companion levels remain bought manually for gold, never gain XP.
-- **Designer task:** XP threshold curve and reward differentiation, hero-level caps, action pacing across 50 stages and replay-farming impact; no gold-only hero-level purchase assumed.
+- **Designer task:** XP threshold curve and **owner-approved reduced XP for replay wins / zero XP on defeats**, hero-level caps, action pacing across 50 stages and replay-farming impact; no gold-only hero-level purchase assumed.
 - **Developer task (after gate):** versioned XP/levelup/pending choice ledger, atomic idempotent reward settlement keyed by `attemptId`, separate companion gold purchase ledger, legacy v1 migration.
 - **QA/Reviewer:** evidence for multi-levelup, duplicate/reload, defeats, replay policy restrictions, 4 main hero kits, companions unaffected. Agent tasks are only descriptions; **AGENT_NOT_LAUNCHED / G2-R_NOT_IMPLEMENTED**.
+
+## XP reward policy approval — 2026-11-19
+- Owner confirmed hero XP from first-clear wins, **smaller positive XP for a separate replay win** versus same-stage first-clear, and **0 XP on defeat**. Companions still have no XP; each level costs player-spent gold.
+- **Designer/Balance:** propose versioned XP curve 1–50, replay reduction coefficient and rounding while keeping repeat gold economy sustainable. PvP/idle XP undecided; don't assume.
+- **Developer/QA/Reviewer (future actual agent runs):** transactional once-per-attempt XP and skill-choice ledger, no XP from defeat, repeat legitimate wins possible, duplicate receipt/reload fail-closed, 4 permanent hero profiles and unlock milestones; require real receipts and tests, not this doc update.
+- AGENT_PLAN_ONLY; no independent agents executed, G2-R NOT_IMPLEMENTED.

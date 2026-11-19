@@ -145,5 +145,10 @@
 
 ## Hero XP confirmation — 2026-11-19
 - OWNER_CONFIRMED: permanent main hero earns XP from verified battle victories; when `heroXp` reaches a threshold, `heroLevel` advances and the player personally selects which of three skills (4 improvement ranks each) or eligible ultimate to upgrade. No auto distribution.
-- Companions earn no XP; levels manually purchased with gold. Hero XP quantities/thresholds, replay/defeat/PvP/idle XP, ultimate unlock/rank cap are OPEN.
+- Companions earn no XP; levels manually purchased with gold. Hero XP quantities/thresholds and **replay reduction factor**, PvP/idle XP, ultimate unlock/rank cap are OPEN. **Reduced XP for replay victory and 0 XP on defeat OWNER_CONFIRMED.**
 - No G2-R skill allocation, new XP/reward logic, Save v2, event-based XP dedup or browser acceptance has been implemented; legacy G2 28/28 PASS does not cover them. [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+
+## Replay victory XP / defeat zero XP — owner confirmed 2026-11-19
+- New legitimate replay victory over CLEARED stage pays **reduced positive hero XP** compared with that stage's first-clear XP, plus already-confirmed reduced ordinary gold. Losing, invalid or unfinished attempts grant **0 hero XP**. Companions gain no XP; they use manual gold upgrade.
+- Levelup/upgrade choice accrual remains determined by earned XP; for a repeated callback of the same `attemptId`, no duplicate XP, heroLevel, skill points or rewards. XP amounts, ratio, level curve and PvP/idle remain OPEN.
+- [Progression 2.4](CHARACTER-PROGRESSION-2.4.md) / [G2-R acceptance](ACCEPTANCE.md): **DESIGN_CONFIRMED / G2-R_NOT_IMPLEMENTED**; existing legacy G2 green CI cannot validate.

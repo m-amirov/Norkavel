@@ -107,4 +107,8 @@
 
 ## Owner decision: hero XP on battle victory — 2026-11-19
 - Героический уровень повышается **за XP, полученный при победе**, не за покупку уровней спутников. Каждый геройский level-up даёт **осознанный выбор** улучшения 3 скиллов или доступной ульты. Все пять спутников повышаются **только вручную за золото**, без автоопыта.
-- XP thresholds, rewards from replayed victories/losses, PvP, idle and ultimate gating remain OPEN. One battle result cannot grant XP or upgrade choice twice. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- XP thresholds, **reduced reward XP for replay victories and zero XP for losses confirmed**, amounts/ratio and PvP/idle and ultimate gating remain OPEN. One battle result cannot grant XP or upgrade choice twice. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+
+## XP farming: owner decision 2026-11-19
+- Replay wins award **reduced positive XP** to the permanent hero compared with first-clear of the same stage. Defeats award **0 hero XP**. Companion XP does not exist; gold purchases are the only companion-level path. Exactly-once reward per verified `attemptId`; repeated valid victories may farm XP.
+- XP numerical curve/replay ratio and PvP/idle policy OPEN; [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.

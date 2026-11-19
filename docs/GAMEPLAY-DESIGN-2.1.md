@@ -180,3 +180,8 @@
 - Главный герой получает **XP за подтверждённую победу в бою**, автоматически повышая свой уровень при накоплении нужного XP. После каждого hero level-up игрок **сам** выбирает улучшение одной из 3 обычных способностей (по 4 апгрейда) или доступной ульты. Спутники не получают XP, только ручные покупки уровней за золото.
 - Открытые вопросы: конкретные XP за победу, повторные победы и поражения, hero level thresholds/caps, PvP/idle XP, ultimate unlock/ranks. Нельзя без согласования выдавать XP за реплей лишь потому, что золотая повторная награда уже утверждена.
 - Вознаграждение XP должно быть идемпотентным по `attemptId` и сохранять несколько unspent hero upgrade choices, если уровень поднялся дважды одной победой. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.
+
+## Hero XP from replays and defeats — owner approval 2026-11-19
+- **First clear of a stage:** base hero XP (amount OPEN). **Each distinct genuine replay victory on cleared stage:** smaller positive hero XP than on first clear of that stage; repeat gold is also reduced (previously CONFIRMED). **Defeat: 0 XP**. Hero-only XP: companions level exclusively with manual gold purchases.
+- A repeat of the **same `attemptId`** cannot award gold, XP, skill choices or milestone twice; two different genuine replay wins may each grant reduced XP. Replay stage 3/10 never reissues Kair/fifth unlock. XP rates/curve, hero caps, PvP/idle XP still OPEN.
+- [Progression 2.4](CHARACTER-PROGRESSION-2.4.md); gameplay spec only, not G2-R implementation.

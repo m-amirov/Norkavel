@@ -75,5 +75,9 @@ The fifth companion must unlock only on first **story-boss victory**, not before
 
 ## Hero XP and level-up choice — owner confirmed 2026-11-19
 - Permanent main hero receives XP for **verified victories** and levels at configurable XP thresholds. Every hero level gained creates a persistent player-controlled upgrade choice of one of three regular skills (four upgrade steps each) or eligible ultimate. No automatic skill assignment or coin-based companion XP. No shared camp level.
-- Avoid inferring XP for replay, defeat, PvP or idle; numerical XP/thresholds/caps and ultimate unlocking still OWNER_OPEN. Prevent duplicate XP and skill points on same attemptId or reload, preserve multiple levelup choice opportunities.
+- **Owner confirmed: replay win pays reduced positive XP; defeat pays 0 XP**. PvP/idle XP, numerical XP/thresholds/caps and ultimate unlocking still OWNER_OPEN. Prevent duplicate XP and skill points on same attemptId or reload, preserve multiple levelup choice opportunities.
 - WFA routing is only guidance; no independent agents executed. [Character Progression 2.4](docs/CHARACTER-PROGRESSION-2.4.md).
+
+## Confirmed replay XP rule — 2026-11-19
+- After first clear, each new **verified replay victory** on a CLEARED stage awards the main hero **reduced but positive XP** versus first-clear of that stage, and reduced normal gold. **Defeat gives 0 XP**, even on a boss; incomplete/invalid fights give none. Companions never accumulate XP.
+- Exactly once per verified `attemptId`: repeated callback/reload cannot duplicate gold, XP, level-up or pending choice; distinct legitimate wins can each grant XP. XP numeric values, replay reduction coefficient, PvP/idle still OPEN. Owner-confirmed SPEC ONLY, G2-R NOT_IMPLEMENTED.
