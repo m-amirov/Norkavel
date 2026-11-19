@@ -178,14 +178,18 @@
 
 ## Hero XP award — OWNER CONFIRMED 2026-11-19
 - Главный герой получает **XP за подтверждённую победу в бою**, автоматически повышая свой уровень при накоплении нужного XP. После каждого hero level-up игрок **сам** выбирает улучшение одной из 3 обычных способностей (по 4 апгрейда) или доступной ульты. Спутники не получают XP, только ручные покупки уровней за золото.
-- Открытые вопросы: конкретные XP за победу, повторные победы и поражения, hero level thresholds/caps, PvP/idle XP, ultimate unlock/ranks. Нельзя без согласования выдавать XP за реплей лишь потому, что золотая повторная награда уже утверждена.
+- Открытые вопросы: конкретные XP за победу, повторные победы и поражения, hero level thresholds (**level cap 16 CONFIRMED**), PvP/idle XP, ultimate unlock/ranks. Нельзя без согласования выдавать XP за реплей лишь потому, что золотая повторная награда уже утверждена.
 - Вознаграждение XP должно быть идемпотентным по `attemptId` и сохранять несколько unspent hero upgrade choices, если уровень поднялся дважды одной победой. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.
 
 ## Hero XP from replays and defeats — owner approval 2026-11-19
 - **First clear of a stage:** base hero XP (amount OPEN). **Each distinct genuine replay victory on cleared stage:** smaller positive hero XP than on first clear of that stage; repeat gold is also reduced (previously CONFIRMED). **Defeat: 0 XP**. Hero-only XP: companions level exclusively with manual gold purchases.
-- A repeat of the **same `attemptId`** cannot award gold, XP, skill choices or milestone twice; two different genuine replay wins may each grant reduced XP. Replay stage 3/10 never reissues Kair/fifth unlock. XP rates/curve, hero caps, PvP/idle XP still OPEN.
+- A repeat of the **same `attemptId`** cannot award gold, XP, skill choices or milestone twice; two different genuine replay wins may each grant reduced XP. Replay stage 3/10 never reissues Kair/fifth unlock. XP rates/curve, **hero cap 16 CONFIRMED**, XP thresholds and PvP/idle XP OPEN.
 - [Progression 2.4](CHARACTER-PROGRESSION-2.4.md); gameplay spec only, not G2-R implementation.
 
 ## Owner ultimate decision — 2026-11-19
 - Ultimate becomes usable at **heroLevel 5**, not before, and permits exactly **3 player-selected improvement steps** (ordinary three skills: 4 each; **15 in total**). Any hero level-up from 5 onward may be invested in ultimate instead of an ordinary skill. Unlock does NOT auto-invest the level-up choice.
 - Hero XP per victory / reduced replay XP / defeat zero remain CONFIRMED; precise XP values and ultimate effects OPEN. All four hero kits must include unique ultimate, not simply a reused generic G2 action. [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+
+## Hero progression cap — OWNER_CONFIRMED 2026-11-19
+- New permanent hero starts at lvl1, maximum **lvl16**, with **15 level-up choices** on levels 2..16. Enough for all 3 regular skills×4 improvements + ultimate×3 (unlocked at lvl5). On reaching max, unspent choices remain; no level17 or extra skill point, while companion upgrades for gold and PvE replays continue.
+- XP thresholds, stage pacing, source variants PvP/idle and post-cap XP accounting OPEN. Reference [Progression 2.4](CHARACTER-PROGRESSION-2.4.md); G2-R NOT_IMPLEMENTED.
