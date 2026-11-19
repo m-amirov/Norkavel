@@ -1,5 +1,6 @@
 import { createServer as httpServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -9,9 +10,17 @@ const allowed = Object.freeze({
   '/index.html': ['web/index.html','text/html; charset=utf-8'],
   '/style.css': ['web/style.css','text/css; charset=utf-8'],
   '/main.mjs': ['web/main.mjs','text/javascript; charset=utf-8'],
+  '/art-registry.mjs': ['web/art-registry.mjs','text/javascript; charset=utf-8'],
   '/src/combat.mjs': ['src/combat.mjs','text/javascript; charset=utf-8'],
   '/assets/art/warrior-concept-01.png': ['assets/art/warrior-concept-01.png','image/png'],
   '/assets/art/arena-ruins-01.png': ['assets/art/arena-ruins-01.png','image/png'],
+  '/assets/art/manifest.json': ['assets/art/manifest.json','application/json; charset=utf-8'],
+  ...Object.fromEntries([
+    'sentinel','ember','healer','ash'
+  ].map(id=>{
+    const file='assets/art/g3/'+id+'-master-0.3.webp';
+    return ['/'+file,[file,'image/webp']];
+  }).filter(([,entry])=>existsSync(path.join(root,entry[0])))),
   '/ludory.project.json': ['ludory.project.json','application/json; charset=utf-8'],
   '/vendor/ludory/packages/core/src/browser.mjs': ['vendor/ludory/packages/core/src/browser.mjs','text/javascript; charset=utf-8'],
   '/vendor/ludory/packages/core/src/definition.mjs': ['vendor/ludory/packages/core/src/definition.mjs','text/javascript; charset=utf-8'],
