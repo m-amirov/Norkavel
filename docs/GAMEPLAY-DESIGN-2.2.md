@@ -21,7 +21,7 @@
 
 ## 3. Рост силы и баланс без переключения героя
 
-- Общий уровень лагеря, золото и развитие пяти спутников могут оставаться основой мета-прогрессии.
+- **OWNER CONFIRMED:** нет общего уровня лагеря; каждый спутник прокачивает только свой уровень. Постоянный герой имеет отдельный уровень и 3 способности с 4 улучшениями у каждой + прокачиваемую ульту. Золото/XP не согласованы.
 - Индивидуальная прокачка относится **только к выбранному главному герою**. Не нужно открывать или прокачивать три недоступных главных героя внутри этого прохождения.
 - Все четыре варианта — полноценные направления игры, а не выбор неправильной сложности; ни один этап/босс не требует обязательной способности героя другого класса. В частности, shield-bash не может быть единственным способом пережить Хранителя Разлома.
 - Для серьёзной угрозы минимум два реальных контрпути с доступными спутниками и/или навыками текущего героя. Расстановка и улучшения помогают, но не подменяют осмысленные тактические решения.
@@ -95,3 +95,7 @@
 ## Owner approved campaign maps — 19.11.2026
 - Five linear maps × ten nodes: bosses 10/20/30/40/50, 50 distinct battle backgrounds + 5 separate chapter map illustrations = 55 environment masters. Story boss stage 10 first clear unlocks ice controller. No forks, map node traversal required.
 - Themes and exact art composition are PROPOSED. See [Campaign Map 2.3](CAMPAIGN-MAP-2.3.md) and [Art inventory](CAMPAIGN-ENVIRONMENT-ART-0.1.md). Runtime assets not produced; WFA agents not launched.
+
+## Superseding progression model — owner confirmed 19.11.2026
+- No camp level, no companion skill upgrade trees: each of 5 companions simply has an independent level. Selected permanent main hero has own level, three ordinary abilities with 4 upgrade steps each and an upgradeable ultimate; player chooses what to improve after every hero level-up.
+- Source of truth [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). XP, ultimate cap/unlock, skill names and balance still OPEN. Older shared-camp and two-ability text elsewhere is not owner-approved.
