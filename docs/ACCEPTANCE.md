@@ -87,3 +87,5 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-035:** G3 includes **4 separate hero masters + 5 companion masters**, not four renamed candidate companion PNGs. Prior Art 0.3 generated four *companions* only. **BLOCKED_ART**.
 - **NKV-036:** Names/classes/visual personalities of four selectable heroes, fifth companion and schedule of unlocks need content specification. **OPEN_DETAILS / COUNTS_CONFIRMED**.
 - Historical G2 boss, browser and G3 art tests do **not** prove NKV-031–035. Any new PASS requires direct validation on the new code and exact commit SHA.
+
+- Current [G3 scope correction 0.4](G3-ART-PRODUCTION-0.4.md) is **PLAN_ONLY**, not a proof of actual nine ally masters or animations.
