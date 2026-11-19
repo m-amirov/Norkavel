@@ -116,7 +116,7 @@ DEFERRED: косметика, платные покупки, сложная эк
 
 ## 8. Кампания и PvE-прогресс (PROPOSED)
 
-Опорный объём прежнего GDD — 5 глав по 10 этапов (50 PvE этапов). Это не owner-CONFIRMED число. Для осмысленной разработки предложены обучающие пики:
+Опорный объём прежнего GDD — **5 глав по 10 этапов (50 PvE этапов) — OWNER_CONFIRMED 19.11.2026**. Для осмысленной разработки предложены обучающие пики:
 - Глава 1 / 1–10: стартовый герой, три спутника, навыки, открытие 4-го и 5-го спутников, boss tutorial.
 - Глава 2 / 11–20: фронт/тыл, противники с точечным фокусом, анти-AoE и смена состава.
 - Глава 3 / 21–30: статусы, контролируемый burn/freeze/mark, синергии и устойчивость босса.
@@ -206,7 +206,7 @@ DEFERRED: косметика, платные покупки, сложная эк
 | Открытие 4-го спутника | после первой победы этапа 3 | OWNER CONFIRMED |
 | **Открытие 5-го спутника** | **после первой победы над первым сюжетным боссом** (не перед ним; этап пока OPEN) | **CONFIRMED / OWNER** |
 | **Роль 5-го спутника** | **Ледяной контролёр: slow + ослабление опасных атак** | **OWNER CONFIRMED 19.11.2026**; детали механики OPEN |
-| PvE кампания | 5 глав × 10 этапов, boss на каждом 10-м | OPEN / прежний вариант |
+| PvE кампания | **5 глав × 10 этапов, boss на 10/20/30/40/50, линейные карты** | **OWNER_CONFIRMED** |
 | Ресурсы первого релиза | золото; минимум дополнительных счетчиков | OPEN / рекомендуем |
 | Offline-cap | 8 часов PvE золота | OPEN / прежний вариант |
 | Модель монетизации | rewarded PvE + косметика, без PvP P2W | OPEN / рекомендуем |
@@ -240,3 +240,8 @@ Release flags остаются false. Ни одна предложенная м�
 - Пятый спутник — **ледяной контролёр**; замедляет противников и ослабляет опасные атаки, роль CONFIRMED. Его собственный персонаж/имя, конкретные умения, численные параметры и art остаются OPEN. Не создавать бесконечный freeze/stunlock; boss counterplay и softlock нужны в отдельных тестах.
 - Не доступен до первой победы над первым сюжетным боссом, поэтому не может быть обязательным для этого босса.
 - [Design brief](FIFTH-COMPANION-ICE-CONTROL-0.1.md), [updated G2-R contract](G2-R-CHARACTER-SYSTEM-0.1.md). Этот GDD не означает реализованной функции.
+
+## 2026-11-19 — campaign map scope approved
+- **Owner approved:** 5 chapters × 10 stages = 50; boss stages 10/20/30/40/50; first story boss on stage 10; Kair unlock stage 3, ice controller after first clear stage 10. All main chapters have **separate maps with ten sequential nodes and no forks** (option A), navigated by player's marker.
+- **Exactly 50 unique stage backdrops** and 5 separate chapter maps, 55 environment masters total, boss backdrops included in 50. Recolor/crop of one background is not a separate unique environment. Actual media NOT PRODUCED.
+- [Campaign Map 2.3](CAMPAIGN-MAP-2.3.md), [Art inventory](CAMPAIGN-ENVIRONMENT-ART-0.1.md), [Agent roles](AGENT-EXECUTION-G2-R.md). Detailed map movement UX/biomes are PROPOSED pending owner review.
