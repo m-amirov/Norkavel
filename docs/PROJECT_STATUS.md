@@ -21,13 +21,13 @@
 |---|---|---|
 | G0 | CONFIRMED | genre/party/PvP/orientation |
 | G1 | DESIGN_DRAFT | pending owner acceptance |
-| G2 | **EXTENDED_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | 1800 deterministic first-stage/boss scenarios, browser victory/defeat/retry and mobile emulation PASS; boss difficulty, hardware and user playtest remain open |
+| G2 | **BOSS_BALANCE_SAMPLE_PASS / EXTENDED_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | retuned boss 1800 seeded fights + real browser natural defeat PASS; human balance and physical-device acceptance remain open |
 | G3 | BLOCKED_ART_PRODUCTION | replace temporary procedural actor geometry with production-quality characters, backgrounds, VFX and animations; rights/visual review |
 | G4 | NOT_STARTED | full content and trusted server PvP |
 | G5–G7 | NOT_STARTED | real users, SDK/platform, rights, release approval |
 
 ## Remaining work (ordered)
-1. Close remaining G2 acceptance gaps: balance the first boss (idle currently wins 100% of sampled encounters), real-device input/safe areas, human playtest and readability at 640×360. Deterministic sampling now exceeds 1000 scenarios.
+1. Close remaining G2 acceptance gaps: independent first-boss playtest, physical-device input/safe areas, human comprehension and readability at 640×360. Mechanical boss balance sample is PASS, not user acceptance.
 2. Art Direction owner approval; create individual transparent masters, animation sheets and rights evidence for 3 active companions + alternate, 3 enemies and 1 boss. Art 0.2 concept lineup is conversation-only, not committed or runtime-integrated. No primitives can be accepted as G3 art.
 3. Determine Ludory Studio trust/origin and host boundaries for non-narrative 2D runtime; Core alone is real, Studio/Connect is not authorized by a hand-written manifest.
 4. Build an authenticated server-authoritative asynchronous PvP backend **only after** separate architecture decision; do not fake online arena.
@@ -61,5 +61,12 @@
 - [Exact source `140a495e`, CI 44459324594 SUCCESS](https://github.com/m-amirov/Norkavel/actions/runs/44459324594): **22/22 Node tests PASS**, full Chromium browser PASS.
 - [Measured report](G2-BALANCE-0.1.md): 1200 seeded first-stage + 600 seeded boss results; additional 200 seed tap-damage observations.
 - Manual tap multiplier tuned 0.31 → 0.14. Post-tune sampled contribution is **18.4%** of allied damage, within the GDD's provisional 15–25% range for the observed slice.
-- First-stage win rate 100% in all three sampled compositions (tutorial-appropriate hypothesis; no human evidence). **Boss idle win rate also 100%** in the sampled 600 scenarios, so boss difficulty and required counterplay remain **OPEN**, despite mechanical telegraph/interrupt tests passing.
+- Historical pre-retune result: first stage 100% sampled clears; old boss 100% idle clears over 600 scenarios. The subsequent **0.2 boss retune** resolves the measured lack of loss probability, documented below; human difficulty remains OPEN.
 - No server PvP or release readiness implied.
+
+## G2 First Boss Balance 0.2 (2026-11-19)
+- **Exact source `fcf3b4a`**: [GitHub Actions CI 44461330338 SUCCESS](https://github.com/m-amirov/Norkavel/actions/runs/44461330338), 23/23 Node tests PASS, complete Chromium browser smoke PASS including an actual natural boss defeat/retry without injured-party injection.
+- [Full 0.2 evidence and design rationale](G2-BOSS-BALANCE-0.2.md). Only Rift Guardian HP 490→780 and ATK 31→66 were tuned; boss interval 40 ticks, windup 20 ticks, other enemies unchanged. Original telegraph/interrupt remains.
+- 1800 fixed-seed stage-two samples (300 each of 6 tactics): healer idle 118/300 wins, healer interrupt 300/300, healer barrier 298/300, healer both 300/300, ash idle 247/300, ash skills 300/300. First-stage sample and ~18.4% manual-tap damage share remain unchanged by boss-only tuning.
+- **Root cause fixed:** browser PvE previously restarted with a single static seed; each playable start now advances and persists a deterministic LCG seed, so retries vary while explicit-seed simulation/replay remains deterministic. The initial state still uses the fixed 24071 seed for the current prototype; per-player initial entropy is not implemented.
+- Mechanical balance is **PROVISIONAL_SAMPLE_PASS**. Human enjoyment, physical touch devices, complete art, async PvP and release remain not verified.
