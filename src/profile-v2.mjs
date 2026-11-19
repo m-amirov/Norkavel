@@ -17,6 +17,13 @@ export const COMPANION_IDS = Object.freeze([
   'ash',
   'control'
 ]);
+export const COMPANION_CATALOG = Object.freeze([
+  Object.freeze({ id: 'sentinel', role: 'defender' }),
+  Object.freeze({ id: 'ember', role: 'mage' }),
+  Object.freeze({ id: 'healer', role: 'support' }),
+  Object.freeze({ id: 'ash', role: 'hunter' }),
+  Object.freeze({ id: 'control', role: 'ice_controller' })
+]);
 
 const STARTER_COMPANIONS = Object.freeze(['sentinel', 'ember', 'healer']);
 const LEGACY_COMPANIONS = Object.freeze(['sentinel', 'ember', 'healer', 'ash']);
@@ -114,14 +121,16 @@ function validHeroProgress(value) {
   const regular = ['skill1', 'skill2', 'skill3'];
   if (!regular.every(id => boundedInt(value.skillRanks[id], 0, 4)) ||
       !boundedInt(value.skillRanks.ultimate, 0, 3)) return false;
+  if (value.level < 5 && value.skillRanks.ultimate !== 0) return false;
   const spent = regular.reduce((sum, id) => sum + value.skillRanks[id], 0) + value.skillRanks.ultimate;
   return spent + value.pendingSkillChoices === value.level - 1;
 }
 
 function validCompanionProgress(value) {
+  // This is a JSON/safe-integer boundary, not an approved gameplay level cap.
   return Array.isArray(value) && value.length === COMPANION_IDS.length &&
     value.every((entry, index) => exactRecord(entry, ['id', 'level']) &&
-      entry.id === COMPANION_IDS[index] && boundedInt(entry.level, 1, 100));
+      entry.id === COMPANION_IDS[index] && boundedInt(entry.level, 1, Number.MAX_SAFE_INTEGER));
 }
 
 function validLegacySnapshot(value) {
@@ -133,15 +142,34 @@ function validLegacySnapshot(value) {
 
 function validLegacyProgress(value) {
   if (value === null) return true;
-  return exactRecord(value, ['sourceSchema', 'prototypeLevel', 'claimedPrototypeStages']) &&
-    value.sourceSchema === 1 && boundedInt(value.prototypeLevel, 1, 100) &&
+  return exactRecord(value, [
+    'sourceSchema', 'sourceRevision', 'prototypeLevel', 'claimedPrototypeStages',
+    'importedGold', 'importedParty', 'activated'
+  ]) && value.sourceSchema === 1 && boundedInt(value.sourceRevision, 0, Number.MAX_SAFE_INTEGER) &&
+    boundedInt(value.prototypeLevel, 1, 100) && boundedInt(value.importedGold, 0, Number.MAX_SAFE_INTEGER) &&
     Array.isArray(value.claimedPrototypeStages) && value.claimedPrototypeStages.length <= 2 &&
     value.claimedPrototypeStages.every(stage => [1, 2].includes(stage)) &&
-    new Set(value.claimedPrototypeStages).size === value.claimedPrototypeStages.length;
+    new Set(value.claimedPrototypeStages).size === value.claimedPrototypeStages.length &&
+    uniqueSubset(value.importedParty, LEGACY_COMPANIONS, 3) && typeof value.activated === 'boolean';
 }
 
 function sameArray(left, right) {
   return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+function validFirstClearLedger(value) {
+  return validStringLedger(value, 50) && value.every(id => {
+    const match = /^stage:(\d+)$/.exec(id);
+    return match && boundedInt(Number(match[1]), 1, 50);
+  });
+}
+
+function expectedUnlockedCompanions(profile) {
+  const expected = profile.legacyProgress === null ? [...STARTER_COMPANIONS] : [...LEGACY_COMPANIONS];
+  if (profile.ledgers.unlockReceiptIds.includes('stage_3_first_clear') && !expected.includes('ash'))
+    expected.push('ash');
+  if (profile.ledgers.unlockReceiptIds.includes('first_story_boss_first_clear')) expected.push('control');
+  return expected;
 }
 
 export function validateProfileV2(profile) {
@@ -161,21 +189,32 @@ export function validateProfileV2(profile) {
       !uniqueSubset(profile.party, COMPANION_IDS, 3) ||
       !profile.party.every(id => profile.unlockedCompanionIds.includes(id))) return false;
   if (!exactRecord(profile.ledgers, ['firstClearStageIds', 'rewardReceiptIds', 'unlockReceiptIds']) ||
-      !validStringLedger(profile.ledgers.firstClearStageIds, 50) ||
+      !validFirstClearLedger(profile.ledgers.firstClearStageIds) ||
       !validStringLedger(profile.ledgers.rewardReceiptIds, 10000) ||
-      !validStringLedger(profile.ledgers.unlockReceiptIds, 10)) return false;
+      !validStringLedger(profile.ledgers.unlockReceiptIds, 2) ||
+      profile.ledgers.unlockReceiptIds.some(id =>
+        !['stage_3_first_clear', 'first_story_boss_first_clear'].includes(id))) return false;
+  const stage3Cleared = profile.ledgers.firstClearStageIds.includes('stage:3');
+  const stage10Cleared = profile.ledgers.firstClearStageIds.includes('stage:10');
+  if (profile.ledgers.unlockReceiptIds.includes('stage_3_first_clear') !== stage3Cleared ||
+      profile.ledgers.unlockReceiptIds.includes('first_story_boss_first_clear') !== stage10Cleared ||
+      !sameArray(profile.unlockedCompanionIds, expectedUnlockedCompanions(profile))) return false;
   if (!validLegacyProgress(profile.legacyProgress)) return false;
   if ((profile.legacyCheckpoint === null) !== (profile.legacyProgress === null)) return false;
   if (profile.legacyCheckpoint === null) {
-    return sameArray(profile.unlockedCompanionIds, STARTER_COMPANIONS);
+    return true;
   }
   if (!validLegacySnapshot(profile.legacyCheckpoint)) return false;
   const legacy = profile.legacyCheckpoint.state;
-  return profile.gold === legacy.gold &&
+  if (profile.legacyProgress.sourceRevision !== profile.legacyCheckpoint.revision ||
+      profile.legacyProgress.importedGold !== legacy.gold ||
+      !sameArray(profile.legacyProgress.importedParty, legacy.party) ||
+      profile.legacyProgress.prototypeLevel !== legacy.level ||
+      !sameArray(profile.legacyProgress.claimedPrototypeStages, legacy.claimed)) return false;
+  return profile.legacyProgress.activated || (profile.gold === legacy.gold &&
     sameArray(profile.party, legacy.party) &&
-    sameArray(profile.unlockedCompanionIds, LEGACY_COMPANIONS) &&
     profile.legacyProgress.prototypeLevel === legacy.level &&
-    sameArray(profile.legacyProgress.claimedPrototypeStages, legacy.claimed);
+    sameArray(profile.legacyProgress.claimedPrototypeStages, legacy.claimed));
 }
 
 export function selectPermanentHero(profile, heroId) {
@@ -186,6 +225,70 @@ export function selectPermanentHero(profile, heroId) {
   next.phase = 'setup';
   next.heroSelection = { confirmedOnce: true, selectionRequired: false };
   return next;
+}
+
+export function upgradeHeroSkill(profile, skillId) {
+  if (!validateProfileV2(profile) || profile.phase !== 'setup' ||
+      !['skill1', 'skill2', 'skill3', 'ultimate'].includes(skillId) ||
+      profile.heroProgress.pendingSkillChoices < 1) return profile;
+  if (skillId === 'ultimate' && profile.heroProgress.level < 5) return profile;
+  const cap = skillId === 'ultimate' ? 3 : 4;
+  if (profile.heroProgress.skillRanks[skillId] >= cap) return profile;
+  const next = clone(profile);
+  next.heroProgress.skillRanks[skillId] += 1;
+  next.heroProgress.pendingSkillChoices -= 1;
+  return next;
+}
+
+export function activateLegacyProfileV2(profile) {
+  if (!validateProfileV2(profile) || profile.legacyProgress === null) return profile;
+  if (profile.legacyProgress.activated) return profile;
+  const next = clone(profile);
+  next.legacyProgress.activated = true;
+  return next;
+}
+
+function validCampaignResult(result) {
+  return exactRecord(result, ['resultVersion', 'attemptId', 'stageId', 'outcome']) &&
+    result.resultVersion === 1 && typeof result.attemptId === 'string' &&
+    result.attemptId.length > 0 && result.attemptId.length <= 96 &&
+    boundedInt(result.stageId, 1, 50) && ['victory', 'defeat'].includes(result.outcome);
+}
+
+export function settleVerifiedCampaignResult(profile, result) {
+  if (!validateProfileV2(profile) || profile.phase !== 'setup' || !validCampaignResult(result) ||
+      (profile.legacyProgress !== null && !profile.legacyProgress.activated) ||
+      profile.ledgers.rewardReceiptIds.includes(result.attemptId)) return profile;
+  const next = clone(profile);
+  next.ledgers.rewardReceiptIds.push(result.attemptId);
+  if (result.outcome !== 'victory') return validateProfileV2(next) ? next : profile;
+  const stageReceipt = `stage:${result.stageId}`;
+  if (next.ledgers.firstClearStageIds.includes(stageReceipt))
+    return validateProfileV2(next) ? next : profile;
+  next.ledgers.firstClearStageIds.push(stageReceipt);
+  if (result.stageId === 3) {
+    next.ledgers.unlockReceiptIds.push('stage_3_first_clear');
+    if (!next.unlockedCompanionIds.includes('ash')) next.unlockedCompanionIds.push('ash');
+  }
+  if (result.stageId === 10) {
+    next.ledgers.unlockReceiptIds.push('first_story_boss_first_clear');
+    next.unlockedCompanionIds.push('control');
+  }
+  return validateProfileV2(next) ? next : profile;
+}
+
+export function assignCompanionSlot(profile, slotIndex, companionId) {
+  if (!validateProfileV2(profile) || profile.phase !== 'setup' ||
+      !boundedInt(slotIndex, 0, 2) || !profile.unlockedCompanionIds.includes(companionId)) return profile;
+  const currentIndex = profile.party.indexOf(companionId);
+  if (currentIndex === slotIndex) return profile;
+  const next = clone(profile);
+  if (currentIndex >= 0) {
+    [next.party[slotIndex], next.party[currentIndex]] = [next.party[currentIndex], next.party[slotIndex]];
+  } else {
+    next.party[slotIndex] = companionId;
+  }
+  return validateProfileV2(next) ? next : profile;
 }
 
 // Produces an in-memory migration candidate only. The caller remains responsible
@@ -199,8 +302,12 @@ export function prepareLegacyProfileV2(snapshot) {
   profile.party = [...source.state.party];
   profile.legacyProgress = {
     sourceSchema: 1,
+    sourceRevision: source.revision,
     prototypeLevel: source.state.level,
-    claimedPrototypeStages: [...source.state.claimed]
+    claimedPrototypeStages: [...source.state.claimed],
+    importedGold: source.state.gold,
+    importedParty: [...source.state.party],
+    activated: false
   };
   profile.legacyCheckpoint = source;
   return validateProfileV2(profile) ? profile : null;
