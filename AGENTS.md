@@ -27,4 +27,4 @@ workflow-for-agents: git=direct-main
 3. node --test tests/*.test.mjs
 4. For optional project Skills run scripts/bootstrap.ps1 -ApplySkills after dry-run and inspecting changes.
 
-Current stage: G2 browser-playable technical slice (exact CI artifact evidence); G1 GDD owner approval pending, G3 production art BLOCKED, async PvP/backend/Yandex Connect not implemented. Do not call existing procedural Canvas placeholder art release-ready.
+Current stage: G2 browser-playable technical slice + art production 0.1 source image candidates (exact CI artifact evidence); G1 GDD owner approval pending, G3 production art BLOCKED, async PvP/backend/Yandex Connect not implemented. Do not call existing procedural Canvas placeholder art release-ready.

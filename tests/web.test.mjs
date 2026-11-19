@@ -12,6 +12,8 @@ test('G2 preview serves real gameplay modules and hides private files', async (t
   for(const [route, expected] of [
     ['/','text/html'],['/style.css','text/css'],['/main.mjs','text/javascript'],
     ['/src/combat.mjs','text/javascript'],
+    ['/assets/art/warrior-concept-01.png','image/png'],
+    ['/assets/art/arena-ruins-01.png','image/png'],
     ['/vendor/ludory/packages/core/src/browser.mjs','text/javascript'],
     ['/vendor/ludory/packages/core/src/session.mjs','text/javascript'],
     ['/ludory.project.json','application/json']

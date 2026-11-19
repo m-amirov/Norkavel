@@ -57,6 +57,9 @@ async function main(){
     await send('Emulation.setDeviceMetricsOverride',{width:1280,height:720,deviceScaleFactor:1,mobile:false,screenOrientation:{type:'landscapePrimary',angle:90}});
     await send('Page.navigate',{url:gameUrl});
     await until(()=>js('Boolean(window.__norkavelDebug && document.querySelector("[data-action=start]"))'),12000,'game boot');
+    await until(()=>js('window.__norkavelDebug.getArtStatus().hero.loaded && window.__norkavelDebug.getArtStatus().background.loaded'),12000,'both real art images decoded');
+    assert.deepEqual(await js('window.__norkavelDebug.getArtStatus()'),
+      {hero:{loaded:true,width:1536,height:1024},background:{loaded:true,width:1672,height:941}});
     assert.equal(await js('window.__norkavelDebug.getStatus()'),'running');
     await screenshot('01-setup');
     assert.equal(await js('document.querySelector("[data-action=choose][data-id=ash]").click();window.__norkavelDebug.snapshot().state.party.includes("ash")'),true);

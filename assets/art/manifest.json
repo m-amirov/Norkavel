@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "status": "ART_CANDIDATES_PENDING_REVIEW",
+  "sourceHeadAtCreation": "4d1dd9b2382b1d0ff9db4760d825e083d8ababb6",
+  "generatedOn": "2026-11-18",
+  "sourceContext": "Norkavel user-authorized Art Production 0.1; ChatGPT ImageGen original output, not web-sourced.",
+  "images": [
+    {
+      "id": "hero-warrior-concept-01",
+      "path": "assets/art/warrior-concept-01.png",
+      "purpose": "Main hero warrior in canvas arena",
+      "scene": "web/main.mjs:drawFigure",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "18a5a559dd4f0b122f7872e4f4ce1a05bea9ac4732cfdb443228754ca5e69f84",
+      "source": "ChatGPT ImageGen 2026-11-18",
+      "transparent": true,
+      "status": "CANDIDATE_INTEGRATED"
+    },
+    {
+      "id": "battle-arena-ruins-01",
+      "path": "assets/art/arena-ruins-01.png",
+      "purpose": "Clean side-view battlefield backdrop",
+      "scene": "web/main.mjs:drawWorld",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "sha256": "c026c91182f8614b39ba9ca49e77ed48f4fbd786a77f36aba670562b6132f2f4",
+      "source": "ChatGPT ImageGen 2026-11-18",
+      "transparent": false,
+      "status": "CANDIDATE_INTEGRATED"
+    }
+  ],
+  "gates": {
+    "mechanical": "NOT_RUN",
+    "runtime": "NOT_RUN",
+    "artistic": "PENDING_OWNER_APPROVAL",
+    "rights": "NOT_VERIFIED",
+    "animation": "MISSING"
+  },
+  "omitted": [
+    "Three companions (unique art and motion)",
+    "Three enemies",
+    "Boss and attack phases",
+    "Independent art review",
+    "Fully documented rights clearance"
+  ]
+}

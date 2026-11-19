@@ -46,3 +46,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 ## G2 Browser receipt (actual)
 - [GitHub Actions 44374853507, commit ac1cdf2](https://github.com/m-amirov/Norkavel/actions/runs/44374853507): Chromium mouse click, two active skill wiring, manual pause, portrait-block/resume including 1024×1366 tablet, first clear, real Core snapshot reload, duplicate reward prevention, retry, boss warning+interrupt. Screenshot artifact uploaded.
 - [G2 visual audit](qa/G2-visual-audit-2026-11-18.md): placeholder art is not accepted as production art.
+
+## Art Production 0.1 additions
+- NKV-022: Real PNG image source for hero and location, registered SHA-256, dimensions, and runtime scene mapping. Mechanical tests and actual browser decode/capture are required; artistic/rights do not inherit mechanical PASS.
+- NKV-023: Full roster (1 hero + 3 companions + enemies/boss) consistent illustrated animation assets, separate artistic review and rights documentation. NOT_READY.

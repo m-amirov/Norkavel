@@ -32,6 +32,7 @@ npm run test:browser
 - [GDD index](GDD.md) — короткая карта утверждённых систем.
 - [Статус и проверки](docs/PROJECT_STATUS.md).
 - [G2 визуальный аудит](docs/qa/G2-visual-audit-2026-11-18.md).
+- [Art Production 0.1 — реальные исходники, статус и ограничения](docs/ART_PRODUCTION-0.1.md).
 - [Технический bootstrap](docs/TECHNICAL_BOOTSTRAP.md).
 - [Пайплайн и критерии приёмки](docs/ACCEPTANCE.md).
 

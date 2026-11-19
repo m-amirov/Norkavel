@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Дата:** 2026-11-18. Current boundary: **G2 TECHNICAL PLAYABLE / G3 ART NOT ACCEPTED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2 TECHNICAL PLAYABLE / ART PRODUCTION 0.1 CANDIDATES / G3 NOT ACCEPTED**.
 
 ## Decisions and design
 - G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, one chosen main hero + three companions, async-only PvP, **landscape-only** across mobile game.
@@ -34,3 +34,8 @@
 5. Actual Codex activation test is NOT_RUN (CI installs WFA Skills but is not Codex runtime).
 
 **Release flags:** releaseReady=false; publicationAllowed=false. No Yandex moderation, money/ads or official platform acceptance performed.
+
+## Art Production 0.1 (2026-11-19)
+- Source-bound candidates: transparent warrior master 1536×1024 and clean landscape battlefield background 1672×941. Original PNG bytes are committed under `assets/art/` with SHA-256/provenance in `assets/art/manifest.json`.
+- Browser now preloads the two real assets; canvas renderer uses actual images when decoded. Geometric fallback and other seven temporary units remain, so not an art-complete slice.
+- See [production register](ART_PRODUCTION-0.1.md). Mechanical/runtime checks must run against latest commit; rights and independent artistic review remain NOT_RUN.

@@ -5,6 +5,15 @@ import { TICK_MS, ROSTER, initialState, validateState, startFight, stepCombat, n
 const $ = (id) => document.getElementById(id);
 const canvas = $('scene'), ctx = canvas.getContext('2d', {alpha:false});
 const panel = $('panel'), hotbar = $('hotbar'), notice = $('notice');
+const art = {
+  hero: new Image(),
+  background: new Image()
+};
+const artLoaded = image => image.complete && image.naturalWidth > 0 && image.naturalHeight > 0;
+art.hero.decoding = 'async';
+art.background.decoding = 'async';
+art.hero.src = '/assets/art/warrior-concept-01.png';
+art.background.src = '/assets/art/arena-ruins-01.png';
 const gate = $('turn-device'), pauseCurtain = $('pause-curtain');
 const SAVE_KEY = 'norkavel.g2.save.v1';
 const params = await fetch('/ludory.project.json').then(r => {if(!r.ok)throw new Error('manifest unavailable');return r.json();});
@@ -197,6 +206,16 @@ function polygon(points,fill,stroke,lineWidth=1){
 function ellipse(x,y,rx,ry,color){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();}
 function skyline(points,color){ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,720);for(const p of points)ctx.lineTo(...p);ctx.lineTo(1280,720);ctx.closePath();ctx.fill();}
 function drawWorld(time,s){
+  if (artLoaded(art.background)) {
+    ctx.drawImage(art.background,0,0,1280,720);
+    const shade=ctx.createLinearGradient(0,0,0,720);
+    shade.addColorStop(0,'#0c172311');
+    shade.addColorStop(.72,'#12202b08');
+    shade.addColorStop(1,'#08171f80');
+    ctx.fillStyle=shade;
+    ctx.fillRect(0,0,1280,720);
+    return;
+  }
   let g=ctx.createLinearGradient(0,0,0,720);
   g.addColorStop(0,'#112735');g.addColorStop(.48,'#2e4950');g.addColorStop(.72,'#696754');g.addColorStop(1,'#1b2826');
   ctx.fillStyle=g;ctx.fillRect(0,0,1280,720);
@@ -230,6 +249,26 @@ function drawWorld(time,s){
   }
 }
 function drawFigure(u,x,y,t,s) {
+  if (u.id === 'hero' && artLoaded(art.hero)) {
+    ctx.save();
+    ctx.globalAlpha=u.hp>0?1:.26;
+    ctx.shadowColor='#08141988';
+    ctx.shadowBlur=12;
+    // Production candidate image: real transparent source; no fake sprite-frame claims.
+    const iw=240,ih=160;
+    const bx=x-105,by=y-ih+20;
+    ctx.drawImage(art.hero,bx,by,iw,ih);
+    ctx.restore();
+    const barY=y-ih-5,bw=80,bh=7;
+    ctx.fillStyle='#102124df';ctx.fillRect(x-bw/2,barY,bw,bh);
+    ctx.fillStyle='#94c9a6';ctx.fillRect(x-bw/2+1,barY+1,Math.max(0,(bw-2)*u.hp/u.maxHp),bh-2);
+    ctx.strokeStyle='#d1cab47a';ctx.lineWidth=1;ctx.strokeRect(x-bw/2,barY,bw,bh);
+    if(u.shield>0){ctx.strokeStyle='#a0d1d8';ctx.strokeRect(x-bw/2-2,barY-2,bw+4,bh+4);}
+    ctx.save();ctx.font='bold 12px Arial';ctx.textAlign='center';
+    ctx.fillStyle='#fff0d8';ctx.shadowColor='#071018';ctx.shadowBlur=5;
+    ctx.fillText('Воин',x,barY-12);ctx.restore();
+    return;
+  }
   const isEnemy=u.team==='enemy',boss=u.id.startsWith('boss-');
   const kind=u.id.replace(/-\d+$/,'');
   const colors={hero:['#c3a06e','#3a525e','#f3dba2'],sentinel:['#798f97','#324655','#d5e1d4'],ember:['#b7645c','#482b53','#e8a570'],healer:['#d8ca9c','#4d7773','#edf1dc'],ash:['#7f839e','#2d4151','#c3bacb'],
@@ -310,4 +349,12 @@ function frame(now) {
 reevaluatePause();
 renderUI(session.getState());
 requestAnimationFrame(frame);
-window.__norkavelDebug = Object.freeze({snapshot:()=>session.snapshot(),getOrientation:()=>({portrait:orientationLocked,active}),getStatus:()=>session.getStatus()});
+window.__norkavelDebug = Object.freeze({
+  snapshot:()=>session.snapshot(),
+  getOrientation:()=>({portrait:orientationLocked,active}),
+  getStatus:()=>session.getStatus(),
+  getArtStatus:()=>({
+    hero:{loaded:artLoaded(art.hero),width:art.hero.naturalWidth,height:art.hero.naturalHeight},
+    background:{loaded:artLoaded(art.background),width:art.background.naturalWidth,height:art.background.naturalHeight}
+  })
+});
