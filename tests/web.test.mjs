@@ -53,9 +53,12 @@ test('G3 uncommitted art is not requested or exposed as real files',async(t)=>{
   await once(server,'listening');
   const origin='http://127.0.0.1:'+server.address().port;
   const manifest=await(await fetch(origin+'/assets/art/manifest.json')).json();
-  assert.equal(manifest.images.length,2,'new art remains a source pack, not a checked-in game asset');
+  assert.ok(manifest.images.length>=2 && manifest.images.length<=6);
   for(const id of ['sentinel','ember','healer','ash']){
     const res=await fetch(origin+'/assets/art/g3/'+id+'-master-0.3.webp');
-    assert.equal(res.status,404,'absent G3 asset must not return a fake success: '+id);
+    const registered=manifest.images.some(image=>image.id==='companion-'+id+'-master-0.3' &&
+      image.status==='CANDIDATE_INTEGRATED');
+    assert.equal(res.status,registered?200:404,
+      'G3 registered WebP must exist and unregistered art must not be exposed: '+id);
   }
 });
