@@ -7,6 +7,7 @@ import {
   HERO_IDS,
   activateLegacyProfileV2,
   assignCompanionSlot,
+  beginCampaignAttempt,
   createProfileV2,
   prepareLegacyProfileV2,
   selectPermanentHero,
@@ -14,6 +15,15 @@ import {
   upgradeHeroSkill,
   validateProfileV2
 } from '../src/profile-v2.mjs';
+
+const TEST_XP_POLICY = Object.freeze({
+  policyVersion: 1,
+  policyId: 'test-xp-policy-v1',
+  xpThresholds: Object.freeze(Array.from({ length: 15 }, (_, index) =>
+    (index + 1) * (index + 2) * 5 / 2)),
+  firstClearXp: Object.freeze(Array.from({ length: 50 }, (_, index) => 12 + index)),
+  replayXp: Object.freeze(Array.from({ length: 50 }, () => 3))
+});
 
 function legacySnapshot(state = initialState()) {
   return {
@@ -101,7 +111,8 @@ test('G2R-F01: valid v1 snapshot is prepared read-only without silent hero bindi
   assert.deepEqual(prepared.legacyCheckpoint, source);
   assert.deepEqual(source, legacySnapshot(state), 'readonly preparation must not mutate v1 data');
   assert.deepEqual(prepared.ledgers.firstClearStageIds, []);
-  assert.deepEqual(prepared.ledgers.rewardReceiptIds, []);
+  assert.equal(prepared.ledgers.settledAttemptCount, 0);
+  assert.equal(prepared.campaignAttempt, null);
   assert.deepEqual(prepared.ledgers.unlockReceiptIds, []);
   assert.equal(prepared.unlockedCompanionIds.includes('control'), false);
 });
@@ -155,6 +166,9 @@ test('G2R-F01 regression: ultimate cannot be upgraded before hero level 5', () =
     heroProgress: {
       ...selected.heroProgress,
       level: 4,
+      xp: 3,
+      xpPolicyId: 'test-level-gate-v1',
+      xpThresholds: Array.from({ length: 15 }, (_, index) => index + 1),
       pendingSkillChoices: 3
     }
   };
@@ -166,6 +180,9 @@ test('G2R-F01 regression: ultimate cannot be upgraded before hero level 5', () =
     heroProgress: {
       ...selected.heroProgress,
       level: 5,
+      xp: 4,
+      xpPolicyId: 'test-level-gate-v1',
+      xpThresholds: Array.from({ length: 15 }, (_, index) => index + 1),
       pendingSkillChoices: 4
     }
   };
@@ -181,6 +198,26 @@ test('G2R-F01 regression: companion serialization has no unapproved gameplay cap
     entry.id === 'sentinel' ? { ...entry, level: 101 } : entry);
   assert.equal(validateProfileV2({ ...profile, companionProgress: progress }), true);
 });
+
+function settleAttempt(profile, stageId, outcome = 'victory', nonce = `${stageId}-${outcome}`) {
+  const sequence = profile.ledgers.settledAttemptCount + 1;
+  const attemptId = `pve:${sequence}:${nonce}`;
+  const begun = beginCampaignAttempt(profile, { attemptId, stageId });
+  assert.notStrictEqual(begun, profile, `stage ${stageId} attempt should be authorized`);
+  return settleVerifiedCampaignResult(begun, {
+    resultVersion: 1,
+    attemptSequence: sequence,
+    attemptId,
+    outcome
+  }, outcome === 'victory' ? TEST_XP_POLICY : null);
+}
+
+function winThrough(profile, targetStage) {
+  let next = profile;
+  for (let stageId = next.ledgers.firstClearStageIds.length + 1; stageId <= targetStage; stageId++)
+    next = settleAttempt(next, stageId, 'victory', `clear-${stageId}`);
+  return next;
+}
 
 test('G2R-F03: prepared legacy profile activates without losing recovery or imported progress', () => {
   const state = {
@@ -207,12 +244,7 @@ test('G2R-F03: prepared legacy profile activates without losing recovery or impo
   assert.strictEqual(activateLegacyProfileV2(active), active, 'activation is idempotent');
 
   let continued = selectPermanentHero(active, 'hero_slot_4');
-  continued = settleVerifiedCampaignResult(continued, {
-    resultVersion: 1,
-    attemptId: 'legacy-story-boss-first',
-    stageId: 10,
-    outcome: 'victory'
-  });
+  continued = winThrough(continued, 10);
   const restored = JSON.parse(JSON.stringify(continued));
   assert.equal(validateProfileV2(restored), true);
   assert.equal(restored.gold, 155);
@@ -223,61 +255,40 @@ test('G2R-F03: prepared legacy profile activates without losing recovery or impo
 
 test('G2R-F03: readonly legacy candidate cannot settle campaign progress before activation', () => {
   const prepared = prepareLegacyProfileV2(legacySnapshot());
-  const event = { resultVersion: 1, attemptId: 'legacy-stage-3', stageId: 3, outcome: 'victory' };
-  assert.strictEqual(settleVerifiedCampaignResult(prepared, event), prepared);
+  assert.strictEqual(beginCampaignAttempt(prepared, { attemptId: 'pve:1:legacy', stageId: 1 }), prepared);
 });
 
 test('G2R-F03: stage 3 first victory unlocks Kair once and preserves all active slots', () => {
-  const profile = selectPermanentHero(createProfileV2(), 'hero_slot_1');
-  const first = settleVerifiedCampaignResult(profile, {
-    resultVersion: 1,
-    attemptId: 'stage-3-first',
-    stageId: 3,
-    outcome: 'victory'
-  });
+  const profile = winThrough(selectPermanentHero(createProfileV2(), 'hero_slot_1'), 2);
+  const first = settleAttempt(profile, 3, 'victory', 'stage-3-first');
   assert.deepEqual(first.unlockedCompanionIds, ['sentinel', 'ember', 'healer', 'ash']);
   assert.deepEqual(first.party, ['sentinel', 'ember', 'healer']);
-  assert.deepEqual(first.ledgers.firstClearStageIds, ['stage:3']);
+  assert.deepEqual(first.ledgers.firstClearStageIds, ['stage:1', 'stage:2', 'stage:3']);
   assert.deepEqual(first.ledgers.unlockReceiptIds, ['stage_3_first_clear']);
-  assert.deepEqual(first.ledgers.rewardReceiptIds, ['stage-3-first']);
+  assert.equal(first.ledgers.settledAttemptCount, 3);
   assert.equal(validateProfileV2(first), true);
 
   assert.strictEqual(settleVerifiedCampaignResult(first, {
     resultVersion: 1,
-    attemptId: 'stage-3-first',
-    stageId: 3,
+    attemptSequence: 3,
+    attemptId: 'pve:3:stage-3-first',
     outcome: 'victory'
   }), first, 'same attempt is idempotent');
 
-  const replay = settleVerifiedCampaignResult(first, {
-    resultVersion: 1,
-    attemptId: 'stage-3-replay',
-    stageId: 3,
-    outcome: 'victory'
-  });
+  const replay = settleAttempt(first, 3, 'victory', 'stage-3-replay');
   assert.deepEqual(replay.unlockedCompanionIds, first.unlockedCompanionIds);
   assert.deepEqual(replay.ledgers.unlockReceiptIds, first.ledgers.unlockReceiptIds);
-  assert.deepEqual(replay.ledgers.rewardReceiptIds, ['stage-3-first', 'stage-3-replay']);
+  assert.equal(replay.ledgers.settledAttemptCount, 4);
 });
 
 test('G2R-F03: stage 3 entry, defeat and unrelated stage never unlock Kair', () => {
-  const profile = selectPermanentHero(createProfileV2(), 'hero_slot_2');
-  const defeated = settleVerifiedCampaignResult(profile, {
-    resultVersion: 1,
-    attemptId: 'stage-3-loss',
-    stageId: 3,
-    outcome: 'defeat'
-  });
+  const profile = winThrough(selectPermanentHero(createProfileV2(), 'hero_slot_2'), 2);
+  const defeated = settleAttempt(profile, 3, 'defeat', 'stage-3-loss');
   assert.deepEqual(defeated.unlockedCompanionIds, ['sentinel', 'ember', 'healer']);
-  assert.deepEqual(defeated.ledgers.firstClearStageIds, []);
-  assert.deepEqual(defeated.ledgers.rewardReceiptIds, ['stage-3-loss']);
+  assert.deepEqual(defeated.ledgers.firstClearStageIds, ['stage:1', 'stage:2']);
+  assert.equal(defeated.ledgers.settledAttemptCount, 3);
 
-  const technicalBoss = settleVerifiedCampaignResult(defeated, {
-    resultVersion: 1,
-    attemptId: 'technical-stage-2',
-    stageId: 2,
-    outcome: 'victory'
-  });
+  const technicalBoss = settleAttempt(defeated, 2, 'victory', 'technical-stage-2');
   assert.equal(technicalBoss.unlockedCompanionIds.includes('ash'), false);
   assert.equal(technicalBoss.unlockedCompanionIds.includes('control'), false);
   assert.deepEqual(technicalBoss.ledgers.unlockReceiptIds, []);
@@ -285,95 +296,163 @@ test('G2R-F03: stage 3 entry, defeat and unrelated stage never unlock Kair', () 
 
 test('G2R-F03: first story boss stage 10 victory unlocks controller once', () => {
   let profile = selectPermanentHero(createProfileV2(), 'hero_slot_3');
-  profile = settleVerifiedCampaignResult(profile, {
-    resultVersion: 1,
-    attemptId: 'stage-3-first',
-    stageId: 3,
-    outcome: 'victory'
-  });
-  const defeated = settleVerifiedCampaignResult(profile, {
-    resultVersion: 1,
-    attemptId: 'story-boss-loss',
-    stageId: 10,
-    outcome: 'defeat'
-  });
+  profile = winThrough(profile, 9);
+  const defeated = settleAttempt(profile, 10, 'defeat', 'story-boss-loss');
   assert.equal(defeated.unlockedCompanionIds.includes('control'), false);
   assert.equal(defeated.ledgers.firstClearStageIds.includes('stage:10'), false);
   profile = defeated;
-  profile = settleVerifiedCampaignResult(profile, {
-    resultVersion: 1,
-    attemptId: 'story-boss-first',
-    stageId: 10,
-    outcome: 'victory'
-  });
+  profile = settleAttempt(profile, 10, 'victory', 'story-boss-first');
   assert.deepEqual(profile.unlockedCompanionIds, COMPANION_IDS);
   assert.deepEqual(profile.party, ['sentinel', 'ember', 'healer']);
-  assert.deepEqual(profile.ledgers.firstClearStageIds, ['stage:3', 'stage:10']);
+  assert.equal(profile.ledgers.firstClearStageIds.length, 10);
   assert.deepEqual(profile.ledgers.unlockReceiptIds,
     ['stage_3_first_clear', 'first_story_boss_first_clear']);
   assert.equal(validateProfileV2(profile), true);
 
-  const replay = settleVerifiedCampaignResult(profile, {
-    resultVersion: 1,
-    attemptId: 'story-boss-replay',
-    stageId: 10,
-    outcome: 'victory'
-  });
+  const replay = settleAttempt(profile, 10, 'victory', 'story-boss-replay');
   assert.deepEqual(replay.ledgers.unlockReceiptIds, profile.ledgers.unlockReceiptIds);
   assert.deepEqual(replay.unlockedCompanionIds, profile.unlockedCompanionIds);
 });
 
-test('G2R-F03: result contract rejects malformed, stale and conflicting attempts', () => {
+test('G2R-P01 prerequisite: campaign result requires a canonical reachable active attempt', () => {
   const profile = selectPermanentHero(createProfileV2(), 'hero_slot_4');
+  assert.strictEqual(beginCampaignAttempt(profile, { attemptId: 'pve:1:forged-10', stageId: 10 }), profile);
+  assert.strictEqual(beginCampaignAttempt(profile, { attemptId: 'wrong', stageId: 1 }), profile);
   const invalid = [
     null,
     {},
-    { resultVersion: 2, attemptId: 'a', stageId: 3, outcome: 'victory' },
-    { resultVersion: 1, attemptId: '', stageId: 3, outcome: 'victory' },
-    { resultVersion: 1, attemptId: 'a', stageId: 0, outcome: 'victory' },
-    { resultVersion: 1, attemptId: 'a', stageId: 51, outcome: 'victory' },
-    { resultVersion: 1, attemptId: 'a', stageId: 3, outcome: 'abandoned' },
-    { resultVersion: 1, attemptId: 'a', stageId: 3, outcome: 'victory', milestone: 'forged' }
+    { resultVersion: 2, attemptSequence: 1, attemptId: 'pve:1:a', outcome: 'victory' },
+    { resultVersion: 1, attemptSequence: 1, attemptId: '', outcome: 'victory' },
+    { resultVersion: 1, attemptSequence: 0, attemptId: 'pve:1:a', outcome: 'victory' },
+    { resultVersion: 1, attemptSequence: 1, attemptId: 'pve:1:a', outcome: 'abandoned' },
+    { resultVersion: 1, attemptSequence: 1, attemptId: 'pve:1:a', outcome: 'victory', stageId: 10 }
   ];
   for (const event of invalid) assert.strictEqual(settleVerifiedCampaignResult(profile, event), profile);
 
-  const loss = settleVerifiedCampaignResult(profile, {
+  const begun = beginCampaignAttempt(profile, { attemptId: 'pve:1:immutable-attempt', stageId: 1 });
+  assert.strictEqual(beginCampaignAttempt(begun, { attemptId: 'pve:1:second', stageId: 1 }), begun);
+  assert.strictEqual(settleVerifiedCampaignResult(begun, {
     resultVersion: 1,
-    attemptId: 'immutable-attempt',
-    stageId: 3,
-    outcome: 'defeat'
-  });
-  assert.strictEqual(settleVerifiedCampaignResult(loss, {
-    resultVersion: 1,
-    attemptId: 'immutable-attempt',
-    stageId: 3,
+    attemptSequence: 1,
+    attemptId: 'pve:1:other',
     outcome: 'victory'
-  }), loss);
+  }), begun);
+});
 
-  const fullLedger = {
+test('G2R-P01 prerequisite: monotonic receipt cursor works beyond 10000 and survives reload', () => {
+  const profile = selectPermanentHero(createProfileV2(), 'hero_slot_1');
+  const longRunning = {
     ...profile,
     ledgers: {
       ...profile.ledgers,
-      rewardReceiptIds: Array.from({ length: 10000 }, (_, index) => `attempt-${index}`)
+      settledAttemptCount: 10000
     }
   };
-  assert.equal(validateProfileV2(fullLedger), true);
-  assert.strictEqual(settleVerifiedCampaignResult(fullLedger, {
+  assert.equal(validateProfileV2(longRunning), true);
+  const begun = beginCampaignAttempt(longRunning, { attemptId: 'pve:10001:after-reload', stageId: 1 });
+  const restored = JSON.parse(JSON.stringify(begun));
+  const settled = settleVerifiedCampaignResult(restored, {
     resultVersion: 1,
-    attemptId: 'overflow-attempt',
-    stageId: 3,
+    attemptSequence: 10001,
+    attemptId: 'pve:10001:after-reload',
     outcome: 'defeat'
-  }), fullLedger);
+  });
+  assert.equal(settled.ledgers.settledAttemptCount, 10001);
+  assert.equal(settled.campaignAttempt, null);
+  assert.equal(validateProfileV2(settled), true);
+  assert.strictEqual(settleVerifiedCampaignResult(settled, {
+    resultVersion: 1,
+    attemptSequence: 10001,
+    attemptId: 'pve:10001:after-reload',
+    outcome: 'victory'
+  }), settled);
+});
+
+test('G2R-P01: verified victories grant policy XP, replays grant less, and defeats grant zero', () => {
+  let profile = selectPermanentHero(createProfileV2(), 'hero_slot_1');
+  const defeated = settleAttempt(profile, 1, 'defeat', 'loss');
+  assert.deepEqual(defeated.heroProgress, profile.heroProgress);
+  profile = settleAttempt(defeated, 1, 'victory', 'first');
+  assert.equal(profile.heroProgress.xp, TEST_XP_POLICY.firstClearXp[0]);
+  assert.equal(profile.heroProgress.level, 2);
+  assert.equal(profile.heroProgress.pendingSkillChoices, 1);
+  assert.equal(profile.heroProgress.xpPolicyId, TEST_XP_POLICY.policyId);
+  const replay = settleAttempt(profile, 1, 'victory', 'replay');
+  assert.equal(replay.heroProgress.xp,
+    TEST_XP_POLICY.firstClearXp[0] + TEST_XP_POLICY.replayXp[0]);
+  assert.equal(replay.heroProgress.level, 3);
+  assert.equal(replay.heroProgress.pendingSkillChoices, 2);
+});
+
+test('G2R-P01: multi-level victory persists every choice and level 16 never becomes 17', () => {
+  const fastPolicy = {
+    ...TEST_XP_POLICY,
+    policyId: 'test-fast-policy-v1',
+    xpThresholds: Array.from({ length: 15 }, (_, index) => index + 1),
+    firstClearXp: Array.from({ length: 50 }, () => 20),
+    replayXp: Array.from({ length: 50 }, () => 1)
+  };
+  let profile = selectPermanentHero(createProfileV2(), 'hero_slot_2');
+  let begun = beginCampaignAttempt(profile, { attemptId: 'pve:1:cap', stageId: 1 });
+  profile = settleVerifiedCampaignResult(begun, {
+    resultVersion: 1, attemptSequence: 1, attemptId: 'pve:1:cap', outcome: 'victory'
+  }, fastPolicy);
+  assert.equal(profile.heroProgress.level, 16);
+  assert.equal(profile.heroProgress.pendingSkillChoices, 15);
+  assert.equal(profile.heroProgress.xp, 20);
+
+  begun = beginCampaignAttempt(profile, { attemptId: 'pve:2:post-cap', stageId: 1 });
+  const postCap = settleVerifiedCampaignResult(begun, {
+    resultVersion: 1, attemptSequence: 2, attemptId: 'pve:2:post-cap', outcome: 'victory'
+  }, fastPolicy);
+  assert.equal(postCap.heroProgress.level, 16);
+  assert.equal(postCap.heroProgress.pendingSkillChoices, 15);
+  assert.equal(postCap.heroProgress.xp, 21, 'lifetime XP remains lossless at cap');
+  assert.equal(validateProfileV2(JSON.parse(JSON.stringify(postCap))), true);
+});
+
+test('G2R-P01: all 15 choices are manual, capped, and survive at level 16', () => {
+  const progress = {
+    level: 16,
+    xp: 15,
+    xpPolicyId: 'test-full-choice-v1',
+    xpThresholds: Array.from({ length: 15 }, (_, index) => index + 1),
+    pendingSkillChoices: 15,
+    skillRanks: { skill1: 0, skill2: 0, skill3: 0, ultimate: 0 }
+  };
+  let profile = { ...selectPermanentHero(createProfileV2(), 'hero_slot_3'), heroProgress: progress };
+  assert.equal(validateProfileV2(profile), true);
+  for (const skillId of ['skill1', 'skill2', 'skill3'])
+    for (let rank = 0; rank < 4; rank++) profile = upgradeHeroSkill(profile, skillId);
+  for (let rank = 0; rank < 3; rank++) profile = upgradeHeroSkill(profile, 'ultimate');
+  assert.deepEqual(profile.heroProgress.skillRanks,
+    { skill1: 4, skill2: 4, skill3: 4, ultimate: 3 });
+  assert.equal(profile.heroProgress.pendingSkillChoices, 0);
+  assert.strictEqual(upgradeHeroSkill(profile, 'ultimate'), profile);
+  assert.strictEqual(upgradeHeroSkill(profile, 'skill1'), profile);
+  assert.equal(validateProfileV2(profile), true);
+});
+
+test('G2R-P01: invalid or changed XP policy cannot consume an active victory', () => {
+  const profile = selectPermanentHero(createProfileV2(), 'hero_slot_4');
+  const begun = beginCampaignAttempt(profile, { attemptId: 'pve:1:policy', stageId: 1 });
+  const result = {
+    resultVersion: 1, attemptSequence: 1, attemptId: 'pve:1:policy', outcome: 'victory'
+  };
+  assert.strictEqual(settleVerifiedCampaignResult(begun, result), begun);
+  assert.strictEqual(settleVerifiedCampaignResult(begun, result, {
+    ...TEST_XP_POLICY, replayXp: [...TEST_XP_POLICY.firstClearXp]
+  }), begun);
+  const awarded = settleVerifiedCampaignResult(begun, result, TEST_XP_POLICY);
+  const replayBegun = beginCampaignAttempt(awarded, { attemptId: 'pve:2:policy-change', stageId: 1 });
+  assert.strictEqual(settleVerifiedCampaignResult(replayBegun, {
+    resultVersion: 1, attemptSequence: 2, attemptId: 'pve:2:policy-change', outcome: 'victory'
+  }, { ...TEST_XP_POLICY, policyId: 'different-policy' }), replayBegun);
 });
 
 test('G2R-F03: all three companion slots accept unlocked units and reject locked or fight changes', () => {
   let profile = selectPermanentHero(createProfileV2(), 'hero_slot_1');
-  profile = settleVerifiedCampaignResult(profile, {
-    resultVersion: 1,
-    attemptId: 'stage-3-first',
-    stageId: 3,
-    outcome: 'victory'
-  });
+  profile = winThrough(profile, 3);
   const replaced = assignCompanionSlot(profile, 0, 'ash');
   assert.deepEqual(replaced.party, ['ash', 'ember', 'healer']);
   const swapped = assignCompanionSlot(replaced, 2, 'ash');

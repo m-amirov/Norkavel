@@ -30,7 +30,7 @@ const LEGACY_COMPANIONS = Object.freeze(['sentinel', 'ember', 'healer', 'ash']);
 const PROFILE_FIELDS = Object.freeze([
   'schema', 'phase', 'selectedHeroId', 'heroSelection', 'heroProgress',
   'companionProgress', 'unlockedCompanionIds', 'party', 'gold', 'ledgers',
-  'legacyProgress', 'legacyCheckpoint'
+  'campaignAttempt', 'legacyProgress', 'legacyCheckpoint'
 ]);
 const LEGACY_SNAPSHOT_FIELDS = Object.freeze([
   'schemaVersion', 'gameId', 'gameVersion', 'revision', 'state'
@@ -73,6 +73,8 @@ function emptyHeroProgress() {
   return {
     level: 1,
     xp: 0,
+    xpPolicyId: null,
+    xpThresholds: null,
     pendingSkillChoices: 0,
     skillRanks: { skill1: 0, skill2: 0, skill3: 0, ultimate: 0 }
   };
@@ -83,7 +85,7 @@ function companionProgress() {
 }
 
 function emptyLedgers() {
-  return { firstClearStageIds: [], rewardReceiptIds: [], unlockReceiptIds: [] };
+  return { firstClearStageIds: [], settledAttemptCount: 0, unlockReceiptIds: [] };
 }
 
 function baseProfile() {
@@ -98,6 +100,7 @@ function baseProfile() {
     party: [...STARTER_COMPANIONS],
     gold: 0,
     ledgers: emptyLedgers(),
+    campaignAttempt: null,
     legacyProgress: null,
     legacyCheckpoint: null
   };
@@ -114,9 +117,18 @@ function validStringLedger(value, maxLength) {
 }
 
 function validHeroProgress(value) {
-  if (!exactRecord(value, ['level', 'xp', 'pendingSkillChoices', 'skillRanks'])) return false;
+  if (!exactRecord(value, ['level', 'xp', 'xpPolicyId', 'xpThresholds', 'pendingSkillChoices', 'skillRanks']))
+    return false;
   if (!boundedInt(value.level, 1, 16) || !boundedInt(value.xp, 0, Number.MAX_SAFE_INTEGER) ||
       !boundedInt(value.pendingSkillChoices, 0, 15)) return false;
+  const noPolicy = value.xpPolicyId === null && value.xpThresholds === null;
+  const hasPolicy = typeof value.xpPolicyId === 'string' && value.xpPolicyId.length > 0 &&
+    value.xpPolicyId.length <= 64 && validXpThresholds(value.xpThresholds);
+  if ((!noPolicy && !hasPolicy) || (noPolicy && (value.level !== 1 || value.xp !== 0))) return false;
+  if (hasPolicy) {
+    const expectedLevel = 1 + value.xpThresholds.filter(threshold => value.xp >= threshold).length;
+    if (value.level !== expectedLevel) return false;
+  }
   if (!exactRecord(value.skillRanks, ['skill1', 'skill2', 'skill3', 'ultimate'])) return false;
   const regular = ['skill1', 'skill2', 'skill3'];
   if (!regular.every(id => boundedInt(value.skillRanks[id], 0, 4)) ||
@@ -124,6 +136,39 @@ function validHeroProgress(value) {
   if (value.level < 5 && value.skillRanks.ultimate !== 0) return false;
   const spent = regular.reduce((sum, id) => sum + value.skillRanks[id], 0) + value.skillRanks.ultimate;
   return spent + value.pendingSkillChoices === value.level - 1;
+}
+
+function validXpThresholds(value) {
+  return Array.isArray(value) && value.length === 15 && value.every((threshold, index) =>
+    boundedInt(threshold, 1, Number.MAX_SAFE_INTEGER) &&
+    (index === 0 || threshold > value[index - 1]));
+}
+
+function validProgressionPolicy(value) {
+  if (!exactRecord(value, ['policyVersion', 'policyId', 'xpThresholds', 'firstClearXp', 'replayXp']) ||
+      value.policyVersion !== 1 || typeof value.policyId !== 'string' || value.policyId.length < 1 ||
+      value.policyId.length > 64 || !validXpThresholds(value.xpThresholds)) return false;
+  return [value.firstClearXp, value.replayXp].every(rewards =>
+    Array.isArray(rewards) && rewards.length === 50 &&
+    rewards.every(xp => boundedInt(xp, 1, Number.MAX_SAFE_INTEGER))) &&
+    value.replayXp.every((xp, index) => xp < value.firstClearXp[index]);
+}
+
+function awardHeroXp(profile, attempt, policy) {
+  if (!validProgressionPolicy(policy)) return null;
+  const progress = profile.heroProgress;
+  if (progress.xpPolicyId !== null && progress.xpPolicyId !== policy.policyId) return null;
+  if (progress.xpThresholds !== null && !sameArray(progress.xpThresholds, policy.xpThresholds)) return null;
+  const award = (attempt.rewardClass === 'first_clear' ? policy.firstClearXp : policy.replayXp)[attempt.stageId - 1];
+  if (!Number.isSafeInteger(progress.xp + award)) return null;
+  const next = clone(profile);
+  const oldLevel = progress.level;
+  next.heroProgress.xp += award;
+  next.heroProgress.xpPolicyId = policy.policyId;
+  next.heroProgress.xpThresholds = [...policy.xpThresholds];
+  next.heroProgress.level = 1 + policy.xpThresholds.filter(threshold => next.heroProgress.xp >= threshold).length;
+  next.heroProgress.pendingSkillChoices += next.heroProgress.level - oldLevel;
+  return next;
 }
 
 function validCompanionProgress(value) {
@@ -158,10 +203,25 @@ function sameArray(left, right) {
 }
 
 function validFirstClearLedger(value) {
-  return validStringLedger(value, 50) && value.every(id => {
+  return validStringLedger(value, 50) && value.every((id, index) => {
     const match = /^stage:(\d+)$/.exec(id);
-    return match && boundedInt(Number(match[1]), 1, 50);
+    return match && Number(match[1]) === index + 1;
   });
+}
+
+function validCampaignAttempt(value, settledAttemptCount, firstClearCount) {
+  if (value === null) return true;
+  if (!exactRecord(value, ['attemptVersion', 'sequence', 'attemptId', 'stageId', 'rewardClass'])) return false;
+  const expectedSequence = settledAttemptCount + 1;
+  const expectedPrefix = `pve:${expectedSequence}:`;
+  if (value.attemptVersion !== 1 || value.sequence !== expectedSequence ||
+      typeof value.attemptId !== 'string' || !value.attemptId.startsWith(expectedPrefix) ||
+      value.attemptId.length <= expectedPrefix.length || value.attemptId.length > 96 ||
+      !boundedInt(value.stageId, 1, 50) ||
+      !['first_clear', 'replay'].includes(value.rewardClass)) return false;
+  return value.rewardClass === 'first_clear'
+    ? value.stageId === firstClearCount + 1
+    : value.stageId <= firstClearCount;
 }
 
 function expectedUnlockedCompanions(profile) {
@@ -188,12 +248,14 @@ export function validateProfileV2(profile) {
   if (!canonicalSubset(profile.unlockedCompanionIds, COMPANION_IDS) ||
       !uniqueSubset(profile.party, COMPANION_IDS, 3) ||
       !profile.party.every(id => profile.unlockedCompanionIds.includes(id))) return false;
-  if (!exactRecord(profile.ledgers, ['firstClearStageIds', 'rewardReceiptIds', 'unlockReceiptIds']) ||
+  if (!exactRecord(profile.ledgers, ['firstClearStageIds', 'settledAttemptCount', 'unlockReceiptIds']) ||
       !validFirstClearLedger(profile.ledgers.firstClearStageIds) ||
-      !validStringLedger(profile.ledgers.rewardReceiptIds, 10000) ||
+      !boundedInt(profile.ledgers.settledAttemptCount, 0, Number.MAX_SAFE_INTEGER) ||
       !validStringLedger(profile.ledgers.unlockReceiptIds, 2) ||
       profile.ledgers.unlockReceiptIds.some(id =>
         !['stage_3_first_clear', 'first_story_boss_first_clear'].includes(id))) return false;
+  if (!validCampaignAttempt(profile.campaignAttempt, profile.ledgers.settledAttemptCount,
+      profile.ledgers.firstClearStageIds.length)) return false;
   const stage3Cleared = profile.ledgers.firstClearStageIds.includes('stage:3');
   const stage10Cleared = profile.ledgers.firstClearStageIds.includes('stage:10');
   if (profile.ledgers.unlockReceiptIds.includes('stage_3_first_clear') !== stage3Cleared ||
@@ -249,28 +311,58 @@ export function activateLegacyProfileV2(profile) {
 }
 
 function validCampaignResult(result) {
-  return exactRecord(result, ['resultVersion', 'attemptId', 'stageId', 'outcome']) &&
+  return exactRecord(result, ['resultVersion', 'attemptSequence', 'attemptId', 'outcome']) &&
     result.resultVersion === 1 && typeof result.attemptId === 'string' &&
     result.attemptId.length > 0 && result.attemptId.length <= 96 &&
-    boundedInt(result.stageId, 1, 50) && ['victory', 'defeat'].includes(result.outcome);
+    boundedInt(result.attemptSequence, 1, Number.MAX_SAFE_INTEGER) &&
+    ['victory', 'defeat'].includes(result.outcome);
 }
 
-export function settleVerifiedCampaignResult(profile, result) {
+export function beginCampaignAttempt(profile, command) {
+  if (!validateProfileV2(profile) || profile.phase !== 'setup' || profile.campaignAttempt !== null ||
+      (profile.legacyProgress !== null && !profile.legacyProgress.activated) ||
+      !exactRecord(command, ['attemptId', 'stageId']) ||
+      typeof command.attemptId !== 'string' || !boundedInt(command.stageId, 1, 50)) return profile;
+  const firstClearCount = profile.ledgers.firstClearStageIds.length;
+  if (command.stageId > firstClearCount + 1) return profile;
+  const sequence = profile.ledgers.settledAttemptCount + 1;
+  const expectedPrefix = `pve:${sequence}:`;
+  if (!command.attemptId.startsWith(expectedPrefix) || command.attemptId.length <= expectedPrefix.length ||
+      command.attemptId.length > 96) return profile;
+  const next = clone(profile);
+  next.campaignAttempt = {
+    attemptVersion: 1,
+    sequence,
+    attemptId: command.attemptId,
+    stageId: command.stageId,
+    rewardClass: command.stageId <= firstClearCount ? 'replay' : 'first_clear'
+  };
+  return validateProfileV2(next) ? next : profile;
+}
+
+export function settleVerifiedCampaignResult(profile, result, progressionPolicy = null) {
   if (!validateProfileV2(profile) || profile.phase !== 'setup' || !validCampaignResult(result) ||
       (profile.legacyProgress !== null && !profile.legacyProgress.activated) ||
-      profile.ledgers.rewardReceiptIds.includes(result.attemptId)) return profile;
-  const next = clone(profile);
-  next.ledgers.rewardReceiptIds.push(result.attemptId);
+      profile.campaignAttempt === null ||
+      result.attemptSequence !== profile.campaignAttempt.sequence ||
+      result.attemptId !== profile.campaignAttempt.attemptId) return profile;
+  let next = clone(profile);
+  const attempt = next.campaignAttempt;
+  if (result.outcome === 'victory') {
+    next = awardHeroXp(next, attempt, progressionPolicy);
+    if (next === null) return profile;
+  }
+  next.campaignAttempt = null;
+  next.ledgers.settledAttemptCount = attempt.sequence;
   if (result.outcome !== 'victory') return validateProfileV2(next) ? next : profile;
-  const stageReceipt = `stage:${result.stageId}`;
-  if (next.ledgers.firstClearStageIds.includes(stageReceipt))
-    return validateProfileV2(next) ? next : profile;
+  if (attempt.rewardClass === 'replay') return validateProfileV2(next) ? next : profile;
+  const stageReceipt = `stage:${attempt.stageId}`;
   next.ledgers.firstClearStageIds.push(stageReceipt);
-  if (result.stageId === 3) {
+  if (attempt.stageId === 3) {
     next.ledgers.unlockReceiptIds.push('stage_3_first_clear');
     if (!next.unlockedCompanionIds.includes('ash')) next.unlockedCompanionIds.push('ash');
   }
-  if (result.stageId === 10) {
+  if (attempt.stageId === 10) {
     next.ledgers.unlockReceiptIds.push('first_story_boss_first_clear');
     next.unlockedCompanionIds.push('control');
   }
