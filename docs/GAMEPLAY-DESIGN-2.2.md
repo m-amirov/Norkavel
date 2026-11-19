@@ -31,7 +31,7 @@
 
 ## 4. Открытие пяти спутников: схема для согласования, НЕ утверждена
 
-Подтверждено: **5 всего / 3 активных / постепенно**, **стартовая тройка Ард/Мира/Элира** и пятый после первой победы над первым сюжетным боссом. Только условие Кайра пока требует согласования:
+Подтверждено: **5 всего / 3 активных / постепенно**, **стартовая тройка Ард/Мира/Элира** и пятый после первой победы над первым сюжетным боссом. Условие открытия Кайра теперь утверждено:
 
 | Этап | Предлагаемое изменение | Результат |
 |---|---|---|
@@ -72,7 +72,7 @@
 
 **CONFIRMED:** 4 главных героя на выбор, 1 постоянный герой на прохождение без смены, 5 постепенно открываемых спутников, 3 активных спутника, партия 1+3, landscape-only, async-only PvP.
 
-**PROPOSED/OPEN:** пробная схватка до подтверждения; личности и способности четырёх героев; **стартовые Ард/Мира/Элира CONFIRMED**; открытие Кайра после 3 пока OPEN; пятый — пока предлагаемая роль контролёра, **веха после первой победы над первым сюжетным боссом CONFIRMED**; условные 50 этапов; общая/индивидуальная экономика; создание отдельного нового профиля.
+**PROPOSED/OPEN:** пробная схватка до подтверждения; личности и способности четырёх героев; **стартовые Ард/Мира/Элира CONFIRMED**; открытие Кайра после первой победы этапа 3 CONFIRMED; пятый — пока предлагаемая роль контролёра, **веха после первой победы над первым сюжетным боссом CONFIRMED**; условные 50 этапов; общая/индивидуальная экономика; создание отдельного нового профиля.
 
 **IMPLEMENTATION:** G2-R NOT_STARTED; G3 BLOCKED; G4 PvP NOT_STARTED; releaseReady=false, publicationAllowed=false.
 
@@ -83,4 +83,6 @@
 
 ## Owner approval 2026-11-19 — initial trio
 - New profile unlocked set equals `sentinel`, `ember`, `healer`. All three fill active companion slots once hero selected; `ash` and fifth are locked for new profiles.
-- Kair-after-stage-3 proposal remains OPEN; fifth story-boss-first-clear milestone remains CONFIRMED. Legacy v1 preserves Kair access.
+- Kair first-clear stage-3 unlock is OWNER CONFIRMED; fifth story-boss-first-clear milestone remains CONFIRMED. Legacy v1 preserves Kair access.
+
+**Owner confirmation (19.11.2026):** Кайр открывается на first-clear этапа 3; стартовые Ард/Мира/Элира и пятый после первого сюжетного босса также CONFIRMED. У старых G2 профилей доступ к Кайру сохраняется. Это не равно G2-R implementation PASS.
