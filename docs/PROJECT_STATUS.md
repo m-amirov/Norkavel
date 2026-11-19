@@ -4,7 +4,7 @@
 
 ## Decisions and design
 - G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, **4 distinct main heroes to choose from (exactly one selected), 5 progressively unlockable companions (3 active), 1+3=4 in combat**, async-only PvP, **landscape-only**. See [GDD 1.1](GDD-1.1.md).
-- G1: [GDD 1.1](GDD-1.1.md) has owner-confirmed roster counts, choice and gradual unlock. Specific hero identities, fifth companion, unlock triggers, switching hero remain OPEN. GDD 1.0 is superseded.
+- G1: [GDD 1.1](GDD-1.1.md) has owner-confirmed roster counts, choice and gradual unlock. Specific hero identities, fifth companion and unlock triggers remain OPEN; **permanent hero choice (variant B) is CONFIRMED**. GDD 1.0 is superseded.
 - Ludory Core pinned at `933c73b195eaf3bfffd12a31ab1cbadb27989eea`; WFA pinned at `6c8d80d15155cd8ccfbd245fce9450f61b5133f3`.
 
 ## Verified implementation
@@ -86,10 +86,15 @@
 ## G2-R gameplay design-first phase (2026-11-19)
 - [Gameplay Design 2.0](GAMEPLAY-SYSTEM-2.0.md): a coherent **proposal**, not a confirmed final game, for hero roles, 5-companion unlock, 3-slot squads, combat, campaign, economy, idle, daily/achievements, PvP, monetization boundaries and landscape UI.
 - [G2-R implementation contract](G2-R-CHARACTER-SYSTEM-0.1.md): source audit, target Save v2, legacy save protection and 14 required test scenarios. No runtime code changed in this design step.
-- Gameplay choices not owner-approved: active-hero switching, exact four hero kits, starter three and milestones, fifth companion identity, 50-stage structure, economy/idle numbers. The confirmed 4 hero choices / 5 companion collection / active 1+3 and portrait restriction remain mandatory.
+- Gameplay choices not owner-approved: exact four hero kits, starter three and milestones, fifth companion identity, 50-stage structure, economy/idle numbers. **Hero switching is rejected by owner variant B**. The confirmed 4 hero choices / 5 companion collection / active 1+3 and portrait restriction remain mandatory.
 - Prior G2 tests verify the old prototype only, not actual G2-R. Implementation NOT_STARTED; G3 BLOCKED; releaseReady=false, publicationAllowed=false.
 
 ## Gameplay Design 2.1 — 2026-11-19
 - [Gameplay Design 2.1](GAMEPLAY-DESIGN-2.1.md) details 4 distinct proposed hero skill kits, 5 companion niches, front/back targeting, deterministic tick/status rules, first ten campaign stage beats, gold/progression, metrics and explicit design gates.
 - **PROPOSED / NOT_IMPLEMENTED.** A new option in 2.1 proposes fifth companion at first boss (stage 10) instead of previous stage 7; neither option is owner-approved. Do not interpret docs as automatic approval or unlock implementation.
-- Pending first priority: owner policy on hero switching after first selection. Continue gameplay review before G2-R engine/UI/save migrations.
+- Hero-switching policy RESOLVED: owner confirms **variant B, one permanent selected main hero per playthrough**. Next owner review: starter three and unlock milestones; do not change G2-R engine/UI/save until gameplay scope is agreed.
+
+## Gameplay 2.2 — owner-approved permanent hero (2026-11-19)
+- [Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md) states **CONFIRMED owner variant B:** one of four main heroes selected once, permanently for a playthrough; no paid/free switching or class swapping after confirmation.
+- One-time warning/explicit commit and optional no-reward trial bout are design recommendations; legacy G2 must prompt for first actual permanent hero selection without auto-binding generic warrior. Independent profile/new-save option is OPEN.
+- First 3 companion candidates Ard/Mira/Elira; Kair unlock after stage 3 and fifth after first boss (stage 10) are **PROPOSED**; fifth at 7 remains an alternative. New progression/hero-lock runtime functionality and save schema are NOT implemented. Legacy tests only prove old G2. G3/art and release remain BLOCKED.
