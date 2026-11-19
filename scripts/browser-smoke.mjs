@@ -129,6 +129,8 @@ async function main(){
     assert.equal(await js('window.__norkavelDebug.snapshot().state.gold'),45,'reward idempotency after reload/retry');
     await js('document.querySelector("[data-action=next]").click()');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.stage'),2);
+    const stageTwoSetup=await js('window.__norkavelDebug.snapshot()');
+    assert.equal(stageTwoSetup.state.phase,'setup');
     await js('document.querySelector("[data-action=start]").click()');
     const stageTwoFixture=await js('window.__norkavelDebug.snapshot()');
     assert.equal(stageTwoFixture.state.seed,(Math.imul(secondSeed,1664525)+1013904223)>>>0,
@@ -176,6 +178,23 @@ async function main(){
     await js('document.querySelector("[data-action=retry]").click()');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.phase'),'setup','retry from real defeat');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.stage'),2,'retry preserves stage');
+    // Real level-one boss loss without artificial HP damage. Restore a valid
+    // stage-two setup, select a documented seed and start through the UI.
+    const naturalBossSetup=structuredClone(stageTwoSetup);
+    naturalBossSetup.state.seed=10000;
+    naturalBossSetup.state.rng=10000;
+    await launchWithSavedState(naturalBossSetup,'natural boss setup');
+    assert.equal(await js('window.__norkavelDebug.snapshot().state.phase'),'setup');
+    await js('document.querySelector("[data-action=start]").click()');
+    assert.equal(await js('window.__norkavelDebug.snapshot().state.seed'),479285039,
+      'natural boss defeat seed is deterministic');
+    await until(()=>js('window.__norkavelDebug.snapshot().state.phase==="defeat"'),28000,'organic boss defeat without skills');
+    assert.equal(await js('window.__norkavelDebug.snapshot().state.gold'),45,'organic boss defeat grants no currency');
+    assert.deepEqual(await js('window.__norkavelDebug.snapshot().state.claimed'),[1],
+      'organic boss defeat cannot claim stage two');
+    await screenshot('08-natural-boss-defeat');
+    await js('document.querySelector("[data-action=retry]").click()');
+    assert.equal(await js('window.__norkavelDebug.snapshot().state.phase'),'setup','natural defeat permits retry');
     await launchWithSavedState({state:{schema:0}},'legacy save');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.phase'),'setup','old save starts clean');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.gold'),0);
@@ -184,7 +203,7 @@ async function main(){
     assert.equal(await js('window.__norkavelDebug.snapshot().state.gold'),0,'corrupt payload cannot mint gold');
     assert.deepEqual(errors,[],'unexpected browser exceptions');
     assert.deepEqual(consoleErrors,[],'browser console errors');
-    console.log('G2_BROWSER_SMOKE_PASS: gameplay, mouse and touch, skills, pause, portrait gates, landscape, saves, invalid/legacy recovery, no duplicate awards, boss, browser defeat/retry');
+    console.log('G2_BROWSER_SMOKE_PASS: gameplay, mouse and touch, skills, pause, portrait gates, landscape, saves, invalid/legacy recovery, no duplicate awards, boss, natural defeat/retry, seeded attempts');
   }finally{
     try{socket?.close();}catch{}
     if(chrome){
