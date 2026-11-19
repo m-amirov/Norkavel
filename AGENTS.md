@@ -7,7 +7,7 @@ workflow-for-agents: git=direct-main
 2. Ludory is pinned as a Git submodule: vendor/ludory. Use its actual Core/Studio/Runtime/Connect/Release contracts, not invented APIs. Until provenance is established this is a Core-bound bootstrap, **not** a Studio-created trusted game.
 3. WFA is pinned at vendor/workflow-for-agents. Its Skills are opt-in, installed project-scope only. Select game-docs, gameplay-design, game-content-qa and relevant QA/art Skills; never install all Skills automatically. Do not overwrite project or Ludory native Skills. WFA methodology never overrides game runtime facts or Ludory native owner constraints.
 4. Initial release target: Yandex Games; do not invent live SDK readiness, online PvP availability, rights clearance or official moderation results.
-5. Scope: 2D side-view autobattler; **4 distinct selectable main heroes (exactly 1 selected)**, **5 progressively unlockable companions (exactly 3 active)**, **1+3=4 battle units**; manual intervention in PvE; **asynchronous-only PvP** with no real-time peer sync.
+5. Scope: 2D side-view autobattler; **4 distinct main hero choices, exactly one chosen ONCE per playthrough, permanently locked after explicit confirmation (NO hero switching)**, **5 progressively unlockable companions (exactly 3 active)**, **1+3=4 battle units**; manual intervention in PvE; **asynchronous-only PvP** with no real-time peer sync.
 5a. **Owner-confirmed mobile orientation: landscape-only across the entire game**. Portrait must show a turn-device screen, no playable portrait layout, no hidden actionable combat; orientation lock API is best-effort and must have fallback. Verify viewport/orientation changes and state/reward integrity.
 6. Record approved requirements vs assumptions vs open questions. No gameplay/rendering implementation may silently change confirmed decisions.
 
@@ -31,5 +31,8 @@ Current stage: G2 browser-playable legacy slice; G2-R needed for new owner-confi
 
 ## G2-R design-first boundary (2026-11-19)
 - Confirmed roster quantities remain in GDD 1.1. Full gameplay mechanics are proposed, NOT owner-approved, in docs/GAMEPLAY-SYSTEM-2.0.md; technical implementation design in docs/G2-R-CHARACTER-SYSTEM-0.1.md.
-- User asked to work through the gameplay system before moving to further production; do NOT implement irreversible hero selection, unlock milestones, currency sinks, or schema migration from unapproved proposal values.
+- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, unlock milestones, currency sinks and migration details are PROPOSED until owner review. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
 - Existing legacy green G2 tests do not establish new G2-R implementation or owner approval; G3 remains BLOCKED.
+
+## 2026-11-19 owner variant B
+The active main hero is selected once and remains permanent for that playthrough. Free hero switching was REJECTED. See docs/GAMEPLAY-DESIGN-2.2.md. Never use the old Gameplay 2.0/2.1 free-switch proposal as requirements; never silently assign a permanent hero to legacy G2 saves.
