@@ -91,13 +91,13 @@
 
 ## Gameplay Design 2.1 — 2026-11-19
 - [Gameplay Design 2.1](GAMEPLAY-DESIGN-2.1.md) details 4 distinct proposed hero skill kits, 5 companion niches, front/back targeting, deterministic tick/status rules, first ten campaign stage beats, gold/progression, metrics and explicit design gates.
-- **PROPOSED / NOT_IMPLEMENTED.** A new option in 2.1 proposes fifth companion at first boss (stage 10) instead of previous stage 7; neither option is owner-approved. Do not interpret docs as automatic approval or unlock implementation.
+- **OWNER CONFIRMED MILESTONE / NOT_IMPLEMENTED.** Fifth companion unlocks after FIRST story-boss victory (boss stage number remains OPEN); technical G2 stage-2 boss is not proof. Earlier stage-7 unlock proposal is rejected.
 - Hero-switching policy RESOLVED: owner confirms **variant B, one permanent selected main hero per playthrough**. Next owner review: starter three and unlock milestones; do not change G2-R engine/UI/save until gameplay scope is agreed.
 
 ## Gameplay 2.2 — owner-approved permanent hero (2026-11-19)
 - [Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md) states **CONFIRMED owner variant B:** one of four main heroes selected once, permanently for a playthrough; no paid/free switching or class swapping after confirmation.
 - One-time warning/explicit commit and optional no-reward trial bout are design recommendations; legacy G2 must prompt for first actual permanent hero selection without auto-binding generic warrior. Independent profile/new-save option is OPEN.
-- First 3 companion candidates Ard/Mira/Elira; Kair unlock after stage 3 and fourth companion Kair after stage 3 are **PROPOSED**, but **fifth after first story boss first victory is CONFIRMED**, with boss stage number still OPEN; fifth at 7 is REJECTED. New progression/hero-lock runtime functionality and save schema are NOT implemented. Legacy tests only prove old G2. G3/art and release remain BLOCKED.
+- First 3 companion candidates Ard/Mira/Elira and fourth companion Kair after stage 3 are **PROPOSED**, but **fifth after first story boss first victory is CONFIRMED**, with boss stage number still OPEN; fifth at 7 is REJECTED. New progression/hero-lock runtime functionality and save schema are NOT implemented. Legacy tests only prove old G2. G3/art and release remain BLOCKED.
 
 ## Owner decision — 2026-11-19 fifth companion milestone
 - **OWNER CONFIRMED** fifth companion unlocks **after the player's first victory over the first story boss**, not before or on reaching the stage. If first boss is later assigned stage 10 in a 50-stage campaign, the award is at stage 10 by consequence, not because stage 10 itself was approved.
