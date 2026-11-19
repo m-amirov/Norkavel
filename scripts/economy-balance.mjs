@@ -60,6 +60,21 @@ export function stageReplayReward(stage) {
     firstClearMilestone: false
   });
 }
+// Pure reward policy for isolated arithmetic checks. Real firstClear entitlement,
+// result provenance and exactly-once attempt receipts belong to G2-R runtime.
+export function battleReward(stage, outcome, firstClear = false) {
+  positiveStage(stage);
+  if (['defeat', 'abandoned', 'invalid'].includes(outcome)) {
+    return Object.freeze({ stage, outcome, xp: 0, gold: 0, firstClearMilestone: false });
+  }
+  if (outcome !== 'victory') throw new RangeError('Invalid battle outcome');
+  if (typeof firstClear !== 'boolean') throw new TypeError('firstClear must be boolean');
+  const reward = firstClear ? stageFirstClearReward(stage) : stageReplayReward(stage);
+  return Object.freeze({
+    stage, outcome, xp: reward.xp, gold: reward.gold,
+    firstClearMilestone: firstClear
+  });
+}
 export function companionUpgradeCost(fromLevel) {
   positiveCompanionLevel(fromLevel);
   return 45 + 12 * fromLevel + 3 * fromLevel * fromLevel;
