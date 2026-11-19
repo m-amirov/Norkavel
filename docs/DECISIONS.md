@@ -16,7 +16,7 @@
 | D-012 | Idle доход до 8 часов | PROPOSED |
 | D-013 | Rewarded для PvE; косметика; без pay-to-win в PvP | PROPOSED |
 | D-014 | Мир после древнего Раскола | ASSUMPTION |
-| D-015 | Возможность смены класса после выбора | OPEN |
+| D-015 | **Смена выбранного главного героя после подтверждения запрещена** | CONFIRMED 19.11.2026 (вариант Б) |
 | D-016 | Phaser renderer с Ludory Core | PROPOSED; NOT_INTEGRATED |
 | D-017 | Размещение, защита и стоимость backend PvP | OPEN |
 | D-018 | Реальное синхронное PvP, WebSocket-дуэли | EXCLUDED |
@@ -34,7 +34,7 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 | ID | Предложение | Статус |
 |---|---|---|
 | D-026 | Архетипы четырёх главных героев: защитник, стихийный маг, дуэлянт, следопыт | PROPOSED |
-| D-027 | Бесплатная смена единственного активного героя только между боями | PROPOSED / OWNER_REVIEW |
+| D-027 | Бесплатная смена главного героя между боями | REJECTED / SUPERSEDED by owner variant B |
 | D-028 | На старте Ард/Мира/Элира, Кайр после этапа 3, пятый спутник после этапа 7 | PROPOSED / OWNER_REVIEW |
 | D-029 | Пятый спутник в роли контролёра/льда | PROPOSED / OWNER_REVIEW |
 | D-030 | 5 глав × 10 этапов, главный босс на каждом десятом | PROPOSED / OWNER_REVIEW |
@@ -52,3 +52,12 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 | D-036 | Детерминированные статусы Burn/Slow/Mark/Shield/Dodge/Interrupt/Heal и front/back AI | DESIGN_DRAFT / NOT_IMPLEMENTED |
 
 [Detailed Gameplay 2.1](GAMEPLAY-DESIGN-2.1.md) is not an owner-approved implementation contract.
+
+## 2026-11-19 — permanent hero choice
+| ID | Решение | Статус |
+|---|---|---|
+| D-037 | **На одном прохождении игрок однократно выбирает одного из 4 главных героев; после подтверждения выбор постоянен, смены нет** | CONFIRMED / OWNER VARIANT B |
+| D-038 | Пробный бой каждым героем ДО необратимого выбора без сохранений и наград | PROPOSED / OWNER_REVIEW |
+| D-039 | Создание отдельного нового профиля ради другого героя | OPEN / не включено в вариант Б |
+
+[Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md) актуализирует onboarding, рост силы и миграцию. D-027 исторически отклонён, не возвращать смену героя в UI.
