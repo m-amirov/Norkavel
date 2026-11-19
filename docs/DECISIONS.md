@@ -42,3 +42,13 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 | D-032 | Не менять runtime и существующие сохранения, пока не согласован gameplay contract | DESIGN-FIRST WORKFLOW (OWNER REQUEST) |
 
 См. [Gameplay Design 2.0](GAMEPLAY-SYSTEM-2.0.md) и [G2-R implementation contract](G2-R-CHARACTER-SYSTEM-0.1.md).
+
+## Gameplay Design 2.1 — additional proposal
+| ID | Предложение | Статус |
+|---|---|---|
+| D-033 | Разные hero-specific навыки, passives и способы counterplay первого босса | PROPOSED / GAMEPLAY 2.1 |
+| D-034 | Пятый спутник как награда за первого босса (этап 10), вместо этапа 7 | ALTERNATIVE_PROPOSAL / OWNER_REVIEW |
+| D-035 | Общий уровень лагеря и отдельное мастерство каждого персонажа; одна основная валюта — золото | PROPOSED / OWNER_REVIEW |
+| D-036 | Детерминированные статусы Burn/Slow/Mark/Shield/Dodge/Interrupt/Heal и front/back AI | DESIGN_DRAFT / NOT_IMPLEMENTED |
+
+[Detailed Gameplay 2.1](GAMEPLAY-DESIGN-2.1.md) is not an owner-approved implementation contract.

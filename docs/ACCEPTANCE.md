@@ -95,3 +95,8 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - [G2-R Character System 0.1](G2-R-CHARACTER-SYSTEM-0.1.md) specifies Save v2, v1 migration and G2R-01..G2R-14 verifiable acceptance criteria. **IMPLEMENTATION_NOT_STARTED / TESTS_NOT_RUN**.
 - Approval still needed for hero-swapping policy, character identities and skill kits, 3 initial companions, milestone/5th role, campaign length and economy. Confirmed roster quantities are not pending.
 - Historical 28/28 test PASS must not be counted as proof that player can select 4 distinct heroes or unlock 5 companions.
+
+### Gameplay Design 2.1 — scope clarification
+- [Gameplay 2.1](GAMEPLAY-DESIGN-2.1.md): 4 hero proposed skill kits, 5 companion role niches, line formation/AI, status rules, first ten stages, proposed economy and gate questions. **DESIGN_DRAFT / NOT_IMPLEMENTED / NOT_TESTED**.
+- Confirmed 4 main heroes, five unlockable companions, battle team 1+3, landscape-only and async-only PvP unchanged. Fifth companion stage-10 unlock is a **proposal** competing with previous stage-7 proposal, not an approved reward.
+- G2-R, G3 and release gates remain blocked pending owner design review and implementation evidence.

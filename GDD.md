@@ -14,6 +14,7 @@
 ## Документы
 - [Актуальная GDD 1.1: подтверждённые правила состава](docs/GDD-1.1.md).
 - [Gameplay Design 2.0: предлагаемый полный игровой цикл](docs/GAMEPLAY-SYSTEM-2.0.md).
+- [Gameplay Design 2.1: геройские навыки, бои, первые 10 этапов](docs/GAMEPLAY-DESIGN-2.1.md).
 - [G2-R Character System: контракты реализации и миграции](docs/G2-R-CHARACTER-SYSTEM-0.1.md).
 - [Историческая GDD 1.0 (количества устарели)](docs/GDD-1.0.md).
 - [Реестр решений и допущений](docs/DECISIONS.md).

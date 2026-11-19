@@ -88,3 +88,8 @@
 - [G2-R implementation contract](G2-R-CHARACTER-SYSTEM-0.1.md): source audit, target Save v2, legacy save protection and 14 required test scenarios. No runtime code changed in this design step.
 - Gameplay choices not owner-approved: active-hero switching, exact four hero kits, starter three and milestones, fifth companion identity, 50-stage structure, economy/idle numbers. The confirmed 4 hero choices / 5 companion collection / active 1+3 and portrait restriction remain mandatory.
 - Prior G2 tests verify the old prototype only, not actual G2-R. Implementation NOT_STARTED; G3 BLOCKED; releaseReady=false, publicationAllowed=false.
+
+## Gameplay Design 2.1 — 2026-11-19
+- [Gameplay Design 2.1](GAMEPLAY-DESIGN-2.1.md) details 4 distinct proposed hero skill kits, 5 companion niches, front/back targeting, deterministic tick/status rules, first ten campaign stage beats, gold/progression, metrics and explicit design gates.
+- **PROPOSED / NOT_IMPLEMENTED.** A new option in 2.1 proposes fifth companion at first boss (stage 10) instead of previous stage 7; neither option is owner-approved. Do not interpret docs as automatic approval or unlock implementation.
+- Pending first priority: owner policy on hero switching after first selection. Continue gameplay review before G2-R engine/UI/save migrations.
