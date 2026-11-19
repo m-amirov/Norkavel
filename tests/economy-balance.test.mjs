@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   VERSION, HERO_LEVEL_CAP, STAGES, XP_TO_NEXT, XP_THRESHOLDS,
-  xpToNextLevel, heroLevelForXp, stageFirstClearReward, stageReplayReward,
+  xpToNextLevel, heroLevelForXp, stageFirstClearReward, stageReplayReward, battleReward,
   companionUpgradeCost, companionCostToLevel, scenarioReplayCount,
   simulateScenario, simulateCompanionBudget, buildBalanceReport
 } from '../scripts/economy-balance.mjs';
@@ -119,14 +119,27 @@ test('moderate repeats bring cap to 46 with 66 real wins; intensive to 33 after 
   for (const s of [moderate, intensive])
     assert.equal(s.rows[s.rows.length - 1].heroLevel, 16);
 });
-test('replay and boss grant are not silently available on defeat', () => {
-  const full = stageFirstClearReward(50);
-  const replay = stageReplayReward(50);
-  assert.ok(replay.xp < full.baseXp);
-  assert.ok(replay.gold < full.baseGold);
-  // This read-only spreadsheet-like simulator intentionally has NO
-  // defeat transaction: approved defeat rewards are 0 XP and no first-clear.
-  // Runtime defeat behavior must be tested separately in G2-R.
+test('pure reward policy grants zero for defeat/abandonment and no first-clear on replay', () => {
+  for (const stage of [1, 3, 10, 20, 50]) {
+    for (const outcome of ['defeat', 'abandoned', 'invalid']) {
+      for (const firstClear of [false, true]) {
+        assert.deepEqual(battleReward(stage, outcome, firstClear), {
+          stage, outcome, xp: 0, gold: 0, firstClearMilestone: false
+        });
+      }
+    }
+    const newWin = battleReward(stage, 'victory', true);
+    const replay = battleReward(stage, 'victory', false);
+    assert.equal(newWin.xp, stageFirstClearReward(stage).xp);
+    assert.equal(newWin.gold, stageFirstClearReward(stage).gold);
+    assert.equal(newWin.firstClearMilestone, true);
+    assert.equal(replay.xp, stageReplayReward(stage).xp);
+    assert.equal(replay.gold, stageReplayReward(stage).gold);
+    assert.equal(replay.firstClearMilestone, false);
+    assert.ok(replay.xp < newWin.xp && replay.gold < newWin.gold);
+  }
+  assert.throws(() => battleReward(10, 'unknown'), RangeError);
+  assert.throws(() => battleReward(10, 'victory', 1), TypeError);
 });
 test('gold budget is conserved under optional, simulated player spending', () => {
   for (const mode of ['normal', 'moderate', 'intensive']) {
