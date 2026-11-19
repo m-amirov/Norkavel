@@ -39,3 +39,7 @@ The active main hero is selected once and remains permanent for that playthrough
 
 ## Owner decision 2026-11-19 — fifth companion gate
 The fifth companion must unlock only on first **story-boss victory**, not before. Store a semantic `first_story_boss_first_clear` award and make it idempotent in future G2-R; do NOT assume provisional chapter stage 10 is approved, and do NOT map legacy G2 stage-2 boss rewards automatically. Every permanent hero must be able to clear that boss with pre-boss companions. See docs/GDD-1.1.md and docs/GAMEPLAY-DESIGN-2.2.md.
+
+## Owner decision 2026-11-19 — initial companion party
+- For new profiles, exactly `sentinel` (Ard), `ember` (Mira), `healer` (Elira) unlocked and in three active slots after permanent hero selection. This is CONFIRMED. `ash` (Kair) and fifth start locked; Kair stage-3 proposed unlock is NOT confirmed.
+- Legacy G2 migration preserves prior Kair access and selected party; fifth remains story boss first-clear reward. Implement with deterministic save/restore and negative tests, not with ad-hoc UI-only disabled states. G2-R not implemented yet.
