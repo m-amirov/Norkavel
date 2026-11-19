@@ -4,7 +4,7 @@
 
 ## Decisions and design
 - G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, **4 distinct main heroes to choose from (exactly one selected), 5 progressively unlockable companions (3 active), 1+3=4 in combat**, async-only PvP, **landscape-only**. See [GDD 1.1](GDD-1.1.md).
-- G1: [GDD 1.1](GDD-1.1.md) has owner-confirmed roster counts, choice and gradual unlock. Specific hero identities, fifth companion and unlock triggers remain OPEN; **permanent hero choice (variant B) is CONFIRMED**. GDD 1.0 is superseded.
+- G1: [GDD 1.1](GDD-1.1.md) has owner-confirmed roster counts, choice and gradual unlock. Specific hero identities, fifth companion role, starter party and fourth-companion unlock remain OPEN; **permanent hero choice AND fifth-companion unlock after first story-boss victory are CONFIRMED**. GDD 1.0 is superseded.
 - Ludory Core pinned at `933c73b195eaf3bfffd12a31ab1cbadb27989eea`; WFA pinned at `6c8d80d15155cd8ccfbd245fce9450f61b5133f3`.
 
 ## Verified implementation
@@ -79,7 +79,7 @@
 ## Owner correction (19.11.2026) — precedence over historical G2/G3 reports
 - [GDD 1.1](GDD-1.1.md) confirms **4 selectable main heroes**, **5 companions available through gradual unlock**, **1 hero + 3 companions active**. Existing G2 uses one fixed hero, a four-companion catalog and a third-slot switch, without hero selection or unlock logic. Therefore historical 28/28 green CI does NOT verify this new requirement.
 - Current art includes **1 candidate hero master** and **4 candidate companion masters** (the latter still external conversation ZIP). Still missing **3 hero masters** and **the fifth companion**, plus 3 enemies, boss, animation and art review. G3 remains BLOCKED; do not relabel existing companion images as selectable heroes.
-- Next implementation gate: G2-R roster + save migration + headless Chrome with both hero choice and unlock/party invariants; then revised G3 visual/animation production. Initial unlock counts and unlock milestones are OPEN; do not hardcode guesses as canon.
+- Next implementation gate: G2-R roster + save migration + headless Chrome with both hero choice and unlock/party invariants; then revised G3 visual/animation production. Starter trio, fourth-companion milestone and first story boss stage ID remain OPEN; **fifth unlock after first story-boss victory is CONFIRMED**.
 
 - [G3 corrected production matrix 0.4](G3-ART-PRODUCTION-0.4.md): 4 main hero masters + 5 companion masters (4 active in battle: 1+3), plus 3 enemies and 1 boss. This plan is NOT art completion.
 
@@ -97,4 +97,10 @@
 ## Gameplay 2.2 — owner-approved permanent hero (2026-11-19)
 - [Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md) states **CONFIRMED owner variant B:** one of four main heroes selected once, permanently for a playthrough; no paid/free switching or class swapping after confirmation.
 - One-time warning/explicit commit and optional no-reward trial bout are design recommendations; legacy G2 must prompt for first actual permanent hero selection without auto-binding generic warrior. Independent profile/new-save option is OPEN.
-- First 3 companion candidates Ard/Mira/Elira; Kair unlock after stage 3 and fifth after first boss (stage 10) are **PROPOSED**; fifth at 7 remains an alternative. New progression/hero-lock runtime functionality and save schema are NOT implemented. Legacy tests only prove old G2. G3/art and release remain BLOCKED.
+- First 3 companion candidates Ard/Mira/Elira; Kair unlock after stage 3 and fourth companion Kair after stage 3 are **PROPOSED**, but **fifth after first story boss first victory is CONFIRMED**, with boss stage number still OPEN; fifth at 7 is REJECTED. New progression/hero-lock runtime functionality and save schema are NOT implemented. Legacy tests only prove old G2. G3/art and release remain BLOCKED.
+
+## Owner decision — 2026-11-19 fifth companion milestone
+- **OWNER CONFIRMED** fifth companion unlocks **after the player's first victory over the first story boss**, not before or on reaching the stage. If first boss is later assigned stage 10 in a 50-stage campaign, the award is at stage 10 by consequence, not because stage 10 itself was approved.
+- Do not treat existing technical G2 stage 2 Rift Guardian as first story boss without explicit stage mapping and transition design. In schema v2, the fifth unlock is keyed to a semantic `first_story_boss_first_clear` milestone with once-only grant and no grant on defeat, repeat clear, reload, migration of `claimed:[2]` or stage entry.
+- First story boss must be beatable by all 4 permanently chosen heroes using only companions available **before** its defeat. Starter three, fourth timing, fifth identity, first boss index, and complete campaign scale remain pending design.
+- This is DESIGN CONFIRMED / RUNTIME NOT IMPLEMENTED; all prior 28/28 green CI receipts are legacy G2 only. G3 BLOCKED.
