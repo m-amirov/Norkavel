@@ -144,3 +144,9 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-057 CONFIRMED_SPEC / G2-R_NOT_IMPLEMENTED:** any cleared stage remains replayable by travelling to its chapter-map node → stage card → explicit «В бой», for resources/upgrades. Cannot use replay to enter locked stages.
 - **NKV-058 NOT_TESTED:** every new verified replay win earns a reduced ordinary reward (below first clear) exactly once per `attemptId`. Duplicate callback/reload/defeat/invalid snapshot yields no duplicate win reward. Replaying stage 3 or 10 does not duplicate Kair/ice-controller/chapter grants.
 - **NKV-059 BALANCE_OPEN:** reward amounts, resources, caps and anti-farm/idle balance; legacy G2 0-replay economy is not proof.
+
+### Owner-approved individual progression (19.11.2026)
+- **NKV-060 / NKV-PRG-01 CONFIRMED_SPEC / NOT_IMPLEMENTED:** no shared camp level. All five companions each have an independent level (persisted even in reserve), no companion skill improvement trees.
+- **NKV-061 / NKV-PRG-02 CONFIRMED_SPEC / NOT_IMPLEMENTED:** permanently chosen main hero has own level, three different skills with **four upgrade steps each**, plus upgradeable ultimate. Four selectable main heroes need distinct 3+ultimate kits.
+- **NKV-062 / NKV-PRG-03 CONFIRMED_SPEC / NOT_IMPLEMENTED:** after each hero level-up, player personally chooses what to improve, no auto assignment. Reject an upgrade beyond 4/4 of regular skill, duplicate choices, stale snapshots. Companion level-up is not a hero improvement choice.
+- **NKV-063 / NKV-PRG-04 OWNER_REVIEW:** XP distribution, skill effects, ult cap/unlock, hero and companion level caps, progression curve and old v1 `level` mapping. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); previous G2 2-ability runtime is not proof.
