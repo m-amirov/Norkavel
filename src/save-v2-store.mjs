@@ -1,0 +1,212 @@
+import { prepareLegacyProfileV2, validateProfileV2 } from './profile-v2.mjs';
+
+export const SAVE_V2_FORMAT_VERSION = 1;
+export const SAVE_V2_DATABASE = 'norkavel.g2r.save.v2';
+export const SAVE_V2_RECORD_KEY = 'profile';
+export const LEGACY_SAVE_KEY = 'norkavel.g2.save.v1';
+
+const RECORD_FIELDS = Object.freeze(['formatVersion', 'revision', 'commitId', 'profile']);
+
+export class SaveV2StoreError extends Error {
+  constructor(code, message, cause) {
+    super(message, cause === undefined ? undefined : { cause });
+    this.name = 'SaveV2StoreError';
+    this.code = code;
+  }
+}
+
+const clone = value => structuredClone(value);
+
+function exactRecord(value, fields) {
+  if (!value || typeof value !== 'object' || Array.isArray(value) ||
+      ![Object.prototype, null].includes(Object.getPrototypeOf(value))) return false;
+  const keys = Reflect.ownKeys(value);
+  return keys.length === fields.length && keys.every(key => typeof key === 'string' && fields.includes(key)) &&
+    fields.every(field => Object.prototype.propertyIsEnumerable.call(value, field));
+}
+
+export function inspectSaveV2Record(record) {
+  if (!exactRecord(record, RECORD_FIELDS) || record.formatVersion !== SAVE_V2_FORMAT_VERSION ||
+      !Number.isSafeInteger(record.revision) || record.revision < 0 ||
+      typeof record.commitId !== 'string' || record.commitId.length < 1 || record.commitId.length > 128 ||
+      !validateProfileV2(record.profile)) return null;
+  return clone(record);
+}
+
+function ownInteger(value, key) {
+  if (!value || typeof value !== 'object') return null;
+  const descriptor = Object.getOwnPropertyDescriptor(value, key);
+  return descriptor && Object.hasOwn(descriptor, 'value') && Number.isSafeInteger(descriptor.value)
+    ? descriptor.value : null;
+}
+
+export function readLegacyProfileCandidate(storage = globalThis.localStorage) {
+  let raw;
+  try {
+    if (!storage || typeof storage.getItem !== 'function') throw new TypeError('legacy storage unavailable');
+    raw = storage.getItem(LEGACY_SAVE_KEY);
+  } catch (error) {
+    return { status: 'unavailable', profile: null, error: String(error?.message ?? error) };
+  }
+  if (raw === null) return { status: 'missing', profile: null, error: null };
+  if (typeof raw !== 'string' || raw.length > 32000) return { status: 'corrupt', profile: null, error: null };
+  let snapshot;
+  try { snapshot = JSON.parse(raw); }
+  catch { return { status: 'corrupt', profile: null, error: null }; }
+  const schemaVersion = ownInteger(snapshot, 'schemaVersion');
+  if (schemaVersion !== null && schemaVersion !== 1) {
+    return { status: 'incompatible', profile: null, error: null };
+  }
+  const profile = prepareLegacyProfileV2(snapshot);
+  return profile === null
+    ? { status: 'corrupt', profile: null, error: null }
+    : { status: 'prepared', profile, error: null };
+}
+
+function openDatabase(indexedDB, databaseName) {
+  if (!indexedDB || typeof indexedDB.open !== 'function') {
+    return Promise.reject(new SaveV2StoreError('STORAGE_UNAVAILABLE', 'IndexedDB capability is unavailable'));
+  }
+  return new Promise((resolve, reject) => {
+    let request;
+    try { request = indexedDB.open(databaseName, 1); }
+    catch (error) {
+      reject(new SaveV2StoreError('STORAGE_UNAVAILABLE', 'IndexedDB open failed', error));
+      return;
+    }
+    request.onupgradeneeded = () => {
+      const database = request.result;
+      if (!database.objectStoreNames.contains('saves')) database.createObjectStore('saves');
+    };
+    request.onblocked = () => reject(new SaveV2StoreError('STORAGE_BLOCKED', 'IndexedDB upgrade is blocked'));
+    request.onerror = () => reject(new SaveV2StoreError(
+      'STORAGE_UNAVAILABLE', 'IndexedDB open failed', request.error));
+    request.onsuccess = () => resolve(request.result);
+  });
+}
+
+function transactionError(transaction, code, message) {
+  return new SaveV2StoreError(code, message, transaction.error);
+}
+
+function randomCommitId() {
+  if (!globalThis.crypto || typeof globalThis.crypto.randomUUID !== 'function') {
+    throw new SaveV2StoreError('STORAGE_UNAVAILABLE', 'Secure commit identity is unavailable');
+  }
+  return globalThis.crypto.randomUUID();
+}
+
+export async function openSaveV2Store({
+  indexedDB = globalThis.indexedDB,
+  databaseName = SAVE_V2_DATABASE,
+  recordKey = SAVE_V2_RECORD_KEY
+} = {}) {
+  if (typeof databaseName !== 'string' || !databaseName.trim() ||
+      typeof recordKey !== 'string' || !recordKey.trim()) {
+    throw new TypeError('databaseName and recordKey must be non-empty strings');
+  }
+  const database = await openDatabase(indexedDB, databaseName);
+  let closed = false;
+  database.onversionchange = () => {
+    database.close();
+    closed = true;
+  };
+  const requireOpen = () => {
+    if (closed) throw new SaveV2StoreError('STORAGE_CLOSED', 'Save v2 store is closed');
+  };
+
+  return Object.freeze({
+    async load() {
+      requireOpen();
+      return new Promise((resolve, reject) => {
+        let transaction;
+        try { transaction = database.transaction('saves', 'readonly'); }
+        catch (error) {
+          reject(new SaveV2StoreError('STORAGE_UNAVAILABLE', 'Save v2 read transaction failed', error));
+          return;
+        }
+        const request = transaction.objectStore('saves').get(recordKey);
+        let outcome;
+        request.onsuccess = () => {
+          if (request.result === undefined) outcome = null;
+          else if (ownInteger(request.result, 'formatVersion') !== SAVE_V2_FORMAT_VERSION) {
+            outcome = new SaveV2StoreError('RESTORE_UNSUPPORTED', 'Save v2 format is unsupported');
+          } else {
+            outcome = inspectSaveV2Record(request.result) ??
+              new SaveV2StoreError('RESTORE_CORRUPT', 'Save v2 record is corrupt');
+          }
+        };
+        request.onerror = () => { outcome = new SaveV2StoreError('STORAGE_UNAVAILABLE', 'Save v2 read failed', request.error); };
+        transaction.onabort = () => reject(transactionError(transaction, 'STORAGE_UNAVAILABLE', 'Save v2 read aborted'));
+        transaction.onerror = () => {};
+        transaction.oncomplete = () => outcome instanceof Error ? reject(outcome) : resolve(outcome);
+      });
+    },
+
+    async compareAndSet(expectedRevision, profile) {
+      requireOpen();
+      if (expectedRevision !== null &&
+          (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0 ||
+           expectedRevision >= Number.MAX_SAFE_INTEGER)) throw new TypeError('expectedRevision is invalid');
+      if (!validateProfileV2(profile)) throw new TypeError('profile v2 is invalid');
+      const detachedProfile = clone(profile);
+      const commitId = randomCommitId();
+      return new Promise((resolve, reject) => {
+        let transaction;
+        try { transaction = database.transaction('saves', 'readwrite'); }
+        catch (error) {
+          reject(new SaveV2StoreError('STORAGE_UNAVAILABLE', 'Save v2 write transaction failed', error));
+          return;
+        }
+        const store = transaction.objectStore('saves');
+        const request = store.get(recordKey);
+        let outcome;
+        request.onsuccess = () => {
+          const current = request.result;
+          if (current !== undefined) {
+            const valid = inspectSaveV2Record(current);
+            if (valid === null) {
+              outcome = new SaveV2StoreError(
+                ownInteger(current, 'formatVersion') === SAVE_V2_FORMAT_VERSION
+                  ? 'RESTORE_CORRUPT' : 'RESTORE_UNSUPPORTED',
+                'Existing Save v2 record cannot be overwritten');
+              return;
+            }
+            if (expectedRevision !== valid.revision) {
+              outcome = { ok: false, code: 'STALE_REVISION', actualRevision: valid.revision };
+              return;
+            }
+          } else if (expectedRevision !== null) {
+            outcome = { ok: false, code: 'STALE_REVISION', actualRevision: null };
+            return;
+          }
+          const revision = expectedRevision === null ? 0 : expectedRevision + 1;
+          const record = {
+            formatVersion: SAVE_V2_FORMAT_VERSION,
+            revision,
+            commitId,
+            profile: detachedProfile
+          };
+          const put = store.put(record, recordKey);
+          put.onsuccess = () => {
+            outcome = { ok: true, revision, receipt: { commitId, revision } };
+          };
+          put.onerror = () => {
+            outcome = new SaveV2StoreError('STORAGE_UNAVAILABLE', 'Save v2 write failed', put.error);
+          };
+        };
+        request.onerror = () => {
+          outcome = new SaveV2StoreError('STORAGE_UNAVAILABLE', 'Save v2 compare failed', request.error);
+        };
+        transaction.onabort = () => reject(transactionError(transaction, 'STORAGE_UNAVAILABLE', 'Save v2 write aborted'));
+        transaction.onerror = () => {};
+        transaction.oncomplete = () => outcome instanceof Error ? reject(outcome) : resolve(outcome);
+      });
+    },
+
+    close() {
+      if (!closed) database.close();
+      closed = true;
+    }
+  });
+}

@@ -12,6 +12,8 @@ const allowed = Object.freeze({
   '/main.mjs': ['web/main.mjs','text/javascript; charset=utf-8'],
   '/art-registry.mjs': ['web/art-registry.mjs','text/javascript; charset=utf-8'],
   '/src/combat.mjs': ['src/combat.mjs','text/javascript; charset=utf-8'],
+  '/src/profile-v2.mjs': ['src/profile-v2.mjs','text/javascript; charset=utf-8'],
+  '/src/save-v2-store.mjs': ['src/save-v2-store.mjs','text/javascript; charset=utf-8'],
   '/assets/art/warrior-concept-01.png': ['assets/art/warrior-concept-01.png','image/png'],
   '/assets/art/arena-ruins-01.png': ['assets/art/arena-ruins-01.png','image/png'],
   '/assets/art/manifest.json': ['assets/art/manifest.json','application/json; charset=utf-8'],

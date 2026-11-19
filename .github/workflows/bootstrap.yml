@@ -44,6 +44,8 @@ jobs:
           }
       - name: Browser G2 smoke in headless Chrome
         run: node scripts/browser-smoke.mjs
+      - name: Browser Save v2 transactional smoke in headless Chrome
+        run: node scripts/save-v2-browser-smoke.mjs
       - name: Archive captured browser scenes
         if: always()
         uses: actions/upload-artifact@v4
