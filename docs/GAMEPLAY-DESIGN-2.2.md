@@ -31,11 +31,11 @@
 
 ## 4. Открытие пяти спутников: схема для согласования, НЕ утверждена
 
-Подтверждено лишь **5 всего / 3 активных / появляются постепенно**. Рекомендуемый вариант:
+Подтверждено: **5 всего / 3 активных / постепенно**, **стартовая тройка Ард/Мира/Элира** и пятый после первой победы над первым сюжетным боссом. Только условие Кайра пока требует согласования:
 
 | Этап | Предлагаемое изменение | Результат |
 |---|---|---|
-| Начало | Открыты Ард (sentinel), Мира (ember), Элира (healer) | Сразу полный состав 1+3 с каждым выбранным героем |
+| **Начало — CONFIRMED** | Открыты Ард (sentinel), Мира (ember), Элира (healer) | Сразу полный состав 1+3 с каждым постоянным героем |
 | Первая победа этапа 3 | Открывается Кайр (ash) | Появляется первый выбор между лечением и дополнительным DPS; синергия burn × ash |
 | **Первая победа над первым сюжетным боссом — CONFIRMED** | **Открывается пятый спутник** (личность пока OPEN) | Награда сразу после босса; номер этапа 10 только предложение |
 
@@ -72,7 +72,7 @@
 
 **CONFIRMED:** 4 главных героя на выбор, 1 постоянный герой на прохождение без смены, 5 постепенно открываемых спутников, 3 активных спутника, партия 1+3, landscape-only, async-only PvP.
 
-**PROPOSED/OPEN:** пробная схватка до подтверждения; личности и способности четырёх героев; стартовые Ард/Мира/Элира; открытие Кайра после 3; пятый — пока предлагаемая роль контролёра, **веха после первой победы над первым сюжетным боссом CONFIRMED**; условные 50 этапов; общая/индивидуальная экономика; создание отдельного нового профиля.
+**PROPOSED/OPEN:** пробная схватка до подтверждения; личности и способности четырёх героев; **стартовые Ард/Мира/Элира CONFIRMED**; открытие Кайра после 3 пока OPEN; пятый — пока предлагаемая роль контролёра, **веха после первой победы над первым сюжетным боссом CONFIRMED**; условные 50 этапов; общая/индивидуальная экономика; создание отдельного нового профиля.
 
 **IMPLEMENTATION:** G2-R NOT_STARTED; G3 BLOCKED; G4 PvP NOT_STARTED; releaseReady=false, publicationAllowed=false.
 
@@ -80,3 +80,7 @@
 - **Confirmed:** the fifth companion is granted on the **first clear of the first story boss**; it cannot be required to beat that boss and must never be unlocked merely by reaching the stage.
 - The first boss `stageId` is OPEN. The 2nd battle in legacy G2 is a technical demo, not a confirmed first story boss; migration must not silently grant #5 from its `claimed:[2]`.
 - Award/achievement/unlock is idempotent and persists across reload, retries and profile migration. Fifth companion identity/role and fourth milestone stay OPEN.
+
+## Owner approval 2026-11-19 — initial trio
+- New profile unlocked set equals `sentinel`, `ember`, `healer`. All three fill active companion slots once hero selected; `ash` and fifth are locked for new profiles.
+- Kair-after-stage-3 proposal remains OPEN; fifth story-boss-first-clear milestone remains CONFIRMED. Legacy v1 preserves Kair access.
