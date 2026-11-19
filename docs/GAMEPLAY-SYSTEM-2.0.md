@@ -250,9 +250,15 @@ Release flags остаются false. Ни одна предложенная м�
 
 ## Owner-approved progression override (19.11.2026)
 - **No camp level**; 5 companions have their own levels only, including reserves, with no separate skill upgrade choices. One permanent hero has separate heroLevel, exactly **three skills with four upgrade tiers each, plus an upgradeable ultimate**. Player chooses improvement after each hero level-up.
-- Legacy two-skill hero and shared camp progression suggestions are SUPERSEDED. XP, caps, ult ranks/unlock and resource economy remain OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); G2-R NOT_IMPLEMENTED.
+- Legacy two-skill hero and shared camp progression suggestions are SUPERSEDED. **Hero XP earned from confirmed victories is OWNER_CONFIRMED**; XP amounts/thresholds, losses/replays/PvP/idle rules, caps, ult ranks/unlock and other economy still OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); G2-R NOT_IMPLEMENTED.
 
 ## Companion manual gold leveling confirmed — 2026-11-19
 - Each unlocked companion has a persistent **individual level**; the player intentionally purchases its next level **with gold**. No companion XP, no automatic leveling in fights/idle, no companion ability-upgrade trees. Reserve companions can be upgraded manually without needing to be active; their purchased levels never disappear on party swap.
 - Exact price curve, cap, stat growth, starting level of later-unlocked Kair/ice controller and UI batching are OPEN. At the time of purchase, require adequate gold, valid unlocked character and an atomic, idempotent `gold -= cost; companionLevel[id] += 1` transaction. Double taps, stale saves and duplicate purchase IDs must never double-charge or mint levels.
 - This is **NOT** approval of hero gold-level purchases, universal single-currency policy or existing G2 gold values. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); G2-R NOT_IMPLEMENTED.
+
+## Hero XP for victorious battles — owner confirmed 2026-11-19
+- Permanent selected hero earns XP on verified winning battles. Once `heroXp` crosses a configurable threshold, `heroLevel` increases and creates a **player-chosen** improvement of one of 3 ordinary skills (4 tiers each) or eligible ultimate. Multiple levels gained in one settlement preserve each selection; **no automatic skill distribution**.
+- Companions never earn XP: their one level track is upgraded **manually with gold**.
+- XP from losses, replayed cleared levels, async PvP, idle and numerical values/curves remain owner-OPEN. A reduced gold replay reward does not itself specify XP replay rules. `attemptId` must prevent duplicate hero XP, level or skill choice on repeat callback/reload.
+- [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md) defines detailed data/QA contract, G2-R NOT_IMPLEMENTED.
