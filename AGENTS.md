@@ -31,8 +31,11 @@ Current stage: G2 browser-playable legacy slice; G2-R needed for new owner-confi
 
 ## G2-R design-first boundary (2026-11-19)
 - Confirmed roster quantities remain in GDD 1.1. Full gameplay mechanics are proposed, NOT owner-approved, in docs/GAMEPLAY-SYSTEM-2.0.md; technical implementation design in docs/G2-R-CHARACTER-SYSTEM-0.1.md.
-- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, unlock milestones, currency sinks and migration details are PROPOSED until owner review. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
+- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, fourth companion unlock, fifth identity, boss stage number, currency sinks and migration details are PROPOSED until owner review. **Fifth companion unlock after first STORY boss first victory is CONFIRMED**; avoid granting from the legacy technical G2 stage-2 boss. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
 - Existing legacy green G2 tests do not establish new G2-R implementation or owner approval; G3 remains BLOCKED.
 
 ## 2026-11-19 owner variant B
 The active main hero is selected once and remains permanent for that playthrough. Free hero switching was REJECTED. See docs/GAMEPLAY-DESIGN-2.2.md. Never use the old Gameplay 2.0/2.1 free-switch proposal as requirements; never silently assign a permanent hero to legacy G2 saves.
+
+## Owner decision 2026-11-19 — fifth companion gate
+The fifth companion must unlock only on first **story-boss victory**, not before. Store a semantic `first_story_boss_first_clear` award and make it idempotent in future G2-R; do NOT assume provisional chapter stage 10 is approved, and do NOT map legacy G2 stage-2 boss rewards automatically. Every permanent hero must be able to clear that boss with pre-boss companions. See docs/GDD-1.1.md and docs/GAMEPLAY-DESIGN-2.2.md.
