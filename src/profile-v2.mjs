@@ -141,7 +141,8 @@ function validHeroProgress(value) {
 function validXpThresholds(value) {
   return Array.isArray(value) && value.length === 15 && value.every((threshold, index) =>
     boundedInt(threshold, 1, Number.MAX_SAFE_INTEGER) &&
-    (index === 0 || threshold > value[index - 1]));
+    (index === 0 || (threshold > value[index - 1] &&
+      threshold - value[index - 1] > value[index - 1] - (value[index - 2] ?? 0))));
 }
 
 function validProgressionPolicy(value) {

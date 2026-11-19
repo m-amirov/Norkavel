@@ -166,9 +166,9 @@ test('G2R-F01 regression: ultimate cannot be upgraded before hero level 5', () =
     heroProgress: {
       ...selected.heroProgress,
       level: 4,
-      xp: 3,
+      xp: 30,
       xpPolicyId: 'test-level-gate-v1',
-      xpThresholds: Array.from({ length: 15 }, (_, index) => index + 1),
+      xpThresholds: [...TEST_XP_POLICY.xpThresholds],
       pendingSkillChoices: 3
     }
   };
@@ -180,9 +180,9 @@ test('G2R-F01 regression: ultimate cannot be upgraded before hero level 5', () =
     heroProgress: {
       ...selected.heroProgress,
       level: 5,
-      xp: 4,
+      xp: 50,
       xpPolicyId: 'test-level-gate-v1',
-      xpThresholds: Array.from({ length: 15 }, (_, index) => index + 1),
+      xpThresholds: [...TEST_XP_POLICY.xpThresholds],
       pendingSkillChoices: 4
     }
   };
@@ -388,8 +388,8 @@ test('G2R-P01: multi-level victory persists every choice and level 16 never beco
   const fastPolicy = {
     ...TEST_XP_POLICY,
     policyId: 'test-fast-policy-v1',
-    xpThresholds: Array.from({ length: 15 }, (_, index) => index + 1),
-    firstClearXp: Array.from({ length: 50 }, () => 20),
+    xpThresholds: Array.from({ length: 15 }, (_, index) => (index + 1) * (index + 2) / 2),
+    firstClearXp: Array.from({ length: 50 }, () => 120),
     replayXp: Array.from({ length: 50 }, () => 1)
   };
   let profile = selectPermanentHero(createProfileV2(), 'hero_slot_2');
@@ -399,7 +399,7 @@ test('G2R-P01: multi-level victory persists every choice and level 16 never beco
   }, fastPolicy);
   assert.equal(profile.heroProgress.level, 16);
   assert.equal(profile.heroProgress.pendingSkillChoices, 15);
-  assert.equal(profile.heroProgress.xp, 20);
+  assert.equal(profile.heroProgress.xp, 120);
 
   begun = beginCampaignAttempt(profile, { attemptId: 'pve:2:post-cap', stageId: 1 });
   const postCap = settleVerifiedCampaignResult(begun, {
@@ -407,16 +407,16 @@ test('G2R-P01: multi-level victory persists every choice and level 16 never beco
   }, fastPolicy);
   assert.equal(postCap.heroProgress.level, 16);
   assert.equal(postCap.heroProgress.pendingSkillChoices, 15);
-  assert.equal(postCap.heroProgress.xp, 21, 'lifetime XP remains lossless at cap');
+  assert.equal(postCap.heroProgress.xp, 121, 'lifetime XP remains lossless at cap');
   assert.equal(validateProfileV2(JSON.parse(JSON.stringify(postCap))), true);
 });
 
 test('G2R-P01: all 15 choices are manual, capped, and survive at level 16', () => {
   const progress = {
     level: 16,
-    xp: 15,
+    xp: 120,
     xpPolicyId: 'test-full-choice-v1',
-    xpThresholds: Array.from({ length: 15 }, (_, index) => index + 1),
+    xpThresholds: Array.from({ length: 15 }, (_, index) => (index + 1) * (index + 2) / 2),
     pendingSkillChoices: 15,
     skillRanks: { skill1: 0, skill2: 0, skill3: 0, ultimate: 0 }
   };
@@ -443,6 +443,10 @@ test('G2R-P01: invalid or changed XP policy cannot consume an active victory', (
   assert.strictEqual(settleVerifiedCampaignResult(begun, result, {
     ...TEST_XP_POLICY, replayXp: [...TEST_XP_POLICY.firstClearXp]
   }), begun);
+  assert.strictEqual(settleVerifiedCampaignResult(begun, result, {
+    ...TEST_XP_POLICY,
+    xpThresholds: [1, 3, 4, ...TEST_XP_POLICY.xpThresholds.slice(3)]
+  }), begun, 'cumulative thresholds must also have strictly increasing level intervals');
   const awarded = settleVerifiedCampaignResult(begun, result, TEST_XP_POLICY);
   const replayBegun = beginCampaignAttempt(awarded, { attemptId: 'pve:2:policy-change', stageId: 1 });
   assert.strictEqual(settleVerifiedCampaignResult(replayBegun, {
