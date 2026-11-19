@@ -58,4 +58,8 @@ The fifth companion must unlock only on first **story-boss victory**, not before
 
 ## Approved map navigation contract — 2026-11-19
 - Owner-confirmed sequence: click/tap AVAILABLE node → short hero-marker movement along a single linear path → matching stage card only after arrival → explicit «В бой» starts fight. No implicit combat on tap/travel end; locked nodes cannot bypass progression. Keep same stable stage ID through selection/preview/combat.
-- Repeat-cleared behavior, animation skip, timing and camera-follow remain OPEN. This is a design-only owner approval. No verified separate WFA agent runs yet.
+- Replay of CLEARED stages for reduced ordinary rewards is OWNER_CONFIRMED; animation skip, timing and camera-follow remain OPEN. This is a design-only owner approval. No verified separate WFA agent runs yet.
+
+## Owner approval 2026-11-19 — cleared-stage replay
+- Every cleared PvE stage may be replayed from linear map; each new valid replay win yields a reduced ordinary progression reward. Never reissue first-clear bonus, Kair/fifth unlock, chapter access or one-time achievement. Each attemptId can award once only; separate first-clear and repeat claim namespaces. Old G2 with zero repeat-win payout is not a new G2-R PASS.
+- Exact reward economy, caps and resource types remain OPEN; no changes to gameplay code or save migration have been implemented.
