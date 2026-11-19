@@ -63,3 +63,7 @@ The fifth companion must unlock only on first **story-boss victory**, not before
 ## Owner approval 2026-11-19 — cleared-stage replay
 - Every cleared PvE stage may be replayed from linear map; each new valid replay win yields a reduced ordinary progression reward. Never reissue first-clear bonus, Kair/fifth unlock, chapter access or one-time achievement. Each attemptId can award once only; separate first-clear and repeat claim namespaces. Old G2 with zero repeat-win payout is not a new G2-R PASS.
 - Exact reward economy, caps and resource types remain OPEN; no changes to gameplay code or save migration have been implemented.
+
+## Owner progression requirement (2026-11-19)
+- **NO general camp/party level**. Each of five companions has an independent level only, without skill upgrade trees, retained in reserve. One permanently chosen main hero has separate level, **3 abilities with 4 upgrade steps each + upgradeable ultimate**. Every hero level-up requires a **player-selected** improvement. No auto-distribution; no fifth upgrade on ordinary skill.
+- The G2 legacy 2-hero-skills HUD, former camp-level proposals and any assumption that ultimate also has four ranks are NOT approved. XP source, reserve XP, ultimate rank cap/unlock, overall level caps and respec are OPEN. Saved choices require atomic idempotency and legacy migration without fabricated upgrade points. [Progression 2.4](docs/CHARACTER-PROGRESSION-2.4.md). G2-R not implemented.
