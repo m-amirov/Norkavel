@@ -11,7 +11,7 @@ const ENEMIES = Object.freeze({
   crawler: { name: 'Скиталец', hp: 102, atk: 16, def: 10, interval: 28 },
   wisp: { name: 'Дух разлома', hp: 88, atk: 19, def: 7, interval: 31 },
   raider: { name: 'Осквернитель', hp: 125, atk: 24, def: 13, interval: 32 },
-  boss: { name: 'Хранитель Разлома', hp: 490, atk: 31, def: 21, interval: 40 }
+  boss: { name: 'Хранитель Разлома', hp: 780, atk: 66, def: 21, interval: 40 }
 });
 const clone = (value) => structuredClone(value);
 const alive = (unit) => unit.hp > 0;
