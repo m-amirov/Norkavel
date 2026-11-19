@@ -213,37 +213,67 @@ test('G2: sampled active-click damage share stays bounded under maximum legal ta
   assert.ok(fraction>=0.08 && fraction<=0.30,'manual input should be relevant but not dominant: '+fraction);
 });
 
-test('G2: stage-two boss balance sample covers idle and readable counterplay',()=>{
+test('G2: first Rift Guardian requires meaningful tactics but remains idle-solvable',()=>{
+  // 300 fixed seeds per approach on the real stage-two simulation. Level-one
+  // tutorial rewards/party are carried into the boss, never forged by a fixture.
+  const interrupt=(tick,state)=>{
+    const boss=state.units.find(u=>u.id==='boss-0');
+    return boss?.windup>0 && state.skills[0]===0
+      ? [{type:'target',id:'boss-0'},{type:'skill1'}] : [];
+  };
+  const barrier=(tick,state)=>state.skills[1]===0?[{type:'skill2'}]:[];
+  const both=(tick,state)=>[...interrupt(tick,state),...barrier(tick,state)];
   const tactics=[
     ['healer-idle',base=>base,()=>[]],
-    ['healer-skills',base=>base,(tick,state)=>{
-      if(state.units.some(u=>u.id==='boss-0' && u.windup>0) && state.skills[0]===0)
-        return [{type:'target',id:'boss-0'},{type:'skill1'}];
-      return state.skills[1]===0?[{type:'skill2'}]:[];
-    }],
-    ['ash-idle',base=>chooseCompanion(base,'ash'),()=>[]]
+    ['healer-interrupt',base=>base,interrupt],
+    ['healer-barrier',base=>base,barrier],
+    ['healer-skills',base=>base,both],
+    ['ash-idle',base=>chooseCompanion(base,'ash'),()=>[]],
+    ['ash-skills',base=>chooseCompanion(base,'ash'),both]
   ];
   const metrics={};
   for(const [name,compose,commands] of tactics){
     let wins=0,defeats=0,totalTicks=0;
-    for(let seed=0;seed<200;seed++){
+    for(let seed=0;seed<300;seed++){
       const stageOne=run(startFight(compose(initialState()),seed));
       assert.equal(stageOne.phase,'victory','stage 1 prerequisite seed '+seed);
-      const second=run(startFight(nextStage(stageOne),seed+10000),commands);
+      const initialBoss=startFight(nextStage(stageOne),seed+10000);
+      assert.equal(initialBoss.units.find(u=>u.id==='boss-0').maxHp,780);
+      assert.equal(initialBoss.units.find(u=>u.id==='boss-0').atk,66);
+      const second=run(initialBoss,commands);
       assert.equal(validateState(second),true,name+' seed '+seed);
-      assert.ok(['victory','defeat'].includes(second.phase),'stage 2 must resolve');
+      assert.ok(['victory','defeat'].includes(second.phase),'boss fight must terminate');
+      assert.ok(second.tick>=1 && second.tick<=MAX_TICKS,'boss fight must terminate within budget');
       if(second.phase==='victory'){
         wins++;
-        assert.equal(second.gold,155,'stage 2 victory adds exactly 110');
+        assert.equal(second.gold,155,'boss victory adds exactly 110 once');
         assert.deepEqual(second.claimed,[1,2]);
+        const repeated=run(startFight(retryStage(second),seed+10000),commands);
+        assert.equal(repeated.gold,155,'boss reward never doubles on replay');
       }else{
         defeats++;
-        assert.equal(second.gold,45,'stage 2 defeat grants nothing');
+        assert.equal(second.gold,45,'boss defeat grants nothing');
         assert.deepEqual(second.claimed,[1]);
       }
       totalTicks+=second.tick;
     }
-    metrics[name]={wins,defeats,meanTicks:Math.round(totalTicks/200)};
+    metrics[name]={wins,defeats,meanTicks:Math.round(totalTicks/300)};
   }
-  console.log('NORKAVEL_G2_BOSS_SAMPLE_600 '+JSON.stringify(metrics));
+  console.log('NORKAVEL_G2_BOSS_SAMPLE_1800 '+JSON.stringify(metrics));
+  // Regression envelope: player choices must influence survival probability;
+  // no specific fixed seed is hard-coded as the desired outcome.
+  assert.ok(metrics['healer-idle'].wins>=60 && metrics['healer-idle'].wins<=195,
+    'default idle should have meaningful danger, not be impossible');
+  assert.ok(metrics['ash-idle'].wins>=180,
+    'a viable damage-focused auto build should still clear the boss');
+  assert.ok(metrics['healer-interrupt'].wins>=255,
+    'skillful interrupts should materially increase survival');
+  assert.ok(metrics['healer-barrier'].wins>=255,
+    'barrier mitigation should materially increase survival');
+  assert.ok(metrics['healer-skills'].wins>=270,
+    'combining boss counterplay should be highly reliable');
+  assert.ok(metrics['ash-idle'].wins>=metrics['healer-idle'].wins+45,
+    'companion choice should change the outcome, not only fight length');
+  assert.ok(metrics['healer-skills'].wins>=metrics['healer-idle'].wins+70,
+    'player timing must matter');
 });
