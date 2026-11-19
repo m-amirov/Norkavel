@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { initialState, chooseCompanion, changeFront, upgradeHero, startFight, nextStage, retryStage, setAutoCast, stepCombat, selectTarget, validateState, MAX_TICKS } from '../src/combat.mjs';
+import { initialState, chooseCompanion, changeFront, upgradeHero, startFight, nextEncounterSeed, nextStage, retryStage, setAutoCast, stepCombat, selectTarget, validateState, MAX_TICKS } from '../src/combat.mjs';
 
 function run(initial, commands = () => [], count = MAX_TICKS) {
   let s=initial;
@@ -276,4 +276,24 @@ test('G2: first Rift Guardian requires meaningful tactics but remains idle-solva
     'companion choice should change the outcome, not only fight length');
   assert.ok(metrics['healer-skills'].wins>=metrics['healer-idle'].wins+70,
     'player timing must matter');
+});
+
+test('G2: deterministic seed advances on each PvE start without breaking replay',()=>{
+  const setup=initialState();
+  const firstSeed=nextEncounterSeed(setup);
+  const nextSeed=nextEncounterSeed({seed:firstSeed});
+  assert.notEqual(firstSeed,setup.seed);
+  assert.notEqual(firstSeed,nextSeed);
+  assert.equal(firstSeed,nextEncounterSeed(structuredClone(setup)));
+  assert.throws(()=>nextEncounterSeed({seed:NaN}),TypeError);
+  const first=run(startFight(setup,firstSeed));
+  assert.equal(first.phase,'victory');
+  const retry=retryStage(first);
+  assert.equal(nextEncounterSeed(retry),nextSeed,'persisted state carries next attempt seed');
+  const repeated=run(startFight(retry,nextSeed));
+  assert.equal(repeated.gold,45,'retry with fresh seed cannot duplicate reward');
+  assert.equal(repeated.seed,nextSeed);
+  const a=run(startFight(retry,firstSeed));
+  const b=run(startFight(retry,firstSeed));
+  assert.deepEqual(a,b,'explicit fixed seed is exactly replayable');
 });
