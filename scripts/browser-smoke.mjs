@@ -67,6 +67,8 @@ async function main(){
     assert.equal(await js('document.querySelector("[data-action=choose][data-id=healer]").click();window.__norkavelDebug.snapshot().state.party.includes("healer")'),true);
     await js('document.querySelector("[data-action=start]").click()');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.phase'),'fight');
+    const firstSeed=await js('window.__norkavelDebug.snapshot().state.seed');
+    assert.notEqual(firstSeed,24071,'first PvE start must advance seed');
     await js('document.getElementById("skill-2").click()');
     await until(()=>js('window.__norkavelDebug.snapshot().state.events.some(e=>e.type==="barrier")'),4000,'skill activation');
     await send('Input.dispatchMouseEvent',{type:'mousePressed',x:807,y:530,button:'left',clickCount:1});
@@ -120,12 +122,17 @@ async function main(){
     await js('document.querySelector("[data-action=retry]").click()');
     await until(()=>js('Boolean(document.querySelector("[data-action=start]"))'),3000,'retry setup');
     await js('document.querySelector("[data-action=start]").click()');
+    const secondSeed=await js('window.__norkavelDebug.snapshot().state.seed');
+    assert.equal(secondSeed,(Math.imul(firstSeed,1664525)+1013904223)>>>0,
+      'retry advances seed reproducibly');
     await until(()=>js('window.__norkavelDebug.snapshot().state.phase==="victory"'),45000,'retry victory');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.gold'),45,'reward idempotency after reload/retry');
     await js('document.querySelector("[data-action=next]").click()');
     assert.equal(await js('window.__norkavelDebug.snapshot().state.stage'),2);
     await js('document.querySelector("[data-action=start]").click()');
     const stageTwoFixture=await js('window.__norkavelDebug.snapshot()');
+    assert.equal(stageTwoFixture.state.seed,(Math.imul(secondSeed,1664525)+1013904223)>>>0,
+      'new stage advances the deterministic PvE seed');
     assert.equal(stageTwoFixture.state.stage,2);
     assert.equal(stageTwoFixture.state.phase,'fight');
     await until(()=>js('window.__norkavelDebug.snapshot().state.events.some(e=>e.type==="warning")'),19000,'boss warning');
