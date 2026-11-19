@@ -18,7 +18,8 @@
       "sha256": "18a5a559dd4f0b122f7872e4f4ce1a05bea9ac4732cfdb443228754ca5e69f84",
       "source": "ChatGPT ImageGen 2026-11-18",
       "transparent": true,
-      "status": "CANDIDATE_INTEGRATED"
+      "status": "CANDIDATE_INTEGRATED",
+      "characterCategory": "main_hero_candidate"
     },
     {
       "id": "battle-arena-ruins-01",
@@ -65,7 +66,8 @@
           512
         ],
         "format": "image/webp",
-        "status": "STAGED_NOT_COMMITTED"
+        "status": "STAGED_NOT_COMMITTED",
+        "characterCategory": "companion_candidate"
       },
       {
         "id": "ember",
@@ -76,7 +78,8 @@
           512
         ],
         "format": "image/webp",
-        "status": "STAGED_NOT_COMMITTED"
+        "status": "STAGED_NOT_COMMITTED",
+        "characterCategory": "companion_candidate"
       },
       {
         "id": "healer",
@@ -87,7 +90,8 @@
           512
         ],
         "format": "image/webp",
-        "status": "STAGED_NOT_COMMITTED"
+        "status": "STAGED_NOT_COMMITTED",
+        "characterCategory": "companion_candidate"
       },
       {
         "id": "ash",
@@ -98,8 +102,19 @@
           512
         ],
         "format": "image/webp",
-        "status": "STAGED_NOT_COMMITTED"
+        "status": "STAGED_NOT_COMMITTED",
+        "characterCategory": "companion_candidate"
       }
-    ]
+    ],
+    "characterCategory": "companion_candidate"
+  },
+  "rosterDesignContract": {
+    "version": "GDD-1.1",
+    "heroChoices": 4,
+    "companionCollection": 5,
+    "activeCompanionSlots": 3,
+    "activeTeam": 4,
+    "status": "OWNER_CONFIRMED_G2-R_NOT_IMPLEMENTED",
+    "note": "Existing 4 staged G3 character images are COMPANION candidates; one 0.1 warrior is HERO candidate. Missing 3 other hero masters and 5th companion."
   }
 }
