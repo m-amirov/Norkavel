@@ -84,7 +84,7 @@ DEFERRED: косметика, платные покупки, сложная эк
 | Первая заметная веха, например первая победа этапа 3 | Открыть Кайра | Впервые становится возможна замена и синергия burn + ash |
 | **Первая победа над первым сюжетным боссом — CONFIRMED** | Открыть 5-го спутника | Новый тактический вариант ПОСЛЕ босса, не условие его победы |
 
-Открытие Кайра на этапе 3 — ПРИМЕР/рекомендация. **Пятый после первой победы над первым сюжетным боссом — CONFIRMED владельцем**; номер этого этапа OPEN. В техническом G2-R нужен конфиг milestones, а не жёстко прошитые числа. Награда-открытие идемпотентна, повторное прохождение ничего не дублирует. Ранее открытый спутник никогда не закрывается при поражении, перезагрузке, смене героя или откате визуальной сцены.
+Открытие Кайра после первой победы этапа 3 — OWNER CONFIRMED. **Пятый после первой победы над первым сюжетным боссом — CONFIRMED владельцем**; номер этого этапа OPEN. В техническом G2-R нужен конфиг milestones, а не жёстко прошитые числа. Награда-открытие идемпотентна, повторное прохождение ничего не дублирует. Ранее открытый спутник никогда не закрывается при поражении, перезагрузке, смене героя или откате визуальной сцены.
 
 Показывать закрытых спутников в коллекции, но отключать помещение в состав. После открытия дать понятную карточку и одноразовый экран «Новый спутник». Не заставлять игрока многократно нажимать на плашки или собирать фрагменты для базового состава.
 
@@ -203,7 +203,7 @@ DEFERRED: косметика, платные покупки, сложная эк
 | **Смена выбранного главного героя** | **ЗАПРЕЩЕНА после единственного подтверждения** | **CONFIRMED / вариант Б 19.11.2026** |
 | Архетипы четырёх героев | защитник, стихийный маг, дуэлянт, следопыт | OPEN / рекомендуем |
 | Стартовый набор | Ард + Мира + Элира | CONFIRMED / OWNER 19.11.2026 |
-| Открытие 4-го спутника | после первой победы условного этапа 3 | OPEN / рекомендуем |
+| Открытие 4-го спутника | после первой победы этапа 3 | OWNER CONFIRMED |
 | **Открытие 5-го спутника** | **после первой победы над первым сюжетным боссом** (не перед ним; этап пока OPEN) | **CONFIRMED / OWNER** |
 | Роль 5-го | контролёр / лед / slow | OPEN / рекомендуем |
 | PvE кампания | 5 глав × 10 этапов, boss на каждом 10-м | OPEN / прежний вариант |
@@ -230,6 +230,8 @@ Release flags остаются false. Ни одна предложенная м�
 ## Owner decision: fifth companion milestone (19.11.2026)
 - Fifth companion unlock is **CONFIRMED on first clear of the first story boss**, not chapter stage 7. `first_story_boss_first_clear` is the stable design trigger; the boss numbering (10 in the proposed 50-stage campaign) is not approved.
 - Do not accidentally trigger it by replaying the **technical G2 stage-2 Rift Guardian** before that test encounter is formally mapped into the story campaign. Legacy rewards and migration must keep separate namespaces.
-- No team should require the fifth companion to defeat this boss. Fourth unlock remains OPEN (proposed Kair after stage 3); starting three Ard/Mira/Elira are CONFIRMED; fifth's identity remains OPEN.
+- No team should require the fifth companion to defeat this boss. Fourth unlock CONFIRMED (Kair after first clear of stage 3); starting three Ard/Mira/Elira are CONFIRMED; fifth's identity remains OPEN.
 
-**Owner decision 19.11.2026:** new profiles start with exactly `sentinel`, `ember`, `healer` unlocked and active. `ash` and fifth initially locked; Kair-after-stage-3 still PROPOSED; old G2 profiles retain earlier Kair entitlement.
+**Owner decision 19.11.2026:** new profiles start with exactly `sentinel`, `ember`, `healer` unlocked and active. `ash` and fifth initially locked; Kair-after-stage-3 OWNER CONFIRMED; old G2 profiles retain earlier Kair entitlement.
+
+**OWNER CONFIRMED 19.11.2026:** Кайр открывается только после первой победы этапа 3. Для новых профилей это переход 3/5 → 4/5. Спутник №5 — после первого сюжетного босса. Этап 3 не привязан к старому тестовому боссу G2; повторные победы не выдают награду повторно.
