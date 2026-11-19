@@ -77,3 +77,8 @@ Each executed role must produce a receipt:
 6. Content QA → reconcile all 50 nodes and real use sites against baseline; only then consider G4 content completeness.
 
 **Status 2026-11-19:** this file is a usable agent brief and routing plan. **NO independent agent was actually launched from this chat.** No claims of G2-R or G3 completion.
+
+## Progression scope update — 2026-11-19
+- Owner confirmed: no camp level; every companion has only an individual character level, and one permanent hero has own level with **three skills (four upgrade steps each) plus upgradeable ultimate**. Player personally chooses improvement after every hero level-up. Old 2-hero-skill and camp-level proposals are superseded.
+- Before G2-R Developer agent coding, Designer must clarify XP delivery, companion reserve leveling and ultimate cap/unlock; Reviewer must verify hero choice/upgrade persistence and save v1 migration, QA must validate 4 hero kits + 5 companion level independence and no duplicated skill choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- This is updated agent work allocation only, NOT actual agent execution, no WFA independent review receipt or implementation PASS.
