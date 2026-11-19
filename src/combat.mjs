@@ -73,21 +73,52 @@ export function initialState() {
   return { schema: 1, phase: 'setup', stage: 1, level: 1, gold: 0, claimed: [], party: ['sentinel', 'ember', 'healer'],
     front: 'sentinel', autoCast: false, seed: 24071, rng: 24071, tick: 0, eventId: 0, events: [], target: '', reward: 0, clickReady: 0, skills: [0, 0], units: [] };
 }
+// Persisted client snapshots are untrusted input, including when they look like valid JSON.
+// Validate complete combat payloads before passing them to the Ludory session.
+const boundedInt = (n, min, max) => Number.isSafeInteger(n) && n >= min && n <= max;
+function validSavedUnit(u) {
+  return u && typeof u === 'object' && typeof u.id === 'string' && u.id.length <= 32 &&
+    ['ally', 'enemy'].includes(u.team) && typeof u.name === 'string' && u.name.length <= 80 &&
+    boundedInt(u.maxHp, 1, 10000) && boundedInt(u.hp, 0, u.maxHp) &&
+    boundedInt(u.atk, 0, 5000) && boundedInt(u.def, 0, 5000) &&
+    boundedInt(u.interval, 1, 300) && boundedInt(u.nextAttack, 0, 300) &&
+    typeof u.front === 'boolean' && boundedInt(u.shield, 0, 10000) &&
+    boundedInt(u.shieldTicks, 0, 75) && boundedInt(u.burn, 0, 3) &&
+    boundedInt(u.burnTicks, 0, 50) && boundedInt(u.windup, 0, 20);
+}
+function validSavedEvent(e, tick, eventId) {
+  return e && typeof e === 'object' && boundedInt(e.id, 1, eventId) &&
+    boundedInt(e.tick, 0, tick) && typeof e.type === 'string' && e.type.length <= 40 &&
+    typeof e.source === 'string' && e.source.length <= 80 &&
+    typeof e.target === 'string' && e.target.length <= 80 &&
+    boundedInt(e.amount, 0, 1000000) && typeof e.detail === 'string' && e.detail.length <= 150;
+}
 export function validateState(s) {
-  return s && s.schema === 1 && ['setup','fight','victory','defeat'].includes(s.phase) &&
-    [1,2].includes(s.stage) && Number.isSafeInteger(s.gold) && s.gold >= 0 && s.gold <= 1000000 &&
-    Number.isSafeInteger(s.level) && s.level >= 1 && s.level <= 100 &&
-    Array.isArray(s.claimed) && s.claimed.every(n => [1,2].includes(n)) && new Set(s.claimed).size === s.claimed.length &&
-    Array.isArray(s.party) && s.party.length === 3 && new Set(s.party).size === 3 &&
-    s.party.every(p => Object.hasOwn(ROSTER, p)) && (s.front === 'hero' || s.front === 'sentinel') &&
-    typeof s.autoCast === 'boolean' && Number.isInteger(s.tick) && s.tick >= 0 && s.tick <= MAX_TICKS &&
-    Number.isInteger(s.rng) && s.rng >= 0 && s.rng <= 0xffffffff &&
-    Number.isInteger(s.seed) && s.seed >= 0 && s.seed <= 0xffffffff &&
-    Number.isInteger(s.eventId) && s.eventId >= 0 && Array.isArray(s.events) && s.events.length <= 16 &&
-    Array.isArray(s.skills) && s.skills.length === 2 && s.skills.every(n => Number.isInteger(n) && n >= 0 && n <= 300) &&
-    Number.isInteger(s.clickReady) && s.clickReady >= 0 && s.clickReady <= 10 &&
-    Array.isArray(s.units) && s.units.length <= 7 && s.units.every(u => typeof u.id === 'string' &&
-      Number.isFinite(u.hp) && u.hp >= 0 && Number.isFinite(u.maxHp) && u.hp <= u.maxHp);
+  if (!s || typeof s !== 'object' || s.schema !== 1 || !['setup', 'fight', 'victory', 'defeat'].includes(s.phase)) return false;
+  if (![1, 2].includes(s.stage) || !boundedInt(s.gold, 0, 1000000) || !boundedInt(s.level, 1, 100)) return false;
+  if (!Array.isArray(s.claimed) || s.claimed.length > 2 ||
+      s.claimed.some(n => ![1, 2].includes(n)) || new Set(s.claimed).size !== s.claimed.length) return false;
+  if (!Array.isArray(s.party) || s.party.length !== 3 || s.party[0] !== 'sentinel' ||
+      s.party[1] !== 'ember' || !['healer', 'ash'].includes(s.party[2])) return false;
+  if (!['hero', 'sentinel'].includes(s.front) || typeof s.autoCast !== 'boolean' ||
+      !boundedInt(s.tick, 0, MAX_TICKS) || !boundedInt(s.rng, 0, 0xffffffff) ||
+      !boundedInt(s.seed, 0, 0xffffffff) || !boundedInt(s.eventId, 0, 100000)) return false;
+  if (!Array.isArray(s.events) || s.events.length > 16 ||
+      !s.events.every(e => validSavedEvent(e, s.tick, s.eventId))) return false;
+  if (!Array.isArray(s.skills) || s.skills.length !== 2 ||
+      !s.skills.every(n => boundedInt(n, 0, 300)) || !boundedInt(s.clickReady, 0, 10) ||
+      typeof s.target !== 'string' || s.target.length > 32 || !boundedInt(s.reward, 0, 110)) return false;
+  if (!Array.isArray(s.units) || !s.units.every(validSavedUnit)) return false;
+  if (s.phase === 'setup') return s.units.length === 0;
+  if (s.units.length !== 7) return false;
+  const expected = [
+    ['hero', 'ally'], ...s.party.map(id => [id, 'ally']),
+    ...(s.stage === 1 ? ['crawler-0', 'wisp-1', 'raider-2'] : ['boss-0', 'crawler-1', 'wisp-2'])
+      .map(id => [id, 'enemy'])
+  ];
+  if (!expected.every(([id, team], index) => s.units[index].id === id && s.units[index].team === team)) return false;
+  if (s.target && !s.units.some(u => u.team === 'enemy' && u.id === s.target)) return false;
+  return true;
 }
 export function chooseCompanion(state, companion) {
   if (state.phase !== 'setup' || !Object.hasOwn(ROSTER, companion)) return state;
