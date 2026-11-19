@@ -19,7 +19,7 @@
 | hero_shadow | Дуэлянт, одиночная цель | быстрые удары по метке | **Теневой рывок**: фокус ослабленного врага, burst | **Исчезновение**: короткое уклонение и контрудар | добивание при низком HP цели; менее эффективен против широких волн |
 | hero_ranger | Следопыт, точный урон | дальняя автоатака по приоритету | **Прицельный выстрел**: mark + сильный удар в цель | **Капкан**: ограниченный control/снижение точности атаки врага | бонус к последовательным ударам по метке; требует прикрытия |
 
-Герою принадлежат **две активные способности**. Кнопки UI и auto-cast отражают выбранного героя; нельзя показывать shield-bash на маге. Пассивные бонусы должны быть измеримы, иметь combat log и не давать вечной неуязвимости. Конкретные секунды и коэффициенты рассчитает balance gate.
+**OWNER CONFIRMED 19.11.2026:** у героя **3 способности с 4 улучшениями каждая + отдельная прокачиваемая ульта**; предыдущая модель двух способностей отклонена. Кнопки UI и auto-cast отражают выбранного героя; нельзя показывать shield-bash на маге. Пассивные бонусы должны быть измеримы, иметь combat log и не давать вечной неуязвимости. Конкретные секунды и коэффициенты рассчитает balance gate.
 
 **Ключевой риск:** текущий босс был сбалансирован для единственного воина, умеющего прерывать удар. Не требовать у остальных героев того же навыка: каждому нужны допустимые противодействия (щит спутника, лечение, снижение урона, другой фокус/темп уничтожения). Система должна давать минимум два понятных способа справиться с угрозой.
 
@@ -104,7 +104,7 @@
 
 ## 7. Экономика и прокачка без лишних систем (PROPOSED)
 
-**Рекомендованный MVP:** один базовый ресурс — золото, 2 способа его траты:
+**SUPERSEDED:** общего уровня лагеря нет. Каждый спутник имеет только свой уровень; герой — отдельный уровень и 3×4 улучшения с ультой, выбранные игроком при каждом hero level-up. Предложение про золото/затраты ниже не утверждено:
 - **Общий тренировочный уровень лагеря:** повышает базовую выживаемость всех четырёх героев и пяти спутников. Смена **спутника** не обнуляет уже полученную мощь; главный герой не меняется.
 - **Индивидуальное мастерство героя/спутника:** усиливает уникальную роль/автонавык, без мультипликаторов, которые превращают персонажа в обязательного.
 
@@ -171,3 +171,5 @@
 - Timing of map travel, preview UI, biome lore, precise level beats and encounter data are PROPOSED. No gameplay code/assets updated. [Campaign Map 2.3](CAMPAIGN-MAP-2.3.md).
 
 **Replay owner approval 19.11.2026:** repeatable CLEARED stages CONFIRMED; reduced ordinary rewards for real replay wins, never extra milestones. Need separate per-attempt idempotency and first-clear one-shot claims, exact numerical balance OPEN. G2-R NOT_IMPLEMENTED.
+
+**Owner progression correction 19.11.2026:** all five companions individually level (no companion skill upgrades); main hero has his/her own level and three abilities with four upgrade steps each + upgradeable ultimate; player chooses an improvement after every hero level-up. No camp level. Earlier proposed two-skill kits must expand to 3+ultimate; XP source and ultimate limits remain OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
