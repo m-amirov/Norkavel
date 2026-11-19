@@ -250,7 +250,7 @@ Release flags остаются false. Ни одна предложенная м�
 
 ## Owner-approved progression override (19.11.2026)
 - **No camp level**; 5 companions have their own levels only, including reserves, with no separate skill upgrade choices. One permanent hero has separate heroLevel, exactly **three skills with four upgrade tiers each, plus an upgradeable ultimate**. Player chooses improvement after each hero level-up.
-- Legacy two-skill hero and shared camp progression suggestions are SUPERSEDED. **Hero XP earned from confirmed victories is OWNER_CONFIRMED**; XP amounts/thresholds, losses/replays/PvP/idle rules, hero level caps and other economy still OPEN; **ult unlock at level 5 with 3 steps OWNER_CONFIRMED**. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); G2-R NOT_IMPLEMENTED.
+- Legacy two-skill hero and shared camp progression suggestions are SUPERSEDED. **Hero XP earned from confirmed victories is OWNER_CONFIRMED**; XP amounts/thresholds, losses/replays/PvP/idle rules, **hero level cap 16 CONFIRMED**; other economy still OPEN; **ult unlock at level 5 with 3 steps OWNER_CONFIRMED**. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); G2-R NOT_IMPLEMENTED.
 
 ## Companion manual gold leveling confirmed — 2026-11-19
 - Each unlocked companion has a persistent **individual level**; the player intentionally purchases its next level **with gold**. No companion XP, no automatic leveling in fights/idle, no companion ability-upgrade trees. Reserve companions can be upgraded manually without needing to be active; their purchased levels never disappear on party swap.
@@ -271,5 +271,9 @@ Release flags остаются false. Ни одна предложенная м�
 ## Owner approval: ultimate lvl5 / 3 ranks (2026-11-19)
 - Every permanent main hero has its **own ultimate**, unavailable for use or improvement at hero levels 1–4; unlocks **when heroLevel reaches 5**.
 - The player may spend an earned hero level-up improvement on their unlocked ultimate **up to 3 times** instead of choosing one of 3 ordinary abilities with 4 improvements each. **3×4 + 3 = 15 optional skill-upgrade steps total**, no free/automatic rank granted at level 5.
-- Recommended implementation: rank 0 means available base ult, rank 1–3 player-chosen improvements; reject rank 4 and attempting to use/upgrade ult before heroLevel 5. Actual hero kits, VFX/cooldowns, XP thresholds and max heroLevel remain OPEN; G2-R NOT_IMPLEMENTED.
+- Recommended implementation: rank 0 means available base ult, rank 1–3 player-chosen improvements; reject rank 4 and attempting to use/upgrade ult before heroLevel 5. Actual hero kits, VFX/cooldowns, XP thresholds remain OPEN; **max heroLevel 16 CONFIRMED**; G2-R NOT_IMPLEMENTED.
 - [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md) and [G2-R character contract](G2-R-CHARACTER-SYSTEM-0.1.md).
+
+## Hero max level 16 — owner confirmed 2026-11-19
+- The single permanent main hero starts at **level 1** and stops at **level 16**. Exactly **15 level-ups** on 2..16 grant 15 user-directed upgrades: 12 regular (three skills×four), three ultimate (unlocked on level 5). The level-5 unlock grants no extra point or automatic ultimate rank.
+- After level16 hero XP cannot create new levels or upgrade choices, but PvE replay, reduced repeat gold, and manual companion gold upgrades remain available. Already earned pending choices remain usable at cap. XP threshold table 2..16 and post-cap XP accounting remain OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.
