@@ -21,13 +21,13 @@
 |---|---|---|
 | G0 | CONFIRMED | genre/party/PvP/orientation |
 | G1 | DESIGN_DRAFT | pending owner acceptance |
-| G2 | **EXTENDED_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | victory/defeat/retry, touch, saves, viewports tested in Chromium; actual hardware, 1000+ balance scenarios and owner playtest outstanding |
+| G2 | **EXTENDED_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | 1800 deterministic first-stage/boss scenarios, browser victory/defeat/retry and mobile emulation PASS; boss difficulty, hardware and user playtest remain open |
 | G3 | BLOCKED_ART_PRODUCTION | replace temporary procedural actor geometry with production-quality characters, backgrounds, VFX and animations; rights/visual review |
 | G4 | NOT_STARTED | full content and trusted server PvP |
 | G5–G7 | NOT_STARTED | real users, SDK/platform, rights, release approval |
 
 ## Remaining work (ordered)
-1. Close remaining G2 acceptance gaps: real-device input and safe areas, 1000+ balance samples, human playtest and readability at 640×360. Extended Chromium smoke already covers browser defeat/retry, corrupt/legacy saves, touch, orientation, diagnostics.
+1. Close remaining G2 acceptance gaps: balance the first boss (idle currently wins 100% of sampled encounters), real-device input/safe areas, human playtest and readability at 640×360. Deterministic sampling now exceeds 1000 scenarios.
 2. Art Direction owner approval; create individual transparent masters, animation sheets and rights evidence for 3 active companions + alternate, 3 enemies and 1 boss. Art 0.2 concept lineup is conversation-only, not committed or runtime-integrated. No primitives can be accepted as G3 art.
 3. Determine Ludory Studio trust/origin and host boundaries for non-narrative 2D runtime; Core alone is real, Studio/Connect is not authorized by a hand-written manifest.
 4. Build an authenticated server-authoritative asynchronous PvP backend **only after** separate architecture decision; do not fake online arena.
@@ -48,7 +48,7 @@
 
 ## G2 extended browser coverage (2026-11-19)
 - [Exact HEAD `a2d1d5d` — CI SUCCESS, run 44458525616](https://github.com/m-amirov/Norkavel/actions/runs/44458525616).
-- Node 22: **19/19 tests PASS**, including malformed/legacy snapshots and 120 reproducible combat seeds (not a 1000+ balance proof). Ludory Core lifecycle/save smoke PASS.
+- Node 22 at the historical a2d1d5d receipt: **19/19 tests PASS**, including malformed/legacy snapshots and 120 reproducible combat seeds. Later exact CI receipts supersede this test count, see balance section below.
 - Chromium CDP: mouse + true emulated touch, skill activation, pause, portrait blocking at 360×640, 390×844, 768×1024, 1024×1366; mobile landscape 640×360, 667×375, 844×390, 915×412; victory, retry, no duplicate rewards, boss warning and interruption, **controlled valid browser defeat fixture**, browser defeat/retry; corrupted/legacy save recovery and browser console diagnostics.
 - Corrected teardown race of Chromium's temporary profile and missing favicon 404 noise. These were actual failed CI checks first, then repaired and rerun; no inference from code alone.
 - Scope: Chrome emulation and source tests, **not** physical touch devices, independent playtesting, artistic sign-off or live Yandex platform acceptance.
@@ -56,3 +56,10 @@
 ## Art Production 0.2 scope
 - [Companion concept and art gate](ART_PRODUCTION-0.2.md): original transparent art lineup of Ард, Мира, Элира; source file and candidate crops were packaged as a downloadable chat artifact, **not present in this repository**.
 - Кайр, враги и босс, frame-based animations and parallax asset separation remain not produced/integrated; Art Production 0.2 is NOT_COMPLETE, G3 remains BLOCKED.
+
+## G2 deterministic balance follow-up (2026-11-19)
+- [Exact source `140a495e`, CI 44459324594 SUCCESS](https://github.com/m-amirov/Norkavel/actions/runs/44459324594): **22/22 Node tests PASS**, full Chromium browser PASS.
+- [Measured report](G2-BALANCE-0.1.md): 1200 seeded first-stage + 600 seeded boss results; additional 200 seed tap-damage observations.
+- Manual tap multiplier tuned 0.31 → 0.14. Post-tune sampled contribution is **18.4%** of allied damage, within the GDD's provisional 15–25% range for the observed slice.
+- First-stage win rate 100% in all three sampled compositions (tutorial-appropriate hypothesis; no human evidence). **Boss idle win rate also 100%** in the sampled 600 scenarios, so boss difficulty and required counterplay remain **OPEN**, despite mechanical telegraph/interrupt tests passing.
+- No server PvP or release readiness implied.
