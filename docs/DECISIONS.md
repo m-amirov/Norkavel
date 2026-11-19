@@ -147,7 +147,7 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 | D-073 | **Главный герой за подтверждённые победы получает опыт XP, повышает свой уровень при достижении порога; после каждого hero level-up игрок выбирает улучшение одной из 3 способностей (4 ранга у каждой) или доступной ульты** | **OWNER_CONFIRMED** |
 | D-074 | Спутники **не получают XP**: их уровни приобретаются вручную за золото. Повышение heroLevel не повышает ни одного спутника | **OWNER_CONFIRMED / DERIVED** |
 | D-075 | Повторная обработка одной победной попытки не дублирует XP/геройский уровень/выбор, несколько уровней одной наградой не теряются | REQUIRED_INTEGRITY / NOT_IMPLEMENTED |
-| D-076 | **XP за replay уменьшенный, за поражение 0 — CONFIRMED**; численные first-clear/replay XP, XP-пороги, PvP/idle, максимальный heroLevel остаётся OPEN, а **ultimate unlock lvl 5 и 3 улучшения CONFIRMED** | PARTIAL_CONFIRMED / BALANCE_OWNER_REVIEW |
+| D-076 | **XP за replay уменьшенный, за поражение 0 — CONFIRMED**; численные first-clear/replay XP, XP-пороги, PvP/idle, максимальный heroLevel **16 CONFIRMED**; ultimate unlock lvl5 и 3 улучшения CONFIRMED | PARTIAL_CONFIRMED / BALANCE_OWNER_REVIEW |
 
 Подробнее в [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); пока дизайн, НЕ implemented runtime.
 
@@ -157,7 +157,7 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 | D-077 | **За каждую новую подтверждённую повторную победу (CLEARED stage) главный герой получает уменьшенный XP, строго меньше обычного XP за первое прохождение того же этапа** | **OWNER_CONFIRMED** |
 | D-078 | **За поражение главный герой получает 0 XP**; ни heroLevel, ни skill-choice ledger не продвигаются | **OWNER_CONFIRMED** |
 | D-079 | Выплата XP атомарно привязана к валидному `attemptId` и не дублируется при повторной обработке; отдельные честные победы могут давать опыт снова | DERIVED_INTEGRITY / NOT_IMPLEMENTED |
-| D-080 | Численная XP-шкала, коэффициент replay, округление, XP за PvP/idle, максимальный heroLevel | OPEN / BALANCE_GATE |
+| D-080 | Численная XP-шкала, коэффициент replay, округление, XP за PvP/idle, **максимальный heroLevel 16 CONFIRMED** | PARTIAL_CONFIRMED / BALANCE_GATE |
 
 [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md), [Acceptance](ACCEPTANCE.md). Только дизайн, G2-R не реализован.
 
@@ -167,6 +167,14 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 | D-081 | **Ульта главного героя становится доступна на 5-м уровне; до этого не используется/не прокачивается** | OWNER_CONFIRMED |
 | D-082 | **Три улучшения ульты**, игрок выбирает когда инвестировать в неё повышение уровня вместо одной из 3 обычных способностей (4 улучшения каждая) | OWNER_CONFIRMED |
 | D-083 | Техническая модель rank 0..3 (rank0 — открытая базовая ульта), unlock не расходует upgrade choice автоматически | DERIVED DESIGN / G2-R_NOT_IMPLEMENTED |
-| D-084 | Всего 15 возможных skill upgrades (12 обычных + 3 ульты); **max hero level и рост после максимизации навыков** OPEN | PARTIAL_CONFIRMED / OWNER_REVIEW |
+| D-084 | Всего 15 возможных skill upgrades (12 обычных + 3 ульты); **heroLevel max 16 CONFIRMED**; после cap новых улучшений нет; XP accounting OPEN | PARTIAL_CONFIRMED / OWNER_REVIEW |
 
 См. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). Без G2-R runtime изменений.
+
+## Owner approval — maximum hero level 16 (2026-11-19)
+| ID | Решение | Статус |
+|---|---|---|
+| D-085 | **Стартовый уровень главного героя 1, максимальный уровень 16** | **OWNER_CONFIRMED** |
+| D-086 | **Ровно 15 уровней повышения (2–16): один самостоятельный выбор улучшения на каждый. 12 обычных + 3 ульты** | **OWNER_CONFIRMED / DERIVED** |
+| D-087 | После heroLevel 16 нет уровня 17 или новых выборов; ранее нераспределённые choices остаются | DERIVED_INTEGRITY / G2-R_NOT_IMPLEMENTED |
+| D-088 | XP-порог каждого уровня 2–16, XP accounting на cap, верхняя планка спутников и стоимость | OPEN / BALANCE_GATE |
