@@ -20,7 +20,7 @@ The preceding 0.2/0.3 art packages were **four companions**, NOT the four select
 
 1. **G2-R roster spec and runtime:** gameplay model with exactly 4 leader choices and exactly 5 companions; three active slots, progressive unlock eligibility, party snapshot contract and save migration. Do not invent milestones or impose permanent hero lock without an owner decision.
 2. **Hero family (4):** use existing warrior only as visual quality reference/candidate. Prepare 3 entirely new hero designs, each with own silhouette, role, palette and interaction card. Main heroes should read as the controllable lead in the side-view fight.
-3. **Companion family (5):** preserve 4 candidate masters from external pack, produce the 5th as an original character after its role/identity is specified. Ensure the four existing files are not mistaken for all five. No duplicate/reskin substitutes.
+3. **Companion family (5):** preserve 4 candidate masters from external pack, produce the 5th as an original **ice-controller** character (ROLE_CONFIRMED; identity/name/design still OPEN). Ensure the four existing files are not mistaken for all five. No duplicate/reskin substitutes.
 4. **Enemy family (3+1):** three combat enemy designs and Rift Guardian with readable windup/impact/recovery poses. Do not use composite presentation boards containing HUD/text as runtime assets.
 5. **Actual motion:** `idle/attack/hit/death` for **all** selected heroes and companions, plus unique casts/skills, windup and victory where applicable. One static illustration translated/rotated by Canvas is NOT a compliant animation sheet.
 6. **Battlefield and interface:** real parallax layers, VFX, HP bars and status indicators; hero selection UI 4 cards, companion collection 5 cards (locked/unlocked states), exactly 3 slot assignments, full landscape-only gameplay.
@@ -36,4 +36,6 @@ The preceding 0.2/0.3 art packages were **four companions**, NOT the four select
 
 ## D. Explicitly open content decisions
 
-Names/classes/skills of four selectable main heroes, fifth companion identity, starting unlocked companion subset, exact unlock triggers and availability of hero swapping after initial choice remain **OPEN**. No production art identity assignment or irreversible migration should assume answers.
+Names/classes/skills of four selectable main heroes, fifth companion **name/identity and detailed skill design** remain **OPEN**, but ice-controller role is OWNER_CONFIRMED; starter trio Ard/Mira/Elira is CONFIRMED, Kair unlocks after stage-3 first clear, fifth after first story-boss first clear, and main hero selection is permanent (no hero swap). Exact first story-boss stage index remains OPEN. No production art identity assignment or irreversible migration should assume answers.
+
+**Art brief update (19.11.2026):** fifth companion's owner-confirmed ice-control role must produce its own readable side-view silhouette and cold-magic VFX distinct from four companion candidates; name/appearance and frame animations still require actual art and review. [Mechanics brief](FIFTH-COMPANION-ICE-CONTROL-0.1.md).

@@ -79,9 +79,9 @@ If there are no legacy users in practice the migrator still requires unit fixtur
 Design proposal from Gameplay 2.0:
 - OWNER_CONFIRMED: new profile unlocks `[sentinel, ember, healer]` only, and those three fill active companion slots after permanent main-hero confirmation;
 - OWNER_CONFIRMED: unlock `ash` only on first successful campaign stage-3 clear;
-- **OWNER CONFIRMED:** unlock fifth companion only on `first_story_boss_first_clear` event, after first confirmed victory over first *story* boss. Do not use old technical G2 boss stage=2, and do not hardcode a provisional campaign stage=10; fifth's identity/role remain OPEN.
+- **OWNER CONFIRMED:** unlock fifth companion only on `first_story_boss_first_clear` event, after first confirmed victory over first *story* boss. Do not use old technical G2 boss stage=2, and do not hardcode a provisional campaign stage=10; fifth's role as ice controller is OWNER_CONFIRMED; name, art and exact skill parameters remain OPEN.
 - grant on first verified clear, not every replay.
-The initial starter party and fifth **unlock event** are owner CONFIRMED; actual first story boss stage ID and fifth's role/identity remain awaiting owner acceptance. A dev-only configuration can support synthetic milestones for testing but may not be described as final game content.
+The initial starter party and fifth **unlock event** are owner CONFIRMED; actual first story boss stage ID and fifth's identity/name and exact mechanics remain open; ICE_CONTROLLER_ROLE is OWNER_CONFIRMED. A dev-only configuration can support synthetic milestones for testing but may not be described as final game content.
 
 Unlock must not be purchasable-only. When unlocking, validate new companion definition, update collection atomically, notify UI once, never auto-remove a current member. The default auto-team may suggest a switch; never rewrite player lineup without consent after initial setup.
 
@@ -152,7 +152,7 @@ Do not declare G2-R complete when only data structures or mock buttons exist. A 
 ## 2026-11-19 owner unlock decision
 - Fifth-companion unlock is owner-confirmed **AFTER first successful clear of first story boss**. Persist a semantic first-clear milestone; stage number is unapproved. The tutorial/testing G2 stage-2 boss is not automatically that story boss.
 - Unlock event must be atomic with first-clear reward idempotency, never from repeat/stale/corrupt/failed events. Legacy G2 boss claim must not retroactively mint fifth companion without an explicit stage mapping.
-- Initial 3 companions are owner CONFIRMED; pending design: the fifth's identity, role and first boss campaign stage.
+- Initial 3 companions are owner CONFIRMED; pending design: the fifth's identity/name, exact ice control skills and first boss campaign stage.
 
 ## Starter trio — owner approval 2026-11-19
 - New v2 profile: exactly `sentinel`, `ember`, `healer` unlocked, and all three in active `party`; `ash` and fifth are locked. Starting any of four permanent hero profiles must be possible without softlock.
@@ -163,3 +163,10 @@ Do not declare G2-R complete when only data structures or mock buttons exist. A 
 - For new profiles, the first successful clear of campaign stage 3 must unlock `ash` (fourth companion). No unlock on stage entry, defeat, retry or duplicate event. Persist milestone and unlock atomically; never auto-replace the active party.
 - Migrated valid G2 profiles retain prior `ash` entitlement independently of new campaign stage 3; preserve progression without duplicate rewards. Fifth remains first-story-boss-first-clear only.
 - G2R-21 (NOT IMPLEMENTED): test 3/5 → 4/5 after first stage-3 clear → 5/5 after first story-boss clear, idempotence, reload, defeat, all four permanent hero profiles and legacy migration.
+
+## Fifth companion role approval — 2026-11-19
+- **OWNER_CONFIRMED:** companion #5 is an ICE CONTROLLER providing enemy slowdown and dangerous-attack mitigation. ID `control` is provisional until canonical naming; make skills configurable/versioned and ensure no dependence on this companion to beat the first story boss.
+- New-account unlock only after idempotent `first_story_boss_first_clear`; no stage entry, loss, repeat, technical G2-stage-2 first-clear or legacy migration grants.
+- Domain should separate `slow` attack cadence effect from `weaken`/damage mitigation or telegraph suppression; exact behavior and caps are PROPOSED and require balance signoff. Never implement permanent boss freeze/stunlock from a vague description. No hidden forced best-in-slot when already fielding healer/tank.
+- G2R-22: companion catalog has exactly five distinct units with fifth `role=ice_controller`; deterministic slow/weaken contribution observable in event log, caps prevent infinite lock, initial first story boss remains beatable for all fixed hero profiles WITHOUT #5; unlock grants once and party stays 1+3. **SPEC_CONFIRMED / TESTS_NOT_RUN**.
+- [Design details](FIFTH-COMPANION-ICE-CONTROL-0.1.md).
