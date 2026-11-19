@@ -12,7 +12,7 @@
 | Приоритет | ID | Задача | Зависимости | Текущий статус |
 |---|---|---|---|---|
 | 1 | G2R-F01 | Проверяемый foundation: модель профиля v2 и безопасная совместимость с G2 v1 | действующие GDD/DECISIONS и actual Ludory Core | **DONE_VERIFIED — `27be4dd`, CI 44526368550** |
-| 2 | G2R-F02 | Постоянный выбор 1 из 4 героев + 3 уникальных обычных навыка/ульта каждому в UI и бою | G2R-F01; **идентичности и exact skill kits — OWNER_OPEN** | **BLOCKED_OWNER (content), independent persistence work permitted** |
+| 2 | G2R-F02 | Постоянный выбор 1 из 4 героев + 3 уникальных обычных навыка/ульта каждому в UI и бою | G2R-F01; **идентичности и exact skill kits — OWNER_OPEN**, предложения для решения: [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md) | **BLOCKED_OWNER (content), independent persistence work permitted** |
 | 3 | G2R-F03 | Roster 5, 3 активных/2 резервных, unlock stage3/10, безопасные first-clear claim receipts | G2R-F01 | **DONE_VERIFIED — `e384e5e`, CI 44531383856** |
 | 4 | G2R-P01 | Отдельная прогрессия героя (lvl1–16, XP за победы, 15 player choices, ultimate lvl5) | G2R-F01; skill effects when moving to combat; economy values remain CANDIDATE | **DONE_VERIFIED — `85114c6`, CI 44535563965** |
 | 5 | G2R-E01 | Ручная прокачка каждого спутника за золото, atomic purchase ledger, denied/double-purchase cases | G2R-F01 + G2R-F03; числа Economy 0.1 **CANDIDATE** | **DONE_VERIFIED — `4af6c6f`, CI 44537806684** |
@@ -108,3 +108,9 @@
 **Граница S01:** store не импортирован в `web/main.mjs`, не заменяет legacy key/runtime и не делает onboarding auto-migration. Cross-device/server consistency, trusted battle result/gold policy, runtime UI и recovery UX остаются NOT_IMPLEMENTED. G2R-F02 — `BLOCKED_OWNER`; G2R-INT — `BLOCKED_DEPENDENCY`, поэтому следующей независимой READY-задачи сейчас нет.
 
 **Кодовый аудит C01 (exact SHA `d88ed8a`):** 50 уникальных `stageId/backgroundId/encounterId`, 5 chapter maps, 5 bosses, доменные `chapter_map → travelling → stage_preview → beginCampaignAttempt`, locked/replay, cancel, first-clear unlock и stage50 подтверждены; [CI #44578010597](https://github.com/m-amirov/Norkavel/actions/runs/44578010597) SUCCESS, 72/72 Node, Ludory Core and legacy browser smoke PASS. Реальной анимации и true combat result provenance нет; `arriveAtCampaignStage` — чистый state transition, а не сам animation completion event. Вводимые через `navigation` данные должны оставаться только клиентским view state; реальную награду и доступ решает trusted campaign/battle producer. Не считать C01 G2-R UI PASS.
+
+## Owner decision gate after S01 (2026-11-19)
+
+**G2R-S01 DOMAIN+CHROMIUM_STORAGE_PASS:** exact `fa2498dbbb23702fbecba191f00ff958bbb5307b`, [CI #44581276187](https://github.com/m-amirov/Norkavel/actions/runs/44581276187) SUCCESS, 77/77 Node, Ludory Core, legacy G2 and standalone two-page IndexedDB CAS Chromium PASS. Saves are *not* integrated with `web/main.mjs` and not cross-device authoritative. No additional independent READY task is assumed.
+
+**NEXT OWNER REVIEW:** [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md). Proposed four classes and **3 normal abilities + ultimate each** plus optional working names. This proposal does NOT unblock F02 without owner's explicit approval. Owner may approve mechanics while leaving names/art for separate review; do not change stable saved hero-slot IDs. Once accepted, update `DECISIONS.md` and queue, then Codex proceeds via ordinary short prompt. 
