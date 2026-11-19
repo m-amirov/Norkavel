@@ -185,3 +185,7 @@
 - **First clear of a stage:** base hero XP (amount OPEN). **Each distinct genuine replay victory on cleared stage:** smaller positive hero XP than on first clear of that stage; repeat gold is also reduced (previously CONFIRMED). **Defeat: 0 XP**. Hero-only XP: companions level exclusively with manual gold purchases.
 - A repeat of the **same `attemptId`** cannot award gold, XP, skill choices or milestone twice; two different genuine replay wins may each grant reduced XP. Replay stage 3/10 never reissues Kair/fifth unlock. XP rates/curve, hero caps, PvP/idle XP still OPEN.
 - [Progression 2.4](CHARACTER-PROGRESSION-2.4.md); gameplay spec only, not G2-R implementation.
+
+## Owner ultimate decision — 2026-11-19
+- Ultimate becomes usable at **heroLevel 5**, not before, and permits exactly **3 player-selected improvement steps** (ordinary three skills: 4 each; **15 in total**). Any hero level-up from 5 onward may be invested in ultimate instead of an ordinary skill. Unlock does NOT auto-invest the level-up choice.
+- Hero XP per victory / reduced replay XP / defeat zero remain CONFIRMED; precise XP values and ultimate effects OPEN. All four hero kits must include unique ultimate, not simply a reused generic G2 action. [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).

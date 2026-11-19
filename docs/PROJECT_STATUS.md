@@ -135,7 +135,7 @@
 
 ## Progression design approved 2026-11-19
 - CONFIRMED: **no camp/squad level**; each of five companions levels separately with no companion skill upgrade trees. Only the selected permanent main hero has own level and **3 skills (4 upgrades each) + an upgradeable ultimate**; after **every hero level-up** player chooses which eligible ability to improve.
-- OLD proposals of shared camp level and just 2 hero skills SUPERSEDED. **Companion levels purchased manually for gold CONFIRMED**; gold cost curve/limits/stats and **hero XP** method, ultimate rank cap/unlock timing still OPEN. No companion/reserve XP. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- OLD proposals of shared camp level and just 2 hero skills SUPERSEDED. **Companion levels purchased manually for gold CONFIRMED**; gold cost curve/limits/stats and **hero XP** method, **ultimate opens at hero level 5, 3 upgrades OWNER_CONFIRMED**; other balance OPEN. No companion/reserve XP. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 - DESIGN_ONLY: no Save v2, updated 3+ult HUD, level-up choices, new character-level engine or regression have been run. Prior 28/28 legacy G2 tests only establish old runtime.
 
 ## Owner approval — companion gold leveling 2026-11-19
@@ -145,10 +145,15 @@
 
 ## Hero XP confirmation — 2026-11-19
 - OWNER_CONFIRMED: permanent main hero earns XP from verified battle victories; when `heroXp` reaches a threshold, `heroLevel` advances and the player personally selects which of three skills (4 improvement ranks each) or eligible ultimate to upgrade. No auto distribution.
-- Companions earn no XP; levels manually purchased with gold. Hero XP quantities/thresholds and **replay reduction factor**, PvP/idle XP, ultimate unlock/rank cap are OPEN. **Reduced XP for replay victory and 0 XP on defeat OWNER_CONFIRMED.**
+- Companions earn no XP; levels manually purchased with gold. Hero XP quantities/thresholds and **replay reduction factor**, PvP/idle XP, **ultimate unlock at hero level 5 and 3 upgrade steps are OWNER_CONFIRMED**, detailed effects OPEN. **Reduced XP for replay victory and 0 XP on defeat OWNER_CONFIRMED.**
 - No G2-R skill allocation, new XP/reward logic, Save v2, event-based XP dedup or browser acceptance has been implemented; legacy G2 28/28 PASS does not cover them. [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 
 ## Replay victory XP / defeat zero XP — owner confirmed 2026-11-19
 - New legitimate replay victory over CLEARED stage pays **reduced positive hero XP** compared with that stage's first-clear XP, plus already-confirmed reduced ordinary gold. Losing, invalid or unfinished attempts grant **0 hero XP**. Companions gain no XP; they use manual gold upgrade.
 - Levelup/upgrade choice accrual remains determined by earned XP; for a repeated callback of the same `attemptId`, no duplicate XP, heroLevel, skill points or rewards. XP amounts, ratio, level curve and PvP/idle remain OPEN.
 - [Progression 2.4](CHARACTER-PROGRESSION-2.4.md) / [G2-R acceptance](ACCEPTANCE.md): **DESIGN_CONFIRMED / G2-R_NOT_IMPLEMENTED**; existing legacy G2 green CI cannot validate.
+
+## Ultimate skill gate owner approval — 2026-11-19
+- Hero ultimate unlocks at **heroLevel 5** and can be upgraded on **three separate user-selected improvement steps**; no automatic ultimate improvement at unlock. Ordinary hero abilities each permit four improvements; total hero improvements 12+3=**15**.
+- G2-R must show skill locked at hero levels <5, reject casting/upgrading early, rank >3 and duplicate rank allocation; preserve level-up choices, unlock and upgrades in Save v2 and all four chosen hero kits. Max hero level / excess XP after maxing 15 upgrades OPEN.
+- Spec in [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md), acceptance in [ACCEPTANCE](ACCEPTANCE.md). No new runtime/QA tests. G2-R NOT_IMPLEMENTED.

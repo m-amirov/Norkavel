@@ -80,7 +80,7 @@ Each executed role must produce a receipt:
 
 ## Progression scope update — 2026-11-19
 - Owner confirmed: no camp level; every companion has only an individual character level, and one permanent hero has own level with **three skills (four upgrade steps each) plus upgradeable ultimate**. Player personally chooses improvement after every hero level-up. Old 2-hero-skill and camp-level proposals are superseded.
-- Before G2-R Developer agent coding, Designer must balance the OWNER_CONFIRMED hero XP from victories (thresholds and first-clear/replay/loss/PvP/idle policy still OPEN), companion next-level gold cost curve/stat scaling and ultimate cap/unlock (companion XP is REJECTED); Reviewer must verify hero choice/upgrade persistence and save v1 migration, QA must validate 4 hero kits + 5 companion level independence and no duplicated skill choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- Before G2-R Developer agent coding, Designer must balance the OWNER_CONFIRMED hero XP from victories (thresholds and first-clear/replay/loss/PvP/idle policy still OPEN), companion next-level gold cost curve/stat scaling and ultimate skill effect balancing / hero level cap (**ultimate unlock lvl 5, 3 upgrades OWNER_CONFIRMED**; companion XP REJECTED); Reviewer must verify hero choice/upgrade persistence and save v1 migration, QA must validate 4 hero kits + 5 companion level independence and no duplicated skill choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 - This is updated agent work allocation only, NOT actual agent execution, no WFA independent review receipt or implementation PASS.
 
 ## Companion gold upgrade scope confirmed — 2026-11-19
@@ -101,3 +101,8 @@ Each executed role must produce a receipt:
 - **Designer/Balance:** propose versioned XP curve 1–50, replay reduction coefficient and rounding while keeping repeat gold economy sustainable. PvP/idle XP undecided; don't assume.
 - **Developer/QA/Reviewer (future actual agent runs):** transactional once-per-attempt XP and skill-choice ledger, no XP from defeat, repeat legitimate wins possible, duplicate receipt/reload fail-closed, 4 permanent hero profiles and unlock milestones; require real receipts and tests, not this doc update.
 - AGENT_PLAN_ONLY; no independent agents executed, G2-R NOT_IMPLEMENTED.
+
+## Ultimate level 5 / three improvements — owner-approved 2026-11-19
+- **Game Designer**: four distinct ultimate kits and readability/balance, unlocked at heroLevel 5 with exactly 3 player-chosen upgrades; 3 normal skills each 4 upgrades, 15 possible choices combined. Hero cap or alternative to surplus choices after skill max is separate OPEN decision.
+- **Developer** (later): versioned `ultimateUnlocked` / `ultimateUpgradeRank=0..3`, level gate, no auto-spend upon unlock, atomic chosen upgrade action, Save v2 migration and deterministic snapshot.
+- **QA / Reviewer** (later): test lv4 locked vs lv5 usable, choosing normal skill instead of ult, ult max 3, no rank4, double callback/reload/multi-level-up, all 4 hero IDs, hero XP reward behavior. Actual agent runs and tests NOT_RUN; this file is task routing only.

@@ -267,3 +267,9 @@ Release flags остаются false. Ни одна предложенная м�
 - The immutable selected hero gets regular XP for a first successful stage clear and **reduced positive XP for each newly validated replay win** on the same already-cleared stage. Replays still award reduced ordinary gold; first-clear bonuses and companion/chapter unlocks never repeat. **Defeat/abandonment earns 0 hero XP**; companion XP is never a source of progression.
 - Unspecified replay XP multiplier, per-stage XP base, thresholds and PvP/idle rules remain OPEN. No automatic XP from defeats, never 0 XP for actual replay wins when regular stage XP is positive.
 - `attemptId`/stage/status/rewardRevision must guard exactly-once XP, level changes and unspent improvement choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.
+
+## Owner approval: ultimate lvl5 / 3 ranks (2026-11-19)
+- Every permanent main hero has its **own ultimate**, unavailable for use or improvement at hero levels 1–4; unlocks **when heroLevel reaches 5**.
+- The player may spend an earned hero level-up improvement on their unlocked ultimate **up to 3 times** instead of choosing one of 3 ordinary abilities with 4 improvements each. **3×4 + 3 = 15 optional skill-upgrade steps total**, no free/automatic rank granted at level 5.
+- Recommended implementation: rank 0 means available base ult, rank 1–3 player-chosen improvements; reject rank 4 and attempting to use/upgrade ult before heroLevel 5. Actual hero kits, VFX/cooldowns, XP thresholds and max heroLevel remain OPEN; G2-R NOT_IMPLEMENTED.
+- [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md) and [G2-R character contract](G2-R-CHARACTER-SYSTEM-0.1.md).

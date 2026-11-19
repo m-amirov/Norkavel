@@ -66,7 +66,7 @@ The fifth companion must unlock only on first **story-boss victory**, not before
 
 ## Owner progression requirement (2026-11-19)
 - **NO general camp/party level**. Each of five companions has an independent level only, without skill upgrade trees, retained in reserve. One permanently chosen main hero has separate level, **3 abilities with 4 upgrade steps each + upgradeable ultimate**. Every hero level-up requires a **player-selected** improvement. No auto-distribution; no fifth upgrade on ordinary skill.
-- The G2 legacy 2-hero-skills HUD, former camp-level proposals and any assumption that ultimate also has four ranks are NOT approved. Companion XP is excluded; companions level **only by manual gold purchase (OWNER CONFIRMED)**. Hero level source **XP from victories is OWNER_CONFIRMED**; numerical XP/thresholds/replay/defeat/PvP/idle, ultimate cap/unlock, companion gold costs/level caps and respec still OPEN. Saved choices require atomic idempotency and legacy migration without fabricated upgrade points. [Progression 2.4](docs/CHARACTER-PROGRESSION-2.4.md). G2-R not implemented.
+- The G2 legacy 2-hero-skills HUD, former camp-level proposals and any assumption that ultimate also has four ranks are NOT approved. Companion XP is excluded; companions level **only by manual gold purchase (OWNER CONFIRMED)**. Hero level source **XP from victories is OWNER_CONFIRMED**; numerical XP/thresholds/replay/defeat/PvP/idle, **ultimate opens at level 5 and has exactly 3 chosen upgrades (OWNER_CONFIRMED)**, companion gold costs/level caps and respec still OPEN. Saved choices require atomic idempotency and legacy migration without fabricated upgrade points. [Progression 2.4](docs/CHARACTER-PROGRESSION-2.4.md). G2-R not implemented.
 
 ## Companion manual gold upgrades — owner confirmed 2026-11-19
 - Each of 5 unlocked companions upgrades **only its own level** when the player deliberately pays gold. No companion XP, auto-leveling in battle/idle/reserve, shared camp level or companion skill upgrades. The main hero's level acquisition remains OPEN, with 3 skills×4 upgrades and upgradeable ultimate after player-chosen hero level-ups.
@@ -75,9 +75,13 @@ The fifth companion must unlock only on first **story-boss victory**, not before
 
 ## Hero XP and level-up choice — owner confirmed 2026-11-19
 - Permanent main hero receives XP for **verified victories** and levels at configurable XP thresholds. Every hero level gained creates a persistent player-controlled upgrade choice of one of three regular skills (four upgrade steps each) or eligible ultimate. No automatic skill assignment or coin-based companion XP. No shared camp level.
-- **Owner confirmed: replay win pays reduced positive XP; defeat pays 0 XP**. PvP/idle XP, numerical XP/thresholds/caps and ultimate unlocking still OWNER_OPEN. Prevent duplicate XP and skill points on same attemptId or reload, preserve multiple levelup choice opportunities.
+- **Owner confirmed: replay win pays reduced positive XP; defeat pays 0 XP**. PvP/idle XP, numerical XP/thresholds/caps and ultimate unlock **heroLevel 5 and 3 upgrades OWNER_CONFIRMED**, ultimate effects still OPEN. Prevent duplicate XP and skill points on same attemptId or reload, preserve multiple levelup choice opportunities.
 - WFA routing is only guidance; no independent agents executed. [Character Progression 2.4](docs/CHARACTER-PROGRESSION-2.4.md).
 
 ## Confirmed replay XP rule — 2026-11-19
 - After first clear, each new **verified replay victory** on a CLEARED stage awards the main hero **reduced but positive XP** versus first-clear of that stage, and reduced normal gold. **Defeat gives 0 XP**, even on a boss; incomplete/invalid fights give none. Companions never accumulate XP.
 - Exactly once per verified `attemptId`: repeated callback/reload cannot duplicate gold, XP, level-up or pending choice; distinct legitimate wins can each grant XP. XP numeric values, replay reduction coefficient, PvP/idle still OPEN. Owner-confirmed SPEC ONLY, G2-R NOT_IMPLEMENTED.
+
+## Hero ultimate policy — OWNER_CONFIRMED 2026-11-19
+- Ultimate available only from hero level **5**, has **exactly three player-selected improvement steps** (ordinary abilities: 3 each with 4 steps = 12; **15 combined**). No early ultimate cast/upgrade and no auto-allocated rank/extra point at unlock. An eligible hero level-up lets player choose ultimate or ordinary skill.
+- Legacy G2 two-skills HUD doesn't meet 3+ult contract. G2-R tests: before/after 4→5 gate, rank0..3, invalid rank4, 4 distinct hero ultimates, dedup XP/choices across reload, pending selections and Save v2 migration. Hero max level and end-of-tree choices OPEN. No independent WFA agent has run. [Progression 2.4](docs/CHARACTER-PROGRESSION-2.4.md).

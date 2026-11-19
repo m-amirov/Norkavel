@@ -112,3 +112,7 @@
 ## XP farming: owner decision 2026-11-19
 - Replay wins award **reduced positive XP** to the permanent hero compared with first-clear of the same stage. Defeats award **0 hero XP**. Companion XP does not exist; gold purchases are the only companion-level path. Exactly-once reward per verified `attemptId`; repeated valid victories may farm XP.
 - XP numerical curve/replay ratio and PvP/idle policy OPEN; [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.
+
+## Ultimate: owner approval 2026-11-19
+- The single chosen permanent hero unlocks an ultimate **at heroLevel 5** and can invest **three player-directed upgrades**, rather than receiving automatic ranks. Before level 5 neither cast nor upgrade is allowed. Along with ordinary skills (3×4) there are **15 total improvement steps**; max hero level and surplus-choice policy remain OPEN.
+- Companions continue manual individual gold upgrades only. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). DESIGN ONLY; G2-R NOT_IMPLEMENTED.
