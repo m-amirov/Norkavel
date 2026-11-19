@@ -114,5 +114,9 @@
 - XP numerical curve/replay ratio and PvP/idle policy OPEN; [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.
 
 ## Ultimate: owner approval 2026-11-19
-- The single chosen permanent hero unlocks an ultimate **at heroLevel 5** and can invest **three player-directed upgrades**, rather than receiving automatic ranks. Before level 5 neither cast nor upgrade is allowed. Along with ordinary skills (3×4) there are **15 total improvement steps**; max hero level and surplus-choice policy remain OPEN.
+- The single chosen permanent hero unlocks an ultimate **at heroLevel 5** and can invest **three player-directed upgrades**, rather than receiving automatic ranks. Before level 5 neither cast nor upgrade is allowed. Along with ordinary skills (3×4) there are **15 total improvement steps**; **hero max level 16 OWNER_CONFIRMED**; surplus choices stop at 15 and pending remain available after reaching cap; XP accounting policy OPEN.
 - Companions continue manual individual gold upgrades only. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). DESIGN ONLY; G2-R NOT_IMPLEMENTED.
+
+## Max heroLevel 16 (owner approval 2026-11-19)
+- Permanent chosen hero starts at 1 and tops at **16**, with **15 player-controlled upgrade choices** earned at 2–16. Three normal abilities×4 upgrades + ultimate×3, unlock level5. No 17th level or 16th choice after max. Pending selections persist through reload/cap; repeat battles and individual companion gold upgrades continue.
+- Numerical XP curve and display/accounting after max are balance questions, not permission to invent more levels. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). DESIGN CONFIRMED / G2-R NOT IMPLEMENTED.
