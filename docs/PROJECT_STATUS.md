@@ -203,3 +203,7 @@
 ## Independent G2R-F03 review — 2026-11-19
 - Domain F03 implementation confirmed on SHA `9242b03` and CI #44531993954 (55/55 Node and legacy G2 browser smoke PASS); G2-R runtime/UI not implemented.
 - Pre-integration risks: structurally valid `stageId:10,victory` without fight provenance can grant fifth unlock; attempt receipt ledger silently stops advancing after 10,000 attempts. See [task queue review](TASK_QUEUE.md) and [acceptance review](ACCEPTANCE.md). Require regression before real XP/reward integration. No gameplay changes made by the review.
+
+## G2R-P01 independent verification and next risk — 2026-11-19
+- SHA `56ee069` [CI #44535832992](https://github.com/m-amirov/Norkavel/actions/runs/44535832992) SUCCESS, **60/60** Node tests and legacy G2 Chromium smoke. P01 **DOMAIN_PASS**, G2-R runtime and trusted combat outcome **NOT_IMPLEMENTED**. Current task queue: **G2R-E01 READY**, G2R-C01 also READY.
+- Newly identified **XP_POLICY_REWARD_DRIFT**: policyId + thresholds are persisted, but 50 first/replay XP reward values are not bound to that identity. Add regression to reject changed reward tables under the same version/ID before live XP awards. See [TASK_QUEUE](TASK_QUEUE.md) and [ACCEPTANCE](ACCEPTANCE.md). No gameplay code was changed by this audit.
