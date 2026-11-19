@@ -189,7 +189,8 @@ function useClick(s) {
   const hero=s.units.find(u=>u.id==='hero');
   const enemy=targetEnemy(s);
   if (!hero || !alive(hero) || !enemy || s.clickReady>0) return;
-  doDamage(s,hero,enemy,0.31,'click');
+  // Initial balance target: active PvE taps contribute, but do not dominate idle damage.
+  doDamage(s,hero,enemy,0.14,'click');
   s.clickReady=5;
 }
 function allyAction(s,u) {
