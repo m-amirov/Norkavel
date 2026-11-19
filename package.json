@@ -9,7 +9,7 @@
   "scripts": {
     "smoke:ludory": "node scripts/smoke-ludory.mjs",
     "test": "node --test tests/*.test.mjs",
-    "check": "node --check scripts/serve.mjs && node --check scripts/browser-smoke.mjs && node --check scripts/smoke-ludory.mjs && node --check src/combat.mjs && node --check src/profile-v2.mjs && node --check web/main.mjs && node --check tests/bootstrap.test.mjs && node --check tests/combat.test.mjs && node --check tests/profile-v2.test.mjs && node --check tests/web.test.mjs && node --check tests/art.test.mjs && node --check web/art-registry.mjs && node --check tests/art-registry.test.mjs && node --check scripts/import-g3-art.mjs && node --check tests/import-g3-art.test.mjs && node --test tests/*.test.mjs && node scripts/smoke-ludory.mjs",
+    "check": "node --check scripts/serve.mjs && node --check scripts/browser-smoke.mjs && node --check scripts/smoke-ludory.mjs && node --check src/combat.mjs && node --check src/profile-v2.mjs && node --check src/campaign-v1.mjs && node --check web/main.mjs && node --check tests/bootstrap.test.mjs && node --check tests/combat.test.mjs && node --check tests/profile-v2.test.mjs && node --check tests/campaign-v1.test.mjs && node --check tests/web.test.mjs && node --check tests/art.test.mjs && node --check web/art-registry.mjs && node --check tests/art-registry.test.mjs && node --check scripts/import-g3-art.mjs && node --check tests/import-g3-art.test.mjs && node --test tests/*.test.mjs && node scripts/smoke-ludory.mjs",
     "preview": "node scripts/serve.mjs --host 127.0.0.1 --port 4173",
     "test:browser": "node scripts/browser-smoke.mjs",
     "balance:summary": "node scripts/economy-balance.mjs",
