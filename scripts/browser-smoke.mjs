@@ -61,6 +61,11 @@ async function main(){
     await until(()=>js('window.__norkavelDebug.getArtStatus().hero.loaded && window.__norkavelDebug.getArtStatus().background.loaded'),12000,'both real art images decoded');
     assert.deepEqual(await js('window.__norkavelDebug.getArtStatus()'),
       {hero:{loaded:true,width:1536,height:1024},background:{loaded:true,width:1672,height:941}});
+    const spriteStatus=await js('window.__norkavelDebug.getG3ActorArtStatus()');
+    assert.deepEqual(Object.keys(spriteStatus),['sentinel','ember','healer','ash']);
+    for(const info of Object.values(spriteStatus))assert.deepEqual(info,
+      {registered:false,decoded:false,dimensions:null},
+      'G3 concept pack must not masquerade as integrated/decoded sprites');
     assert.equal(await js('window.__norkavelDebug.getStatus()'),'running');
     await screenshot('01-setup');
     assert.equal(await js('document.querySelector("[data-action=choose][data-id=ash]").click();window.__norkavelDebug.snapshot().state.party.includes("ash")'),true);
