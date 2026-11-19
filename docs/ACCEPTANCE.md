@@ -130,7 +130,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 
 ### Linear campaign map and unique backgrounds — owner confirmed 2026-11-19
 - **NKV-051 / NKV-CMP-01:** exactly five chapters × ten ordered stage nodes (1–50), boss flag on 10,20,30,40,50, with deterministic contiguous progression. **CONFIRMED_SPEC / NOT_IMPLEMENTED**.
-- **NKV-052 / NKV-CMP-02-03:** 5 illustrated maps with linear, non-branching linked nodes and visible player marker traversal; locked nodes cannot be entered, cleared nodes can be revisited per proposed UX, stage preview follows correct node. **CONFIRMED_SPEC / CODE_AND_BROWSER_NOT_RUN**.
+- **NKV-052 / NKV-CMP-02-03:** 5 illustrated maps with linear, non-branching linked nodes and visible player marker traversal; locked nodes cannot be entered, CLEARED nodes are replayable (OWNER_CONFIRMED), ordinary reward reduced, stage preview follows correct node. **CONFIRMED_SPEC / CODE_AND_BROWSER_NOT_RUN**.
 - **NKV-053 / NKV-CMP-04,09:** each of 50 stage IDs has its own original battle backdrop, plus 5 unique maps (55 environment masters; 5 boss arenas included in 50). Check actual files, SHA, stage mapping, rights, visual uniqueness, mobile cropping/decode budgets. **CONFIRMED_ASSET_SCOPE / 55_ORIGINALS_NOT_GENERATED / G3_BLOCKED**.
 - **NKV-054 / NKV-CMP-05-08:** first-clear stage 3 Kair; stage 10 first story boss ice controller, map travel and post-clear chapter opening idempotent; save reload/legacy G2 migration, mouse/touch/portrait. **REQUIRED / G2-R_NOT_IMPLEMENTED**.
 - **WFA agent audit status:** [plan and role routing](AGENT-EXECUTION-G2-R.md) PREPARED, **independent agent runs NOT_STARTED**, no Reviewer/QA agent PASS. CI checks old G2 only.
@@ -138,4 +138,9 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 ### Map travel UX owner approved — 2026-11-19
 - **NKV-055 / NKV-CMP-03 CONFIRMED_SPEC / NOT_IMPLEMENTED:** click/tap an available chapter-map node → short visible marker travel along the single route → show the corresponding stage card **after arrival** → battle starts **only on the «В бой» button**, not on node tap or arrival.
 - **NKV-056 / G2R-23 NOT_TESTED:** fast taps, invalid stage selection, pause/background/reload, portrait, touch/mouse must not start hidden fights, advance milestones or mint first-clear rewards; map preview and battle must use the same canonical stage ID.
-- **UX_OPEN:** cleared-stage replay policy, animation skip, camera motion, travel timing/easing. Legacy G2 browser PASS is not navigation evidence.
+- **UX_CONFIRMED:** replay of CLEARED stages for reduced ordinary rewards; **UX_OPEN:** animation skip, camera motion, travel timing/easing. Legacy G2 browser PASS is not navigation evidence.
+
+### Cleared-stage replay & farming — owner confirmed 2026-11-19
+- **NKV-057 CONFIRMED_SPEC / G2-R_NOT_IMPLEMENTED:** any cleared stage remains replayable by travelling to its chapter-map node → stage card → explicit «В бой», for resources/upgrades. Cannot use replay to enter locked stages.
+- **NKV-058 NOT_TESTED:** every new verified replay win earns a reduced ordinary reward (below first clear) exactly once per `attemptId`. Duplicate callback/reload/defeat/invalid snapshot yields no duplicate win reward. Replaying stage 3 or 10 does not duplicate Kair/ice-controller/chapter grants.
+- **NKV-059 BALANCE_OPEN:** reward amounts, resources, caps and anti-farm/idle balance; legacy G2 0-replay economy is not proof.
