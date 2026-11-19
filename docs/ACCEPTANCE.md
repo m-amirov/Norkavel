@@ -85,7 +85,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-033:** Active party has **4 units = 1 hero + 3 distinct unlocked companions**, with 2 reserve companions when all five are unlocked; all three companion slots configurable outside fights. **LEGACY_PARTY_SIZE_PASS / CORRECT_COLLECTION_AND_SLOTS_NOT_IMPLEMENTED**.
 - **NKV-034:** Explicit compatibility/migration for schema:1 / local save with one fixed hero and missing unlock data, preserving existing progress without accidental retroactive permanent hero selection. **NOT_IMPLEMENTED**.
 - **NKV-035:** G3 includes **4 separate hero masters + 5 companion masters**, not four renamed candidate companion PNGs. Prior Art 0.3 generated four *companions* only. **BLOCKED_ART**.
-- **NKV-036:** Names/classes/visual personalities of four selectable heroes, fifth companion **name/art/skill details** and first-story-boss stage index still need content specification; fifth **ice-controller role is OWNER_CONFIRMED**; Kair after first-clear stage 3 CONFIRMED; fifth's **boss-clear trigger** is CONFIRMED. **OPEN_DETAILS / COUNTS_AND_FIFTH_TRIGGER_CONFIRMED**.
+- **NKV-036:** Names/classes/visual personalities of four selectable heroes, fifth companion **name/art/skill details** and first-story-boss stage **10 OWNER_CONFIRMED**; exact hero/companion names and skill details still need specification; fifth **ice-controller role is OWNER_CONFIRMED**; Kair after first-clear stage 3 CONFIRMED; fifth's **boss-clear trigger** is CONFIRMED. **OPEN_DETAILS / COUNTS_AND_FIFTH_TRIGGER_CONFIRMED**.
 - Historical G2 boss, browser and G3 art tests do **not** prove NKV-031–035. Any new PASS requires direct validation on the new code and exact commit SHA.
 
 - Current [G3 scope correction 0.4](G3-ART-PRODUCTION-0.4.md) is **PLAN_ONLY**, not a proof of actual nine ally masters or animations.
@@ -106,7 +106,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-038: DESIGN_PROPOSAL / NOT_IMPLEMENTED:** optional pre-confirmation test fight must not mutate real save, gold, first-clear, unlocks or committed hero ID.
 - **NKV-039: G2-R_NOT_IMPLEMENTED:** four individual hero profiles must independently complete the campaign, including bosses, with their permanently selected hero and only available companion counters. Do not demand all heroes in one player profile.
 - **NKV-040: MIGRATION_NOT_IMPLEMENTED:** legacy save generic hero cannot be silently treated as chosen permanent warrior. Explicit one-time user choice before atomic schema v2 confirm, preserving old gold/level/claimed and four previously accessible companions; reject conflicting confirm, duplicate reward and corrupted payloads.
-- **NKV-041: UNLOCK_DESIGN_OPEN:** **starter triple Ard/Mira/Elira CONFIRMED**; Kair stage-3 first-clear CONFIRMED; **fifth after first STORY boss first victory is CONFIRMED by owner** (stage index 10 only PROPOSED). No runtime PASS claim.
+- **NKV-041: UNLOCK_DESIGN_OPEN:** **starter triple Ard/Mira/Elira CONFIRMED**; Kair stage-3 first-clear CONFIRMED; **fifth after first STORY boss first victory is CONFIRMED by owner** (stage 10 OWNER_CONFIRMED). No runtime PASS claim.
 - GitHub CI verifying document changes does not prove permanent hero runtime implementation; G2-R and G3 remain blocked.
 
 ### Boss-first-clear unlock decision — owner confirmed 2026-11-19
