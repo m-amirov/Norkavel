@@ -188,3 +188,14 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 | D-092 | Строго возрастающие `xpToNextLevel[1..15]`, расчёт трёх режимов прохождения, журнал исходных параметров и проверка на 16→17 | TECHNICAL_CONTRACT / NOT_IMPLEMENTED |
 
 См. [Hero XP Pacing 2.5](HERO-XP-PACING-2.5.md). Не путать качественно утверждённую кривую с готовой численной экономикой.
+
+## Economy Balance 0.1 — numerical candidate, NOT owner-approved (2026-11-19)
+| ID | Decision / model output | Status |
+|---|---|---|
+| D-093 | Предложенная XP-кривая `xpToNext(level) = 40 + 6k + ceil(13k²/4)`, k=level−1, 15 порогов, суммарно **4534 XP до lvl16** | **CANDIDATE / OWNER_REVIEW** |
+| D-094 | 50 этапов: базовая XP=12+3×stage, gold=32+8×stage; boss first-clear бонус XP=25×chapter, gold=80×chapter | **CANDIDATE / OWNER_REVIEW** |
+| D-095 | Новая повторная победа: **40% базовой XP и 50% базового золота**, без повторного boss/first-clear bonus | **CANDIDATE / OWNER_REVIEW** |
+| D-096 | Индивидуальная ручная покупка уровня спутника за `45 + 12L + 3L²` золота при текущем уровне L, max companion level всё ещё OPEN | **CANDIDATE / OWNER_REVIEW** |
+| D-097 | Normal 50 wins → hero lvl16 stage50, XP 4800, gold 13000; Moderate 66 wins → cap stage46; Intensive 200 wins → cap stage33 | **ARITHMETIC_MODEL_RESULT / NOT_LIVE_COMBAT_PROOF** |
+
+Экономика численно рассчитана, но **не утверждена владельцем** и не внедрена в G2-R. [Economy Balance 0.1](ECONOMY-BALANCE-0.1.md) · [Simulator](../scripts/economy-balance.mjs) · [Tests](../tests/economy-balance.test.mjs). Последняя подтверждённая владельцем форма XP-кривой — «ранние быстрее, поздние требуют больше», а не эти коэффициенты.
