@@ -1,9 +1,17 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-E01 (manual companion gold upgrades)**; G2R-F02 content остаётся BLOCKED_OWNER, а G2R-C01 также READY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-C01 (linear 5×10 campaign domain)**; G2R-F02 content остаётся BLOCKED_OWNER. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
-**Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01+E01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
+
+## G2R-E01 companion purchase domain (2026-11-19)
+- Exact implementation `4af6c6fb234dac7bfbf1aaecfe4fa2408e80ef3f` adds pure `upgradeCompanion`; legacy combat/UI/save key remain unchanged.
+- A strict purchase v1 uses monotonic sequence/ID, expected current level and a complete persisted cost-policy snapshot. One success debits the exact policy cost and raises only one unlocked companion; all five and reserve upgrades are covered without party or hero changes.
+- Locked/unknown companion, stale level, insufficient gold, duplicate/reload, cap and same-ID cost drift fail without mutation. Purchase cursor remains usable beyond 10 000 after JSON reload; readonly legacy migration cannot spend, while activated migration preserves original checkpoint/gold provenance.
+- P01 reward identity was strengthened in the same slice: persisted 50-row first/replay tables reject same-ID reward drift after reload.
+- [CI 44537806684](https://github.com/m-amirov/Norkavel/actions/runs/44537806684) SUCCESS on exact `4af6c6f`: 66/66 Node tests, Ludory Core smoke, project-scoped WFA bootstrap and headless Chrome legacy G2 smoke. Local Chromium remains unavailable.
+- Remaining: approved production prices/cap/stats, legitimate runtime gold income, browser purchase UI and atomic storage/CAS. Domain policy rollover requires an explicit future migration. No economy balance or end-to-end runtime PASS is implied.
 
 ## G2R-P01 hero progression domain (2026-11-19)
 - Exact implementation `85114c6886fae8cda80d1ed9efb6e1ae6d9d4e0f` extends pure `src/profile-v2.mjs`; legacy combat/UI/save key remain unchanged.
