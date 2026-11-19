@@ -215,3 +215,8 @@
 ## G2R-P01 independent verification and next risk — 2026-11-19
 - SHA `56ee069` [CI #44535832992](https://github.com/m-amirov/Norkavel/actions/runs/44535832992) SUCCESS, **60/60** Node tests and legacy G2 Chromium smoke. P01 **DOMAIN_PASS**, G2-R runtime and trusted combat outcome **NOT_IMPLEMENTED**. Current task queue: **G2R-E01 READY**, G2R-C01 also READY.
 - Newly identified **XP_POLICY_REWARD_DRIFT**: policyId + thresholds are persisted, but 50 first/replay XP reward values are not bound to that identity. Add regression to reject changed reward tables under the same version/ID before live XP awards. See [TASK_QUEUE](TASK_QUEUE.md) and [ACCEPTANCE](ACCEPTANCE.md). No gameplay code was changed by this audit.
+
+## G2R-E01 independent audit — 2026-11-19
+
+- Domain work verified on `370dd43919ee6cce3669aad0c730bab1bd981e60`: [CI #44538317550](https://github.com/m-amirov/Norkavel/actions/runs/44538317550) SUCCESS, 66/66 Node PASS, Ludory Core and legacy Chromium smoke PASS. `upgradeCompanion` performs a pure in-memory atomic purchase, persistent policy snapshot and monotonic duplicate protection; XP reward-table identity correction also verified. **E01 DOMAIN_PASS**.
+- Future integration risks: initial gold-cost policy must come from an authoritative config (domain accepts structurally valid caller-supplied policy) and multi-tab browser Save v2 must provide CAS/single-writer transaction semantics; independent copies can otherwise cause last-write-wins. Real win-gold source/UI and live purchase flow not implemented. See [acceptance](ACCEPTANCE.md) and [task queue](TASK_QUEUE.md). Next READY G2R-C01.
