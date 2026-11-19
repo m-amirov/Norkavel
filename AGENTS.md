@@ -3,11 +3,11 @@
 workflow-for-agents: git=direct-main
 
 ## Canonical boundaries
-1. Game requirements are in GDD.md, docs/GDD-1.0.md, docs/ACCEPTANCE.md and the current source.
+1. Canonical game requirements are in docs/GDD-1.1.md, GDD.md, docs/DECISIONS.md and docs/ACCEPTANCE.md. GDD 1.0 is historical; current source may be noncompliant.
 2. Ludory is pinned as a Git submodule: vendor/ludory. Use its actual Core/Studio/Runtime/Connect/Release contracts, not invented APIs. Until provenance is established this is a Core-bound bootstrap, **not** a Studio-created trusted game.
 3. WFA is pinned at vendor/workflow-for-agents. Its Skills are opt-in, installed project-scope only. Select game-docs, gameplay-design, game-content-qa and relevant QA/art Skills; never install all Skills automatically. Do not overwrite project or Ludory native Skills. WFA methodology never overrides game runtime facts or Ludory native owner constraints.
 4. Initial release target: Yandex Games; do not invent live SDK readiness, online PvP availability, rights clearance or official moderation results.
-5. Scope: 2D side-view autobattler; one chosen main hero and exactly three active companions; manual intervention in PvE; **asynchronous-only PvP** with no real-time peer sync.
+5. Scope: 2D side-view autobattler; **4 distinct selectable main heroes (exactly 1 selected)**, **5 progressively unlockable companions (exactly 3 active)**, **1+3=4 battle units**; manual intervention in PvE; **asynchronous-only PvP** with no real-time peer sync.
 5a. **Owner-confirmed mobile orientation: landscape-only across the entire game**. Portrait must show a turn-device screen, no playable portrait layout, no hidden actionable combat; orientation lock API is best-effort and must have fallback. Verify viewport/orientation changes and state/reward integrity.
 6. Record approved requirements vs assumptions vs open questions. No gameplay/rendering implementation may silently change confirmed decisions.
 
@@ -27,4 +27,4 @@ workflow-for-agents: git=direct-main
 3. node --test tests/*.test.mjs
 4. For optional project Skills run scripts/bootstrap.ps1 -ApplySkills after dry-run and inspecting changes.
 
-Current stage: G2 browser-playable technical slice + art production 0.1 source image candidates (exact CI artifact evidence); G1 GDD owner approval pending, G3 production art BLOCKED, async PvP/backend/Yandex Connect not implemented. Do not call existing procedural Canvas placeholder art release-ready.
+Current stage: G2 browser-playable legacy slice; G2-R needed for new owner-confirmed 4 selectable heroes + 5 progressively unlocked companions + 3-slot selection and save migration. G3 art BLOCKED; async PvP/backend/Yandex Connect not implemented. Four old companion art candidates must not be relabeled as selectable main heroes.
