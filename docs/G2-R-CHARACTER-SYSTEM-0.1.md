@@ -51,7 +51,7 @@ Proposed API; exact naming may vary after repository investigation:
 - selectMainHero(state, heroId): **one-time irreversible confirmation** in hero_selection state, with mandatory explicit warning; after commitment any different heroId returns unchanged state even in setup/retry, and duplicate confirmation of the same id is idempotent.
 - unlockedCompanions(state): read-only canonical ordered subset.
 - assignCompanion(state, slotIndex 0..2, companionId): only unlocked, no duplicates; swaps existing assigned unit atomically rather than dropping it.
-- unlockCompanionFromProgress(state, milestoneEvent): no direct user unlock action; first-clear milestone + idempotent reward claim.
+- unlockCompanionFromProgress(state, milestoneEvent): no direct user unlock action; first-clear milestone + idempotent reward claim. **Fifth companion only** on canonical `first_story_boss_first_clear`, **after** boss result and reward validation (not merely reached stage). The G2 stage-2 sample boss does not count as story boss without an explicit approved campaign mapping.
 - createLineup(state): exactly 1 hero + 3 companions; reject invalid setup.
 - startFight(state, seed): immutable snapshot of definitions and formation, phase fight.
 - migrateSaveV1ToV2(snapshot): explicit schema migration with progress preserved; never silently call initialState for valid old snapshots.
@@ -79,9 +79,9 @@ If there are no legacy users in practice the migrator still requires unit fixtur
 Design proposal from Gameplay 2.0:
 - starts with [sentinel, ember, healer], party exactly these 3;
 - unlock ash after proposed stage 3;
-- unlock fifth controller after proposed stage 7;
+- **OWNER CONFIRMED:** unlock fifth companion only on `first_story_boss_first_clear` event, after first confirmed victory over first *story* boss. Do not use old technical G2 boss stage=2, and do not hardcode a provisional campaign stage=10; fifth's identity/role remain OPEN.
 - grant on first verified clear, not every replay.
-All milestones and fifth character role remain awaiting owner acceptance. A dev-only configuration can support synthetic milestones for testing but may not be described as final game content.
+The fifth **unlock event** is owner CONFIRMED; starter party, Kair/stage-3 milestone, actual first story boss stage ID and fifth's role/identity remain awaiting owner acceptance. A dev-only configuration can support synthetic milestones for testing but may not be described as final game content.
 
 Unlock must not be purchasable-only. When unlocking, validate new companion definition, update collection atomically, notify UI once, never auto-remove a current member. The default auto-team may suggest a switch; never rewrite player lineup without consent after initial setup.
 
@@ -127,6 +127,8 @@ Require consistent reward contracts, seed replay and non-dominant clicker; measu
 | G2R-15 | After explicit choice heroId is immutable through setup/fight/victory/retry/reload; legacy v1 hero choice remains pending until confirmation | negative domain + atomic save + Chromium |
 | G2R-16 | Four fixed-hero profiles remain playable without swapping class; boss counters reachable with unlocked companions | 4 profiles × selected team seeds |
 | G2R-17 | Trial fight, if owner approves, does not persist hero choice, spend/gain currency or first-clear a mission | isolated fixture + browser |
+| G2R-18 | Fifth companion unlocks only after first story-boss victory, not on boss entry, failed battle, stage 7, test-only G2 boss or repeat clear | seeded boss event + save/replay tests |
+| G2R-19 | All four fixed heroes can beat first story boss with only first four accessible companions | 4 hero profiles + seeded composition samples |
 
 New screenshot evidence must include four hero cards, early 3/5 unlocked state, post-milestone 4/5 and 5/5, all active 4 combat sprites and both victory/defeat. Browser screenshot alone is not human visual signoff.
 
@@ -146,3 +148,8 @@ Do not declare G2-R complete when only data structures or mock buttons exist. A 
 - Persisted v2 player profile requires an immutable committed heroId, confirmedOnce marker/provenance, and a recovery-safe legacy migration that never silently binds a generic v1 warrior to permanent identity. Cloud synchronization/async PvP later require server-authoritative profile identity; client validation alone is not security.
 - All class-specific encounter design must be beatable for each of the four **fixed** heroes, without relying on switching to a different main hero.
 - [Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md) contains owner confirmed permanent rule and proposed companion unlock milestone alternatives.
+
+## 2026-11-19 owner unlock decision
+- Fifth-companion unlock is owner-confirmed **AFTER first successful clear of first story boss**. Persist a semantic first-clear milestone; stage number is unapproved. The tutorial/testing G2 stage-2 boss is not automatically that story boss.
+- Unlock event must be atomic with first-clear reward idempotency, never from repeat/stale/corrupt/failed events. Legacy G2 boss claim must not retroactively mint fifth companion without an explicit stage mapping.
+- Pending design: initial 3 companions, Kair's unlock timing and the fifth's identity, role and first boss campaign stage. Do not implement these assumptions as CONFIRMED.
