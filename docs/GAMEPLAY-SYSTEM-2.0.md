@@ -8,7 +8,7 @@
 
 CONFIRMED владельцем: 4 РАЗНЫХ главных героя на выбор; один из них в активном отряде; 5 постепенно открываемых спутников; ровно 3 спутника в бою; 4 союзника в целом; 2D автобои с видом сбоку; Auto Battler + Clicker + Idle RPG; PvP исключительно асинхронное; все мобильные экраны landscape-only; качественная графика, не примитивные фигуры.
 
-PROPOSED ниже: архетипы персонажей, стартовый набор, этапы открытия, главы кампании, экономика, сроки, формулы и социальные механики. **Смена главного героя после выбора ОТКЛОНЕНА владельцем (вариант Б, см. Gameplay Design 2.2).** Их нельзя маркировать CONFIRMED или внедрять как необратимые решения до owner-review.
+PROPOSED ниже: архетипы персонажей, прочие этапы открытия, главы кампании, экономика, сроки, формулы и социальные механики. **Стартовая тройка Ард/Мира/Элира CONFIRMED.** **Смена главного героя после выбора ОТКЛОНЕНА владельцем (вариант Б, см. Gameplay Design 2.2).** Их нельзя маркировать CONFIRMED или внедрять как необратимые решения до owner-review.
 
 DEFERRED: косметика, платные покупки, сложная экипировка, дополнительные боссы, сетевой PvP backend и production art до отдельного гейта.
 
@@ -80,7 +80,7 @@ DEFERRED: косметика, платные покупки, сложная эк
 
 | Момент | Предложение | Польза |
 |---|---|---|
-| Старт | Ард, Мира, Элира открыты; эти 3 занимают стартовые слоты | Игрок немедленно получает корректный боевой состав |
+| **Старт — CONFIRMED** | Ард, Мира, Элира открыты и занимают 3 спутниковых слота | Полный отряд 1+3 после выбора постоянного героя |
 | Первая заметная веха, например первая победа этапа 3 | Открыть Кайра | Впервые становится возможна замена и синергия burn + ash |
 | **Первая победа над первым сюжетным боссом — CONFIRMED** | Открыть 5-го спутника | Новый тактический вариант ПОСЛЕ босса, не условие его победы |
 
@@ -202,7 +202,7 @@ DEFERRED: косметика, платные покупки, сложная эк
 |---|---|---|
 | **Смена выбранного главного героя** | **ЗАПРЕЩЕНА после единственного подтверждения** | **CONFIRMED / вариант Б 19.11.2026** |
 | Архетипы четырёх героев | защитник, стихийный маг, дуэлянт, следопыт | OPEN / рекомендуем |
-| Стартовый набор | Ард + Мира + Элира | OPEN / рекомендуем |
+| Стартовый набор | Ард + Мира + Элира | CONFIRMED / OWNER 19.11.2026 |
 | Открытие 4-го спутника | после первой победы условного этапа 3 | OPEN / рекомендуем |
 | **Открытие 5-го спутника** | **после первой победы над первым сюжетным боссом** (не перед ним; этап пока OPEN) | **CONFIRMED / OWNER** |
 | Роль 5-го | контролёр / лед / slow | OPEN / рекомендуем |
@@ -230,4 +230,6 @@ Release flags остаются false. Ни одна предложенная м�
 ## Owner decision: fifth companion milestone (19.11.2026)
 - Fifth companion unlock is **CONFIRMED on first clear of the first story boss**, not chapter stage 7. `first_story_boss_first_clear` is the stable design trigger; the boss numbering (10 in the proposed 50-stage campaign) is not approved.
 - Do not accidentally trigger it by replaying the **technical G2 stage-2 Rift Guardian** before that test encounter is formally mapped into the story campaign. Legacy rewards and migration must keep separate namespaces.
-- No team should require the fifth companion to defeat this boss. Fourth unlock remains OPEN (proposed Kair after stage 3), as do starting three and fifth's identity.
+- No team should require the fifth companion to defeat this boss. Fourth unlock remains OPEN (proposed Kair after stage 3); starting three Ard/Mira/Elira are CONFIRMED; fifth's identity remains OPEN.
+
+**Owner decision 19.11.2026:** new profiles start with exactly `sentinel`, `ember`, `healer` unlocked and active. `ash` and fifth initially locked; Kair-after-stage-3 still PROPOSED; old G2 profiles retain earlier Kair entitlement.
