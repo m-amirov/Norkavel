@@ -155,5 +155,10 @@
 
 ## Ultimate skill gate owner approval — 2026-11-19
 - Hero ultimate unlocks at **heroLevel 5** and can be upgraded on **three separate user-selected improvement steps**; no automatic ultimate improvement at unlock. Ordinary hero abilities each permit four improvements; total hero improvements 12+3=**15**.
-- G2-R must show skill locked at hero levels <5, reject casting/upgrading early, rank >3 and duplicate rank allocation; preserve level-up choices, unlock and upgrades in Save v2 and all four chosen hero kits. Max hero level / excess XP after maxing 15 upgrades OPEN.
+- G2-R must show skill locked at hero levels <5, reject casting/upgrading early, rank >3 and duplicate rank allocation; preserve level-up choices, unlock and upgrades in Save v2 and all four chosen hero kits. **Max hero level 16 OWNER_CONFIRMED**; post-cap XP accounting and exact level thresholds OPEN.
 - Spec in [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md), acceptance in [ACCEPTANCE](ACCEPTANCE.md). No new runtime/QA tests. G2-R NOT_IMPLEMENTED.
+
+## Max hero level 16 owner approved — 2026-11-19
+- New profile heroLevel starts **1**, caps at **16**. 15 level-ups at hero levels 2–16 create exactly 15 user-selected upgrade choices (3 regular skills × 4 = 12 + 3 ultimate). Ultimate unlock on level 5 is free and does not auto-spend. Pending upgrades persist at cap; level 17 and 16th choice forbidden.
+- Existing 50-stage replay and reduced gold rewards remain usable after hero reaches max. XP thresholds and storage/display at cap remain balance/UX OPEN; companion levels still bought with gold individually. This is documented contract, not production game behavior.
+- [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md), [G2-R contract](G2-R-CHARACTER-SYSTEM-0.1.md). **G2-R NOT_IMPLEMENTED; no independent WFA agent test has run.**
