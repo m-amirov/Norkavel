@@ -1,5 +1,12 @@
 # Norkavel — project agent contract
 
+## Autopilot — read this first (owner workflow 2026-11-19)
+
+Codex prompt may be as short as **«Продолжай Norkavel»**. Treat [agent workflow](docs/AGENT-WORKFLOW.md) as the persistent execution procedure and [task queue](docs/TASK_QUEUE.md) as the single current-next-task pointer. **Read them before selecting work.** Do not require a new long technical prompt for each step, invent a parallel backlog, or repeat already confirmed questions. Choose next READY task with satisfied dependencies, implement a verifiable slice, run its relevant checks, update queue/status/acceptance, integrate main-first, report exact SHA. If blocked by owner-OPEN, record it and move to another independent READY task without fake decisions.
+
+**Authority:** owner-confirmed latest [Decisions](docs/DECISIONS.md) / [GDD 1.1](docs/GDD-1.1.md) define gameplay; real pinned Ludory APIs define engine behavior; WFA defines process/evidence/role boundaries. `Economy Balance 0.1` numerical coefficients are candidates, **not** approved release balance. WFA git submodule is not an automatic independent agent dispatcher. No release/publishing without explicit owner authorization.
+
+
 workflow-for-agents: git=direct-main
 
 ## Canonical boundaries

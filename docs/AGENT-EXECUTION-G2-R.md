@@ -1,5 +1,8 @@
 # Norkavel — WFA Agent Routing for G1 Campaign / G2-R
 
+**Обязательная актуальная навигация:** [AGENT-WORKFLOW.md](AGENT-WORKFLOW.md) управляет выполнением; [TASK_QUEUE.md](TASK_QUEUE.md) определяет следующий кодовый срез. Этот файл — каталог ролей/проверок, а не команда каждый раз возвращаться к проектированию всей игры. После Economy Balance 0.1 первая READY задача — **G2R-F01**, без превращения чисел-кандидатов в утверждённую экономику. Исторические упоминания «не реализовывать пока пользователь утверждает концепцию» относятся к прежнему этапу, а не к запрету выполнять выбранные сейчас READY-задачи.
+
+
 **Дата:** 2026-11-19  
 **Статус:** AGENT_PLAN_PREPARED / AGENT_RUN_NOT_STARTED / INDEPENDENT_REVIEW_NOT_RUN.  
 **Scope:** approved five linear chapter maps × ten stages, 50 distinct stage backgrounds, permanent main hero, five-companion unlock contract; do not implement the game while the user is finalizing gameplay design.

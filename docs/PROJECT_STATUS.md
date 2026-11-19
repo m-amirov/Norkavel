@@ -1,5 +1,8 @@
 # Norkavel — project status
 
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-F01 (profile v2 / safe legacy compatibility)**. Это не доказательство запуска агента или реализации задачи. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime NOT_IMPLEMENTED.
+
+
 **Дата обновления:** 2026-11-19. Current boundary: **G2-R DESIGN_DRAFT / FUNCTIONAL_G2-R_NOT_IMPLEMENTED / G3 BLOCKED**.
 
 ## Decisions and design
