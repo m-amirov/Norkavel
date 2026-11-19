@@ -9,7 +9,7 @@
 | NKV-002 | WFA project Skill routing и activation | bootstrap | dry-run/installed receipts, positive/negative Codex calls | PARTIAL_CI_INSTALL; CODEX_ACTIVATION_NOT_RUN |
 | NKV-003 | Один главный герой + 3 спутника участвуют в бою | G2 | runtime state + browser playback | PASS_G2_BROWSER |
 | NKV-004 | 2D бой с видом сбоку | G2/G3 | реальная запись экрана + independent pixel review | G2_SIDEVIEW_PASS / G3_ART_BLOCKED |
-| NKV-005 | Deterministic fixed-tick simulation и replay | G2 | seeded equality + 1000+ scenario tests | PARTIAL: 120 SEEDS UNIT_PASS; 1000+ SCENARIOS_NOT_RUN |
+| NKV-005 | Deterministic fixed-tick simulation и replay | G2 | seeded equality + 1000+ scenario tests | PARTIAL: 1800 SCENARIOS PASS, FIXED_SEED_INVARIANTS_PASS; REPLAY_FORMAT_NOT_IMPLEMENTED |
 | NKV-006 | PvE autoattack, click cap и 2 активных скилла | G2 | script input, cooldown cap tests | PASS_G2_BROWSER_AND_UNIT |
 | NKV-007 | Замена спутника/позиции/синергии влияет на исход | G2 | deterministic A/B outcome | PASS_G2_UNIT |
 | NKV-008 | Boss telegraph, victory/defeat/retry | G2 | browser smoke обоих исходов | PASS_G2_BROWSER: real victory and controlled near-defeat fixture, retry + boss interrupt |
@@ -29,7 +29,7 @@
 
 ## Набор оставшихся проверок (выполненное отделено от плана)
 - Domain: damage, statuses, AI target priority, critical PRNG, seed replay determinism, save migration, cooldown, idle duplicate grants.
-- Balance: 1000+ seeded team compositions; win-rate targets are hypotheses, not human enjoyment evidence.
+- Balance: 1800 seeded composition/stage scenarios executed; boss difficulty currently fails design intent (all sampled idle boss fights win). Win-rate targets remain hypotheses, not human enjoyment evidence.
 - UI: альбомные мобильные размеры 640×360, 667×375, 844×390, 915×412; landscape планшет и desktop 1280×720/1440×900; портретные 360×640, 390×844, 768×1024, 1024×1366 — **только** полноэкранный экран «Поверните устройство». Проверить portrait → landscape → portrait при активном бою, touch/keyboard, safe areas, отсутствие скрытых нажатий и двойных наград, pause/resume, background tab, reload, fallback без доступного orientation lock API.
 - PvP: server authentication, anti-spoof, stale defense snapshot, double submission, clock skew, season rollover, leaderboard integrity.
 - Human: novice player can explain hero role, companion synergy and cause of win/fail without prompting.
@@ -60,4 +60,10 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - [CI 44458525616 on `a2d1d5d`: SUCCESS](https://github.com/m-amirov/Norkavel/actions/runs/44458525616); 19/19 Node tests, Core smoke, real Chromium mouse/touch/portrait/landscape, victory and controlled defeat/retry, validation of invalid/legacy saves, console diagnostics.
 - NKV-009 validation **rejects structurally incomplete unit payloads**, malformed events and impossible party composition before restoring into the session. This is crash/integrity hardening, **not** anti-cheat for client-controlled currency or PvP.
 - NKV-024 Art Production 0.2: companion lineup candidate was generated and provided outside source control; `docs/ART_PRODUCTION-0.2.md` registers SHA/visual brief but no runtime or CI asset proof. STATUS CONCEPT_ONLY / ART_GATE_BLOCKED.
-- Pending before G2 owner acceptance: physical devices, touch-safe-area QA, independent usability test, 1000+ seeded balance samples. G3 full roster animation/rights remains BLOCKED. Release flags remain false.
+- Pending before G2 owner acceptance: tune boss challenge/meaningful counterplay, physical devices and touch safe areas, independent usability test. G3 full roster animation/rights remains BLOCKED. Release flags remain false.
+
+### Balance sampling receipt (2026-11-19)
+- [CI 44459324594 at `140a495e`: SUCCESS](https://github.com/m-amirov/Norkavel/actions/runs/44459324594), 22/22 Node tests PASS + Chromium browser smoke PASS.
+- [Measured balance evidence](G2-BALANCE-0.1.md): 1200 PvE first-stage + 600 boss seeded scenarios, 200 more maximum-legal-tap damage samples (18.4% damage share).
+- NKV-025 manual click cap balance within provisional GDD share for sampled team/stage: **MECHANICAL_SAMPLE_PASS**, not global balance proof.
+- NKV-026 first boss survival/counterplay: **DESIGN_GATE_OPEN**, zero losses across 600 boss scenarios including idle. A synthetic injured-party browser fixture demonstrates defeat wiring only; it does not establish organic boss difficulty.
