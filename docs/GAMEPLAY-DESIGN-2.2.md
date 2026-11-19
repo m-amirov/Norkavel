@@ -120,3 +120,7 @@
 ## Max heroLevel 16 (owner approval 2026-11-19)
 - Permanent chosen hero starts at 1 and tops at **16**, with **15 player-controlled upgrade choices** earned at 2–16. Three normal abilities×4 upgrades + ultimate×3, unlock level5. No 17th level or 16th choice after max. Pending selections persist through reload/cap; repeat battles and individual companion gold upgrades continue.
 - Numerical XP curve and display/accounting after max are balance questions, not permission to invent more levels. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). DESIGN CONFIRMED / G2-R NOT IMPLEMENTED.
+
+## Nonlinear XP curve — owner approved 2026-11-19
+- The hero gains early levels faster, with progressively more XP required per later level-up through lvl16. All four main hero choices follow the same qualitative schedule; numerical XP table/formula still OPEN. Keep 15 distinct 1→2…15→16 transitions and one player-picked ability improvement each; ultimate access lvl5 unchanged.
+- Require measured simulation of 50 stages under normal progression and two farming intensities. A positive reduced XP on replay victory and zero XP on defeat remain owner-approved; balance check must catch too-early lvl16 or artificial first-boss grind. [Hero XP Pacing 2.5](HERO-XP-PACING-2.5.md). G2-R NOT_IMPLEMENTED.
