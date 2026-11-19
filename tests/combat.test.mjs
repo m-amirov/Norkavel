@@ -185,3 +185,30 @@ test('G2: 1200 seeded composition scenarios terminate with valid rewards and sta
   console.log('NORKAVEL_G2_BALANCE_SAMPLE_1200 '+JSON.stringify(stats));
   // This is a deterministic engine/regression sample, NOT proof of fun or final DPS target.
 });
+
+test('G2: sampled active-click damage share stays bounded under maximum legal taps',()=>{
+  let tapped=0,alliedTotal=0,scenarios=0;
+  for(let seed=0;seed<200;seed++){
+    let state=startFight(initialState(),seed),lastEventId=0;
+    const enemies=new Set(state.units.filter(u=>u.team==='enemy').map(u=>u.id));
+    let tick=0;
+    while(state.phase==='fight' && tick<MAX_TICKS){
+      state=stepCombat(state,tick%5===0?[{type:'click'}]:[]);
+      for(const event of state.events.filter(e=>e.id>lastEventId)){
+        if(enemies.has(event.target) && ['hit','dot'].includes(event.type) &&
+            ['hero','sentinel','ember','healer'].includes(event.source)){
+          alliedTotal+=event.amount;
+          if(event.detail==='click')tapped+=event.amount;
+        }
+      }
+      lastEventId=state.eventId;
+      tick++;
+    }
+    assert.equal(validateState(state),true,'seed '+seed);
+    scenarios++;
+  }
+  const fraction=Number((tapped/alliedTotal).toFixed(3));
+  console.log('NORKAVEL_G2_TAP_DAMAGE_SAMPLE '+JSON.stringify({scenarios,tapped,alliedTotal,fraction}));
+  // A soft engineering envelope around the proposed 15–25% GDD share, not human balance approval.
+  assert.ok(fraction>=0.08 && fraction<=0.30,'manual input should be relevant but not dominant: '+fraction);
+});
