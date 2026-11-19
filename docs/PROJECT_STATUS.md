@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NO INDEPENDENT READY TASK:** G2R-C01 domain завершён; G2R-F02 content остаётся BLOCKED_OWNER, G2R-INT — BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-S01 (Save v2 persistence foundation):** G2R-C01 domain завершён; G2R-F02 content всё ещё BLOCKED_OWNER, G2R-INT — BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
 **Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01+E01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
@@ -226,3 +226,7 @@
 - `src/campaign-v1.mjs` defines and validates 5 linear chapters × 10 stages, stable `stage-001..050`, five maps, unique encounter/background/claim identities and boss nodes 10/20/30/40/50. Navigation is explicit `map → travel → preview → fight`; locked nodes and implicit fight starts fail closed, cleared stages remain replayable through the existing attempt ledger.
 - Exact code SHA `6813b98a40bbddf47083f709e0e8443bded860e7`, [CI #44577561998](https://github.com/m-amirov/Norkavel/actions/runs/44577561998) SUCCESS: 72/72 Node, Ludory Core, WFA bootstrap and legacy Chromium smoke. **C01 DOMAIN_PASS**, not browser-map acceptance.
 - Still missing: visible map/marker/travel UI, navigation persistence and multi-tab CAS, real mouse/touch/keyboard/portrait checks, trusted combat producer, production rewards/encounters, 50 battle backgrounds and 5 chapter-map artworks. G2R runtime/UI remains NOT_IMPLEMENTED; no independent READY task remains without owner content decisions or integration prerequisites.
+
+## G2R-C01 verification and next independent task (2026-11-19)
+- [CI #44578010597](https://github.com/m-amirov/Norkavel/actions/runs/44578010597) SUCCESS at `d88ed8a252ce90e0d825da240a8278638198227a`: 72/72 Node, Core smoke, legacy G2 headless Chromium smoke PASS. `src/campaign-v1.mjs` defines five chapters, 50 unique stage/encounter/background keys, boss stages 10/20/30/40/50 and valid map/travel/preview/explicit-fight domain semantics. Browser G2-R UI, travel animation, trusted combat proof and real 50 battles NOT_IMPLEMENTED.
+- Former "no READY" state was too broad: **G2R-S01 (standalone versioned Save v2 persistence + stale/concurrent write protection) is independent of unapproved hero identities/art/XP cost numbers and has been added to [TASK_QUEUE](TASK_QUEUE.md)**. It must not silently replace `norkavel.g2.save.v1` or enable G2-R game mode. Cross-tab CAS/browser tests and migrated/invalid v1 recovery are required; selection UI and overall G2-R runtime remain separate.
