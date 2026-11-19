@@ -86,7 +86,7 @@
 ## G2-R gameplay design-first phase (2026-11-19)
 - [Gameplay Design 2.0](GAMEPLAY-SYSTEM-2.0.md): a coherent **proposal**, not a confirmed final game, for hero roles, 5-companion unlock, 3-slot squads, combat, campaign, economy, idle, daily/achievements, PvP, monetization boundaries and landscape UI.
 - [G2-R implementation contract](G2-R-CHARACTER-SYSTEM-0.1.md): source audit, target Save v2, legacy save protection and 14 required test scenarios. No runtime code changed in this design step.
-- Gameplay choices not owner-approved: exact four hero kits, fifth companion name/art/skill details, 50-stage structure, economy/idle numbers. **Fifth ice-controller ROLE IS OWNER_CONFIRMED.** **Hero switching is rejected by owner variant B**. The confirmed 4 hero choices / 5 companion collection / active 1+3 and portrait restriction remain mandatory.
+- Gameplay choices not owner-approved: exact four hero kits, fifth companion name/art/skill details, economy/idle numbers (50-stage structure now owner-approved). **Fifth ice-controller ROLE IS OWNER_CONFIRMED.** **Hero switching is rejected by owner variant B**. The confirmed 4 hero choices / 5 companion collection / active 1+3 and portrait restriction remain mandatory.
 - Prior G2 tests verify the old prototype only, not actual G2-R. Implementation NOT_STARTED; G3 BLOCKED; releaseReady=false, publicationAllowed=false.
 
 ## Gameplay Design 2.1 — 2026-11-19
@@ -97,12 +97,12 @@
 ## Gameplay 2.2 — owner-approved permanent hero (2026-11-19)
 - [Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md) states **CONFIRMED owner variant B:** one of four main heroes selected once, permanently for a playthrough; no paid/free switching or class swapping after confirmation.
 - One-time warning/explicit commit and optional no-reward trial bout are design recommendations; legacy G2 must prompt for first actual permanent hero selection without auto-binding generic warrior. Independent profile/new-save option is OPEN.
-- Starter trio Ard/Mira/Elira is **CONFIRMED**; fourth companion Kair after first-clear stage 3 is **CONFIRMED**, but **fifth after first story boss first victory is CONFIRMED**, with boss stage number still OPEN; fifth at 7 is REJECTED. New progression/hero-lock runtime functionality and save schema are NOT implemented. Legacy tests only prove old G2. G3/art and release remain BLOCKED.
+- Starter trio Ard/Mira/Elira is **CONFIRMED**; fourth companion Kair after first-clear stage 3 is **CONFIRMED**, but **fifth after first story boss first victory is CONFIRMED**, with first boss on stage 10 CONFIRMED; fifth at 7 is REJECTED. New progression/hero-lock runtime functionality and save schema are NOT implemented. Legacy tests only prove old G2. G3/art and release remain BLOCKED.
 
 ## Owner decision — 2026-11-19 fifth companion milestone
 - **OWNER CONFIRMED** fifth companion unlocks **after the player's first victory over the first story boss**, not before or on reaching the stage. If first boss is later assigned stage 10 in a 50-stage campaign, the award is at stage 10 by consequence, not because stage 10 itself was approved.
 - Do not treat existing technical G2 stage 2 Rift Guardian as first story boss without explicit stage mapping and transition design. In schema v2, the fifth unlock is keyed to a semantic `first_story_boss_first_clear` milestone with once-only grant and no grant on defeat, repeat clear, reload, migration of `claimed:[2]` or stage entry.
-- First story boss must be beatable by all 4 permanently chosen heroes using only companions available **before** its defeat. Starter three, fourth timing, fifth identity, first boss index, and complete campaign scale remain pending design.
+- First story boss must be beatable by all 4 permanently chosen heroes using only companions available **before** its defeat. Starter three, fourth timing, fifth identity, first boss mechanics remain pending; campaign scale 5×10 and first boss stage 10 owner-approved.
 - This is DESIGN CONFIRMED / RUNTIME NOT IMPLEMENTED; all prior 28/28 green CI receipts are legacy G2 only. G3 BLOCKED.
 
 ## Owner-approved starter trio — 2026-11-19
@@ -116,3 +116,9 @@
 ## Fifth companion role owner confirmation — 2026-11-19
 - OWNER CONFIRMED: fifth companion is an **ice controller** specializing in enemy slowdown and dangerous-attack weakening. [Gameplay mechanic scope](FIFTH-COMPANION-ICE-CONTROL-0.1.md). G2-R must implement role-appropriate effects with bounded boss control only after precise skill design and tests.
 - Companion #5 still unlocked after first story boss first victory, Kair after stage-3 first clear, starting Ard/Mira/Elira. No code/asset integration from these document changes. G2-R implementation NOT_DONE; G3 BLOCKED.
+
+## Linear campaign-map approval — 2026-11-19
+- Owner CONFIRMED **5 chapters × 10 stages = 50**, five **linear single-path maps** with ten nodes each; player travels between stage nodes, boss on 10/20/30/40/50. First story boss is **stage 10**. Fifth ice companion unlocked only after first victory there, Kair after first clear stage 3.
+- Each of fifty stages has own unique original battle background, boss backgrounds included in 50, plus five chapter-map images: **55 distinct planned environment masters**. Descriptive inventory exists but actual originals, rights, runtime use-sites and art review are **MISSING**. No G3/G4 PASS.
+- [Campaign Map 2.3](CAMPAIGN-MAP-2.3.md) [Art inventory](CAMPAIGN-ENVIRONMENT-ART-0.1.md) [WFA agent routing](AGENT-EXECUTION-G2-R.md). WFA roles are documented; **no subagent run occurred**, independent review NOT_RUN. The current ChatGPT connector can read/write GitHub but is not itself a multi-agent executor.
+- Existing source still hard-codes technical G2 stage 1/2 (separate legacy boss). G2-R maps and Save v2 NOT_IMPLEMENTED; release flags false.
