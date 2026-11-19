@@ -12,6 +12,7 @@ import {
   prepareLegacyProfileV2,
   selectPermanentHero,
   settleVerifiedCampaignResult,
+  upgradeCompanion,
   upgradeHeroSkill,
   validateProfileV2
 } from '../src/profile-v2.mjs';
@@ -23,6 +24,12 @@ const TEST_XP_POLICY = Object.freeze({
     (index + 1) * (index + 2) * 5 / 2)),
   firstClearXp: Object.freeze(Array.from({ length: 50 }, (_, index) => 12 + index)),
   replayXp: Object.freeze(Array.from({ length: 50 }, () => 3))
+});
+const TEST_COMPANION_POLICY = Object.freeze({
+  policyVersion: 1,
+  policyId: 'test-companion-cost-v1',
+  maxLevel: 4,
+  costs: Object.freeze([7, 11, 19])
 });
 
 function legacySnapshot(state = initialState()) {
@@ -169,6 +176,10 @@ test('G2R-F01 regression: ultimate cannot be upgraded before hero level 5', () =
       xp: 30,
       xpPolicyId: 'test-level-gate-v1',
       xpThresholds: [...TEST_XP_POLICY.xpThresholds],
+      xpRewardTables: {
+        firstClearXp: [...TEST_XP_POLICY.firstClearXp],
+        replayXp: [...TEST_XP_POLICY.replayXp]
+      },
       pendingSkillChoices: 3
     }
   };
@@ -183,6 +194,10 @@ test('G2R-F01 regression: ultimate cannot be upgraded before hero level 5', () =
       xp: 50,
       xpPolicyId: 'test-level-gate-v1',
       xpThresholds: [...TEST_XP_POLICY.xpThresholds],
+      xpRewardTables: {
+        firstClearXp: [...TEST_XP_POLICY.firstClearXp],
+        replayXp: [...TEST_XP_POLICY.replayXp]
+      },
       pendingSkillChoices: 4
     }
   };
@@ -417,6 +432,10 @@ test('G2R-P01: all 15 choices are manual, capped, and survive at level 16', () =
     xp: 120,
     xpPolicyId: 'test-full-choice-v1',
     xpThresholds: Array.from({ length: 15 }, (_, index) => (index + 1) * (index + 2) / 2),
+    xpRewardTables: {
+      firstClearXp: [...TEST_XP_POLICY.firstClearXp],
+      replayXp: [...TEST_XP_POLICY.replayXp]
+    },
     pendingSkillChoices: 15,
     skillRanks: { skill1: 0, skill2: 0, skill3: 0, ultimate: 0 }
   };
@@ -447,11 +466,150 @@ test('G2R-P01: invalid or changed XP policy cannot consume an active victory', (
     ...TEST_XP_POLICY,
     xpThresholds: [1, 3, 4, ...TEST_XP_POLICY.xpThresholds.slice(3)]
   }), begun, 'cumulative thresholds must also have strictly increasing level intervals');
-  const awarded = settleVerifiedCampaignResult(begun, result, TEST_XP_POLICY);
+  const awarded = JSON.parse(JSON.stringify(
+    settleVerifiedCampaignResult(begun, result, TEST_XP_POLICY)));
   const replayBegun = beginCampaignAttempt(awarded, { attemptId: 'pve:2:policy-change', stageId: 1 });
+  const driftedRewards = {
+    ...TEST_XP_POLICY,
+    firstClearXp: TEST_XP_POLICY.firstClearXp.map((xp, index) => index === 0 ? xp + 1 : xp)
+  };
+  assert.strictEqual(settleVerifiedCampaignResult(replayBegun, {
+    resultVersion: 1, attemptSequence: 2, attemptId: 'pve:2:policy-change', outcome: 'victory'
+  }, driftedRewards), replayBegun, 'same policy ID cannot hide reward-table drift');
   assert.strictEqual(settleVerifiedCampaignResult(replayBegun, {
     resultVersion: 1, attemptSequence: 2, attemptId: 'pve:2:policy-change', outcome: 'victory'
   }, { ...TEST_XP_POLICY, policyId: 'different-policy' }), replayBegun);
+});
+
+test('G2R-E01: one purchase atomically debits policy cost and upgrades only the selected companion', () => {
+  const selected = selectPermanentHero(createProfileV2(), 'hero_slot_1');
+  const profile = { ...selected, gold: 20 };
+  const purchased = upgradeCompanion(profile, {
+    purchaseVersion: 1,
+    purchaseSequence: 1,
+    purchaseId: 'companion:1:first',
+    companionId: 'sentinel',
+    expectedLevel: 1
+  }, TEST_COMPANION_POLICY);
+  assert.equal(purchased.gold, 13);
+  assert.deepEqual(purchased.companionProgress.map(entry => entry.level), [2, 1, 1, 1, 1]);
+  assert.equal(purchased.ledgers.settledPurchaseCount, 1);
+  assert.deepEqual(purchased.companionUpgradePolicy, TEST_COMPANION_POLICY);
+  assert.deepEqual(purchased.party, profile.party);
+  assert.deepEqual(purchased.heroProgress, profile.heroProgress);
+  assert.equal(validateProfileV2(purchased), true);
+});
+
+test('G2R-E01: duplicate purchase and JSON reload cannot double charge or upgrade', () => {
+  const selected = { ...selectPermanentHero(createProfileV2(), 'hero_slot_2'), gold: 30 };
+  const command = {
+    purchaseVersion: 1,
+    purchaseSequence: 1,
+    purchaseId: 'companion:1:double-click',
+    companionId: 'ember',
+    expectedLevel: 1
+  };
+  const purchased = upgradeCompanion(selected, command, TEST_COMPANION_POLICY);
+  const restored = JSON.parse(JSON.stringify(purchased));
+  assert.strictEqual(upgradeCompanion(restored, command, TEST_COMPANION_POLICY), restored);
+  assert.equal(restored.gold, 23);
+  assert.equal(restored.companionProgress[1].level, 2);
+});
+
+test('G2R-E01: invalid, locked, stale, insufficient and cap purchases fail without mutation', () => {
+  let profile = { ...selectPermanentHero(createProfileV2(), 'hero_slot_3'), gold: 6 };
+  const base = {
+    purchaseVersion: 1,
+    purchaseSequence: 1,
+    purchaseId: 'companion:1:denied',
+    companionId: 'sentinel',
+    expectedLevel: 1
+  };
+  assert.strictEqual(upgradeCompanion(profile, base, TEST_COMPANION_POLICY), profile);
+  profile = { ...profile, gold: 100 };
+  assert.strictEqual(upgradeCompanion(profile, { ...base, companionId: 'ash' },
+    TEST_COMPANION_POLICY), profile);
+  for (const command of [
+    { ...base, companionId: 'unknown' },
+    { ...base, expectedLevel: 2 },
+    { ...base, purchaseSequence: 2, purchaseId: 'companion:2:gap' },
+    { ...base, purchaseId: 'wrong' },
+    { ...base, extra: true }
+  ]) assert.strictEqual(upgradeCompanion(profile, command, TEST_COMPANION_POLICY), profile);
+
+  const cappedProgress = profile.companionProgress.map(entry =>
+    entry.id === 'sentinel' ? { ...entry, level: 4 } : entry);
+  const capped = { ...profile, companionProgress: cappedProgress };
+  assert.equal(validateProfileV2(capped), true);
+  assert.strictEqual(upgradeCompanion(capped, { ...base, expectedLevel: 4 }, TEST_COMPANION_POLICY), capped);
+});
+
+test('G2R-E01: cost-policy drift and readonly legacy migration fail closed', () => {
+  const prepared = prepareLegacyProfileV2(legacySnapshot({ ...initialState(), gold: 100 }));
+  const command = {
+    purchaseVersion: 1,
+    purchaseSequence: 1,
+    purchaseId: 'companion:1:legacy',
+    companionId: 'ash',
+    expectedLevel: 1
+  };
+  assert.strictEqual(upgradeCompanion(prepared, command, TEST_COMPANION_POLICY), prepared);
+  let active = selectPermanentHero(activateLegacyProfileV2(prepared), 'hero_slot_4');
+  active = upgradeCompanion(active, command, TEST_COMPANION_POLICY);
+  assert.equal(active.gold, 93);
+  assert.equal(active.companionProgress[3].level, 2);
+  const nextCommand = {
+    ...command,
+    purchaseSequence: 2,
+    purchaseId: 'companion:2:drift',
+    expectedLevel: 2
+  };
+  assert.strictEqual(upgradeCompanion(active, nextCommand, {
+    ...TEST_COMPANION_POLICY,
+    costs: [7, 12, 19]
+  }), active);
+  assert.equal(active.legacyCheckpoint.state.gold, 100);
+  assert.equal(active.legacyProgress.importedGold, 100);
+});
+
+test('G2R-E01: all five unlocked companions can be upgraded manually without changing the party', () => {
+  let profile = winThrough(selectPermanentHero(createProfileV2(), 'hero_slot_1'), 10);
+  assert.deepEqual(profile.companionProgress.map(entry => entry.level), [1, 1, 1, 1, 1],
+    'campaign victories never auto-level companions');
+  profile = { ...profile, gold: 100 };
+  const originalParty = [...profile.party];
+  for (const [index, companionId] of COMPANION_IDS.entries()) {
+    profile = upgradeCompanion(profile, {
+      purchaseVersion: 1,
+      purchaseSequence: index + 1,
+      purchaseId: `companion:${index + 1}:all-five`,
+      companionId,
+      expectedLevel: 1
+    }, TEST_COMPANION_POLICY);
+  }
+  assert.deepEqual(profile.companionProgress.map(entry => entry.level), [2, 2, 2, 2, 2]);
+  assert.deepEqual(profile.party, originalParty);
+  assert.equal(profile.gold, 65);
+});
+
+test('G2R-E01: purchase cursor continues beyond 10000 after JSON reload', () => {
+  const selected = selectPermanentHero(createProfileV2(), 'hero_slot_2');
+  const longRunning = JSON.parse(JSON.stringify({
+    ...selected,
+    gold: 20,
+    ledgers: { ...selected.ledgers, settledPurchaseCount: 10000 }
+  }));
+  const purchased = upgradeCompanion(longRunning, {
+    purchaseVersion: 1,
+    purchaseSequence: 10001,
+    purchaseId: 'companion:10001:long-session',
+    companionId: 'healer',
+    expectedLevel: 1
+  }, TEST_COMPANION_POLICY);
+  assert.equal(purchased.ledgers.settledPurchaseCount, 10001);
+  assert.equal(purchased.companionProgress[2].level, 2);
+  assert.equal(purchased.gold, 13);
+  assert.equal(validateProfileV2(purchased), true);
 });
 
 test('G2R-F03: all three companion slots accept unlocked units and reject locked or fight changes', () => {

@@ -30,7 +30,7 @@ const LEGACY_COMPANIONS = Object.freeze(['sentinel', 'ember', 'healer', 'ash']);
 const PROFILE_FIELDS = Object.freeze([
   'schema', 'phase', 'selectedHeroId', 'heroSelection', 'heroProgress',
   'companionProgress', 'unlockedCompanionIds', 'party', 'gold', 'ledgers',
-  'campaignAttempt', 'legacyProgress', 'legacyCheckpoint'
+  'campaignAttempt', 'companionUpgradePolicy', 'legacyProgress', 'legacyCheckpoint'
 ]);
 const LEGACY_SNAPSHOT_FIELDS = Object.freeze([
   'schemaVersion', 'gameId', 'gameVersion', 'revision', 'state'
@@ -75,6 +75,7 @@ function emptyHeroProgress() {
     xp: 0,
     xpPolicyId: null,
     xpThresholds: null,
+    xpRewardTables: null,
     pendingSkillChoices: 0,
     skillRanks: { skill1: 0, skill2: 0, skill3: 0, ultimate: 0 }
   };
@@ -85,7 +86,12 @@ function companionProgress() {
 }
 
 function emptyLedgers() {
-  return { firstClearStageIds: [], settledAttemptCount: 0, unlockReceiptIds: [] };
+  return {
+    firstClearStageIds: [],
+    settledAttemptCount: 0,
+    settledPurchaseCount: 0,
+    unlockReceiptIds: []
+  };
 }
 
 function baseProfile() {
@@ -101,6 +107,7 @@ function baseProfile() {
     gold: 0,
     ledgers: emptyLedgers(),
     campaignAttempt: null,
+    companionUpgradePolicy: null,
     legacyProgress: null,
     legacyCheckpoint: null
   };
@@ -117,13 +124,16 @@ function validStringLedger(value, maxLength) {
 }
 
 function validHeroProgress(value) {
-  if (!exactRecord(value, ['level', 'xp', 'xpPolicyId', 'xpThresholds', 'pendingSkillChoices', 'skillRanks']))
+  if (!exactRecord(value, [
+    'level', 'xp', 'xpPolicyId', 'xpThresholds', 'xpRewardTables', 'pendingSkillChoices', 'skillRanks'
+  ]))
     return false;
   if (!boundedInt(value.level, 1, 16) || !boundedInt(value.xp, 0, Number.MAX_SAFE_INTEGER) ||
       !boundedInt(value.pendingSkillChoices, 0, 15)) return false;
-  const noPolicy = value.xpPolicyId === null && value.xpThresholds === null;
+  const noPolicy = value.xpPolicyId === null && value.xpThresholds === null && value.xpRewardTables === null;
   const hasPolicy = typeof value.xpPolicyId === 'string' && value.xpPolicyId.length > 0 &&
-    value.xpPolicyId.length <= 64 && validXpThresholds(value.xpThresholds);
+    value.xpPolicyId.length <= 64 && validXpThresholds(value.xpThresholds) &&
+    validXpRewardTables(value.xpRewardTables);
   if ((!noPolicy && !hasPolicy) || (noPolicy && (value.level !== 1 || value.xp !== 0))) return false;
   if (hasPolicy) {
     const expectedLevel = 1 + value.xpThresholds.filter(threshold => value.xp >= threshold).length;
@@ -155,11 +165,22 @@ function validProgressionPolicy(value) {
     value.replayXp.every((xp, index) => xp < value.firstClearXp[index]);
 }
 
+function validXpRewardTables(value) {
+  return exactRecord(value, ['firstClearXp', 'replayXp']) &&
+    [value.firstClearXp, value.replayXp].every(rewards =>
+      Array.isArray(rewards) && rewards.length === 50 &&
+      rewards.every(xp => boundedInt(xp, 1, Number.MAX_SAFE_INTEGER))) &&
+    value.replayXp.every((xp, index) => xp < value.firstClearXp[index]);
+}
+
 function awardHeroXp(profile, attempt, policy) {
   if (!validProgressionPolicy(policy)) return null;
   const progress = profile.heroProgress;
   if (progress.xpPolicyId !== null && progress.xpPolicyId !== policy.policyId) return null;
   if (progress.xpThresholds !== null && !sameArray(progress.xpThresholds, policy.xpThresholds)) return null;
+  if (progress.xpRewardTables !== null &&
+      (!sameArray(progress.xpRewardTables.firstClearXp, policy.firstClearXp) ||
+       !sameArray(progress.xpRewardTables.replayXp, policy.replayXp))) return null;
   const award = (attempt.rewardClass === 'first_clear' ? policy.firstClearXp : policy.replayXp)[attempt.stageId - 1];
   if (!Number.isSafeInteger(progress.xp + award)) return null;
   const next = clone(profile);
@@ -167,6 +188,10 @@ function awardHeroXp(profile, attempt, policy) {
   next.heroProgress.xp += award;
   next.heroProgress.xpPolicyId = policy.policyId;
   next.heroProgress.xpThresholds = [...policy.xpThresholds];
+  next.heroProgress.xpRewardTables = {
+    firstClearXp: [...policy.firstClearXp],
+    replayXp: [...policy.replayXp]
+  };
   next.heroProgress.level = 1 + policy.xpThresholds.filter(threshold => next.heroProgress.xp >= threshold).length;
   next.heroProgress.pendingSkillChoices += next.heroProgress.level - oldLevel;
   return next;
@@ -177,6 +202,21 @@ function validCompanionProgress(value) {
   return Array.isArray(value) && value.length === COMPANION_IDS.length &&
     value.every((entry, index) => exactRecord(entry, ['id', 'level']) &&
       entry.id === COMPANION_IDS[index] && boundedInt(entry.level, 1, Number.MAX_SAFE_INTEGER));
+}
+
+function validCompanionUpgradePolicy(value) {
+  if (value === null) return true;
+  return exactRecord(value, ['policyVersion', 'policyId', 'maxLevel', 'costs']) &&
+    value.policyVersion === 1 && typeof value.policyId === 'string' &&
+    value.policyId.length > 0 && value.policyId.length <= 64 &&
+    boundedInt(value.maxLevel, 2, 10000) && Array.isArray(value.costs) &&
+    value.costs.length === value.maxLevel - 1 &&
+    value.costs.every(cost => boundedInt(cost, 1, Number.MAX_SAFE_INTEGER));
+}
+
+function sameCompanionUpgradePolicy(left, right) {
+  return left.policyVersion === right.policyVersion && left.policyId === right.policyId &&
+    left.maxLevel === right.maxLevel && sameArray(left.costs, right.costs);
 }
 
 function validLegacySnapshot(value) {
@@ -249,14 +289,20 @@ export function validateProfileV2(profile) {
   if (!canonicalSubset(profile.unlockedCompanionIds, COMPANION_IDS) ||
       !uniqueSubset(profile.party, COMPANION_IDS, 3) ||
       !profile.party.every(id => profile.unlockedCompanionIds.includes(id))) return false;
-  if (!exactRecord(profile.ledgers, ['firstClearStageIds', 'settledAttemptCount', 'unlockReceiptIds']) ||
+  if (!exactRecord(profile.ledgers, [
+    'firstClearStageIds', 'settledAttemptCount', 'settledPurchaseCount', 'unlockReceiptIds'
+  ]) ||
       !validFirstClearLedger(profile.ledgers.firstClearStageIds) ||
       !boundedInt(profile.ledgers.settledAttemptCount, 0, Number.MAX_SAFE_INTEGER) ||
+      !boundedInt(profile.ledgers.settledPurchaseCount, 0, Number.MAX_SAFE_INTEGER) ||
       !validStringLedger(profile.ledgers.unlockReceiptIds, 2) ||
       profile.ledgers.unlockReceiptIds.some(id =>
         !['stage_3_first_clear', 'first_story_boss_first_clear'].includes(id))) return false;
   if (!validCampaignAttempt(profile.campaignAttempt, profile.ledgers.settledAttemptCount,
       profile.ledgers.firstClearStageIds.length)) return false;
+  if (!validCompanionUpgradePolicy(profile.companionUpgradePolicy) ||
+      (profile.companionUpgradePolicy !== null && profile.companionProgress.some(entry =>
+        entry.level > profile.companionUpgradePolicy.maxLevel))) return false;
   const stage3Cleared = profile.ledgers.firstClearStageIds.includes('stage:3');
   const stage10Cleared = profile.ledgers.firstClearStageIds.includes('stage:10');
   if (profile.ledgers.unlockReceiptIds.includes('stage_3_first_clear') !== stage3Cleared ||
@@ -381,6 +427,36 @@ export function assignCompanionSlot(profile, slotIndex, companionId) {
   } else {
     next.party[slotIndex] = companionId;
   }
+  return validateProfileV2(next) ? next : profile;
+}
+
+export function upgradeCompanion(profile, command, policy) {
+  if (!validateProfileV2(profile) || profile.phase !== 'setup' ||
+      (profile.legacyProgress !== null && !profile.legacyProgress.activated) ||
+      !exactRecord(command, [
+        'purchaseVersion', 'purchaseSequence', 'purchaseId', 'companionId', 'expectedLevel'
+      ]) || command.purchaseVersion !== 1 ||
+      !boundedInt(command.purchaseSequence, 1, Number.MAX_SAFE_INTEGER) ||
+      command.purchaseSequence !== profile.ledgers.settledPurchaseCount + 1 ||
+      typeof command.purchaseId !== 'string' ||
+      !command.purchaseId.startsWith(`companion:${command.purchaseSequence}:`) ||
+      command.purchaseId.length <= `companion:${command.purchaseSequence}:`.length ||
+      command.purchaseId.length > 96 || !COMPANION_IDS.includes(command.companionId) ||
+      !boundedInt(command.expectedLevel, 1, Number.MAX_SAFE_INTEGER) ||
+      !validCompanionUpgradePolicy(policy) || policy === null ||
+      (profile.companionUpgradePolicy !== null &&
+       !sameCompanionUpgradePolicy(profile.companionUpgradePolicy, policy)) ||
+      !profile.unlockedCompanionIds.includes(command.companionId)) return profile;
+  const index = COMPANION_IDS.indexOf(command.companionId);
+  const currentLevel = profile.companionProgress[index].level;
+  if (currentLevel !== command.expectedLevel || currentLevel >= policy.maxLevel) return profile;
+  const cost = policy.costs[currentLevel - 1];
+  if (profile.gold < cost) return profile;
+  const next = clone(profile);
+  next.gold -= cost;
+  next.companionProgress[index].level += 1;
+  next.ledgers.settledPurchaseCount = command.purchaseSequence;
+  next.companionUpgradePolicy = clone(policy);
   return validateProfileV2(next) ? next : profile;
 }
 
