@@ -141,6 +141,13 @@ export function setAutoCast(state, value) {
   if (state.phase !== 'fight' && state.phase !== 'setup') return state;
   const s = clone(state); s.autoCast = Boolean(value); return s;
 }
+// The PvE UI advances a stored seed once per new attempt. Simulation and replays
+// remain deterministic for an explicit seed; never use browser time or Math.random.
+export function nextEncounterSeed(state) {
+  if (!state || !Number.isSafeInteger(state.seed) || state.seed < 0 || state.seed > 0xffffffff)
+    throw new TypeError('Invalid encounter seed');
+  return (Math.imul(state.seed, 1664525) + 1013904223) >>> 0;
+}
 export function startFight(state, seed = state.seed) {
   if (!['setup','defeat','victory'].includes(state.phase) || !Number.isSafeInteger(seed)) return state;
   const s = clone(state);
