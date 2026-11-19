@@ -100,3 +100,11 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - [Gameplay 2.1](GAMEPLAY-DESIGN-2.1.md): 4 hero proposed skill kits, 5 companion role niches, line formation/AI, status rules, first ten stages, proposed economy and gate questions. **DESIGN_DRAFT / NOT_IMPLEMENTED / NOT_TESTED**.
 - Confirmed 4 main heroes, five unlockable companions, battle team 1+3, landscape-only and async-only PvP unchanged. Fifth companion stage-10 unlock is a **proposal** competing with previous stage-7 proposal, not an approved reward.
 - G2-R, G3 and release gates remain blocked pending owner design review and implementation evidence.
+
+### Hero permanence — owner decision B (2026-11-19)
+- **NKV-037: CONFIRMED_SPEC / NOT_IMPLEMENTED:** 1 of 4 different main heroes chosen **once** per playthrough with explicit confirmation and cannot be changed afterwards; no menu, free swap or premium swap. [Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md).
+- **NKV-038: DESIGN_PROPOSAL / NOT_IMPLEMENTED:** optional pre-confirmation test fight must not mutate real save, gold, first-clear, unlocks or committed hero ID.
+- **NKV-039: G2-R_NOT_IMPLEMENTED:** four individual hero profiles must independently complete the campaign, including bosses, with their permanently selected hero and only available companion counters. Do not demand all heroes in one player profile.
+- **NKV-040: MIGRATION_NOT_IMPLEMENTED:** legacy save generic hero cannot be silently treated as chosen permanent warrior. Explicit one-time user choice before atomic schema v2 confirm, preserving old gold/level/claimed and four previously accessible companions; reject conflicting confirm, duplicate reward and corrupted payloads.
+- **NKV-041: UNLOCK_DESIGN_OPEN:** proposed three starting companions, Kair after stage 3, fifth after first boss stage 10, but alternatives stage 7 or later remain open. No PASS claim or final content for unapproved milestones.
+- GitHub CI verifying document changes does not prove permanent hero runtime implementation; G2-R and G3 remain blocked.
