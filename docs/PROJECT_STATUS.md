@@ -1,9 +1,16 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-F01 (profile v2 / safe legacy compatibility)**. Это не доказательство запуска агента или реализации задачи. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-F03 (roster/unlock/claim domain)**; G2R-F02 content остаётся BLOCKED_OWNER, хотя независимый persistence-срез разрешён. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
-**Дата обновления:** 2026-11-19. Current boundary: **G2-R DESIGN_DRAFT / FUNCTIONAL_G2-R_NOT_IMPLEMENTED / G3 BLOCKED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2R-F01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
+
+## G2R-F01 profile v2 foundation (2026-11-19)
+- Exact implementation `27be4dd`: separate pure `src/profile-v2.mjs`; current `src/combat.mjs`, `web/main.mjs` and `norkavel.g2.save.v1` remain unchanged.
+- Schema 2 expresses four provisional hero slots, five companion records, three active unlocked slots, hero lvl1–16/pending choices, ledgers and intact legacy checkpoint. Hero confirmation is one-time and immutable; unknown/duplicate/locked/tampered values fail closed.
+- Valid schema 1 Ludory snapshots prepare deterministic in-memory v2 candidates while preserving gold, prototype level/history, claims, party and Kair access. No hero is silently selected, no old level becomes XP/skill choices, no technical stage-2 boss grants the fifth companion, and no v2 key is written in F01.
+- [CI 44526368550](https://github.com/m-amirov/Norkavel/actions/runs/44526368550) SUCCESS on exact `27be4dd`: 46/46 Node tests, Ludory Core smoke, project-scoped WFA bootstrap and headless Chrome legacy G2 smoke. Local Chromium was unavailable; browser evidence comes from CI.
+- Remaining: atomic v2 persistence, migration/onboarding UI, real confirmed hero identities/kits, unlock event APIs and G2-R browser flows. This is not full NKV-031–034 or G2-R runtime PASS.
 
 ## Decisions and design
 - G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, **4 distinct main heroes to choose from (exactly one selected), 5 progressively unlockable companions (3 active), 1+3=4 in combat**, async-only PvP, **landscape-only**. See [GDD 1.1](GDD-1.1.md).

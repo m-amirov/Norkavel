@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**Текущая граница:** G2 legacy browser playable, **G2-R ещё не реализован**; Economy Balance 0.1 проверен арифметически, но его **численные значения не утверждены окончательно**, G3 production art не принят. См. [Project Status](PROJECT_STATUS.md), [Acceptance](ACCEPTANCE.md) и [WFA agent routing](AGENT-EXECUTION-G2-R.md).
+**Текущая граница:** G2 legacy browser playable; **G2R-F01 domain foundation проверен**, но G2-R runtime/UI и атомная запись v2 ещё не реализованы. Economy Balance 0.1 проверен арифметически, но его **численные значения не утверждены окончательно**, G3 production art не принят. См. [Project Status](PROJECT_STATUS.md), [Acceptance](ACCEPTANCE.md) и [WFA agent routing](AGENT-EXECUTION-G2-R.md).
 
 ## Правила очереди
 
@@ -11,9 +11,9 @@
 
 | Приоритет | ID | Задача | Зависимости | Текущий статус |
 |---|---|---|---|---|
-| **NOW** | **G2R-F01** | **Проверяемый foundation: модель профиля v2 и безопасная совместимость с G2 v1** | действующие GDD/DECISIONS и actual Ludory Core | **READY** |
+| 1 | G2R-F01 | Проверяемый foundation: модель профиля v2 и безопасная совместимость с G2 v1 | действующие GDD/DECISIONS и actual Ludory Core | **DONE_VERIFIED — `27be4dd`, CI 44526368550** |
 | 2 | G2R-F02 | Постоянный выбор 1 из 4 героев + 3 уникальных обычных навыка/ульта каждому в UI и бою | G2R-F01; **идентичности и exact skill kits — OWNER_OPEN** | **BLOCKED_OWNER (content), independent persistence work permitted** |
-| 3 | G2R-F03 | Рoster 5, 3 активных/2 резервных, unlock stage3/10, безопасные first-clear claim receipts | G2R-F01 | BLOCKED_DEPENDENCY |
+| **NOW** | **G2R-F03** | **Roster 5, 3 активных/2 резервных, unlock stage3/10, безопасные first-clear claim receipts** | G2R-F01 | **READY** |
 | 4 | G2R-P01 | Отдельная прогрессия героя (lvl1–16, XP за победы, 15 player choices, ultimate lvl5) | G2R-F01; skill effects when moving to combat; economy values remain CANDIDATE | BLOCKED_DEPENDENCY |
 | 5 | G2R-E01 | Ручная прокачка каждого спутника за золото, atomic purchase ledger, denied/double-purchase cases | G2R-F01 + G2R-F03; числа Economy 0.1 **CANDIDATE** | BLOCKED_DEPENDENCY |
 | 6 | G2R-C01 | Доменная линейная кампания 5×10, 50 stage IDs, 5 chapter map IDs, маршруты/preview/explicit fight/replay | G2R-F01 + G2R-F03, недостающие stage details фиксировать как OPEN | BLOCKED_DEPENDENCY |
@@ -36,6 +36,8 @@
 **Exit gate F01:** новый доменный код с unit и негативными regression tests; безопасный legacy read/restore без silent irreversible migration; `npm run check` и применимые Ludory/браузерные проверки **реально выполнены**; exact HEAD в `origin/main` и CI receipt. Только после этого поставить `DONE_VERIFIED`, обновить acceptance/status и открыть F03/F02-domain.
 
 **Не делать в F01:** фальшивые четыре полностью готовых героя, 55 временных картинок как production art, имитацию серверного PvP, неподтверждённую раздачу ресурсов по формулам Economy 0.1, новые рекламные/монетизационные зависимости.
+
+**Фактический выход F01:** `src/profile-v2.mjs` вводит отдельную schema 2 с provisional `hero_slot_1..4`, подтверждёнными пятью companion slots (пятый technical ID `control`), starter/legacy invariants, одноразовым immutable hero selection и readonly `prepareLegacyProfileV2`. Старый runtime/key не переключён и v1 checkpoint сохраняется целиком; old `level` остаётся только legacy history и не создаёт XP/skill choices. [CI 44526368550](https://github.com/m-amirov/Norkavel/actions/runs/44526368550) на exact `27be4dd`: 46/46 Node, Ludory smoke, project WFA bootstrap и Chromium legacy smoke PASS. Atomic v2 persistence/onboarding UI остаются следующими срезами.
 
 ## Правило перехода к следующей задаче
 
