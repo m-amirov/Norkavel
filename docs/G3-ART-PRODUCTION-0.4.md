@@ -36,6 +36,10 @@ The preceding 0.2/0.3 art packages were **four companions**, NOT the four select
 
 ## D. Explicitly open content decisions
 
-Names/classes/skills of four selectable main heroes, fifth companion **name/identity and detailed skill design** remain **OPEN**, but ice-controller role is OWNER_CONFIRMED; starter trio Ard/Mira/Elira is CONFIRMED, Kair unlocks after stage-3 first clear, fifth after first story-boss first clear, and main hero selection is permanent (no hero swap). Exact first story-boss stage index remains OPEN. No production art identity assignment or irreversible migration should assume answers.
+Names/classes/skills of four selectable main heroes, fifth companion **name/identity and detailed skill design** remain **OPEN**, but ice-controller role is OWNER_CONFIRMED; starter trio Ard/Mira/Elira is CONFIRMED, Kair unlocks after stage-3 first clear, fifth after first story-boss first clear, and main hero selection is permanent (no hero swap). First story-boss stage index **10 is OWNER_CONFIRMED**. No production art identity assignment or irreversible migration should assume answers.
 
 **Art brief update (19.11.2026):** fifth companion's owner-confirmed ice-control role must produce its own readable side-view silhouette and cold-magic VFX distinct from four companion candidates; name/appearance and frame animations still require actual art and review. [Mechanics brief](FIFTH-COMPANION-ICE-CONTROL-0.1.md).
+
+## Chapter environments art scope — owner confirmed 2026-11-19
+- **50 distinct battle backgrounds** (one for stages 1–50), bosses stages 10,20,30,40,50 use five of those 50 unique images; **5 separate illustrated chapter maps** with ten linked linear stage nodes: **55 environment masters**, in addition to 13 character designs and animation/VFX. No recolor/crop counted as separate authored scene.
+- [Environment use-site inventory](CAMPAIGN-ENVIRONMENT-ART-0.1.md) lists exactly 50 planned original compositions + five maps. All **NOT_GENERATED / rights NOT_VERIFIED / G3 BLOCKED**. Chapter map navigation and scenery loading must be tested on representative landscape mobile viewports and against byte/decode budgets.
