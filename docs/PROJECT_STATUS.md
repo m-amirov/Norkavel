@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-S01 (Save v2 persistence foundation):** G2R-C01 domain завершён; G2R-F02 content всё ещё BLOCKED_OWNER, G2R-INT — BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NO INDEPENDENT READY TASK:** G2R-S01 persistence foundation завершён; G2R-F02 content всё ещё BLOCKED_OWNER, G2R-INT — BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
 **Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01+E01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
@@ -230,3 +230,9 @@
 ## G2R-C01 verification and next independent task (2026-11-19)
 - [CI #44578010597](https://github.com/m-amirov/Norkavel/actions/runs/44578010597) SUCCESS at `d88ed8a252ce90e0d825da240a8278638198227a`: 72/72 Node, Core smoke, legacy G2 headless Chromium smoke PASS. `src/campaign-v1.mjs` defines five chapters, 50 unique stage/encounter/background keys, boss stages 10/20/30/40/50 and valid map/travel/preview/explicit-fight domain semantics. Browser G2-R UI, travel animation, trusted combat proof and real 50 battles NOT_IMPLEMENTED.
 - Former "no READY" state was too broad: **G2R-S01 (standalone versioned Save v2 persistence + stale/concurrent write protection) is independent of unapproved hero identities/art/XP cost numbers and has been added to [TASK_QUEUE](TASK_QUEUE.md)**. It must not silently replace `norkavel.g2.save.v1` or enable G2-R game mode. Cross-tab CAS/browser tests and migrated/invalid v1 recovery are required; selection UI and overall G2-R runtime remain separate.
+
+## G2R-S01 transactional browser persistence — 2026-11-19
+
+- `src/save-v2-store.mjs` implements a standalone IndexedDB Save v2 envelope and atomic compare-and-set transaction. Full rich profiles round-trip across reload; parallel same-revision contexts serialize to one commit/one stale rejection; aborted writes retain the previous record; corrupt/future formats fail closed without destructive overwrite. Legacy v1 preparation is read-only and preserves its exact checkpoint without implicit hero selection or rewards.
+- Exact code SHA `5cb4700ba40f455b37efb16f47529466e33a1e39`, [CI #44580816549](https://github.com/m-amirov/Norkavel/actions/runs/44580816549) SUCCESS: 77/77 Node, Ludory Core, legacy G2 Chromium and dedicated two-context Save v2 Chromium smoke PASS. Adversarial review was degraded self-review because no independent agent executor was available; version-change connection cleanup and corrupt-record preservation were added and retested.
+- This does **not** switch `web/main.mjs`, migrate users, provide cross-device/server consistency, authenticate battle/gold policy, or implement G2-R UI. F02 remains owner-blocked and G2R-INT dependency-blocked; no independent READY task remains.
