@@ -122,3 +122,8 @@
 - Each of fifty stages has own unique original battle background, boss backgrounds included in 50, plus five chapter-map images: **55 distinct planned environment masters**. Descriptive inventory exists but actual originals, rights, runtime use-sites and art review are **MISSING**. No G3/G4 PASS.
 - [Campaign Map 2.3](CAMPAIGN-MAP-2.3.md) [Art inventory](CAMPAIGN-ENVIRONMENT-ART-0.1.md) [WFA agent routing](AGENT-EXECUTION-G2-R.md). WFA roles are documented; **no subagent run occurred**, independent review NOT_RUN. The current ChatGPT connector can read/write GitHub but is not itself a multi-agent executor.
 - Existing source still hard-codes technical G2 stage 1/2 (separate legacy boss). G2-R maps and Save v2 NOT_IMPLEMENTED; release flags false.
+
+## Map-entry interaction approved — 2026-11-19
+- OWNER CONFIRMED: click/tap available node → short travel along the linear route → stage preview → explicit «В бой». Do not start combat on node click or animation completion; same stable stage ID throughout.
+- OPEN: replay of cleared stages, duration/easing, camera-follow, skip. Double taps, portrait/background, save restore require regression before implementation can pass. No new map runtime or art implemented; independent WFA agent runs have NOT occurred.
+- See [Campaign Map 2.3](CAMPAIGN-MAP-2.3.md) and [Acceptance](ACCEPTANCE.md).
