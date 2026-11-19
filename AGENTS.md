@@ -31,7 +31,7 @@ Current stage: G2 browser-playable legacy slice; G2-R needed for new owner-confi
 
 ## G2-R design-first boundary (2026-11-19)
 - Confirmed roster quantities remain in GDD 1.1. Full gameplay mechanics are proposed, NOT owner-approved, in docs/GAMEPLAY-SYSTEM-2.0.md; technical implementation design in docs/G2-R-CHARACTER-SYSTEM-0.1.md.
-- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, fourth companion unlock, fifth identity, boss stage number, currency sinks and migration details are PROPOSED until owner review. **Fifth companion unlock after first STORY boss first victory is CONFIRMED**; avoid granting from the legacy technical G2 stage-2 boss. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
+- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, fifth identity, boss stage number, currency sinks and migration details are PROPOSED until owner review. **Fifth companion unlock after first STORY boss first victory is CONFIRMED**; avoid granting from the legacy technical G2 stage-2 boss. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
 - Existing legacy green G2 tests do not establish new G2-R implementation or owner approval; G3 remains BLOCKED.
 
 ## 2026-11-19 owner variant B
@@ -41,5 +41,8 @@ The active main hero is selected once and remains permanent for that playthrough
 The fifth companion must unlock only on first **story-boss victory**, not before. Store a semantic `first_story_boss_first_clear` award and make it idempotent in future G2-R; do NOT assume provisional chapter stage 10 is approved, and do NOT map legacy G2 stage-2 boss rewards automatically. Every permanent hero must be able to clear that boss with pre-boss companions. See docs/GDD-1.1.md and docs/GAMEPLAY-DESIGN-2.2.md.
 
 ## Owner decision 2026-11-19 — initial companion party
-- For new profiles, exactly `sentinel` (Ard), `ember` (Mira), `healer` (Elira) unlocked and in three active slots after permanent hero selection. This is CONFIRMED. `ash` (Kair) and fifth start locked; Kair stage-3 proposed unlock is NOT confirmed.
+- For new profiles, exactly `sentinel` (Ard), `ember` (Mira), `healer` (Elira) unlocked and in three active slots after permanent hero selection. This is CONFIRMED. `ash` (Kair) and fifth start locked; Kair unlock after first successful stage-3 clear is OWNER CONFIRMED.
 - Legacy G2 migration preserves prior Kair access and selected party; fifth remains story boss first-clear reward. Implement with deterministic save/restore and negative tests, not with ad-hoc UI-only disabled states. G2-R not implemented yet.
+
+## Owner confirmation 2026-11-19 — Kair unlock
+- Fourth companion Kair (`ash`) unlocks on first successful clear of PvE campaign stage 3, not on entry, loss, repeat or reload. Preserve `ash` entitlement for valid legacy G2 save migrations. All three active party slots remain unchanged until player chooses a swap outside combat; fifth remains first story-boss first-clear reward. G2-R runtime remains NOT IMPLEMENTED.
