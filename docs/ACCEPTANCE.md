@@ -1,6 +1,6 @@
 # Norkavel — Acceptance / Requirements Traceability
 
-**Дата:** 2026-11-18. Источники требований: GDD.md, docs/GDD-1.0.md, owner decisions.  
+**Дата:** 2026-11-19. Требования: [GDD 1.1](GDD-1.1.md), GDD.md, owner decisions; GDD 1.0 is historical.  
 **Правило:** SPECIFIED означает «написано», а не PASS. Никаких G2–G7 PASS без реальных доказательств.
 
 | ID | Требование | Gate | Обязательное доказательство | Текущий статус |
@@ -15,8 +15,8 @@
 | NKV-008 | Boss telegraph, victory/defeat/retry | G2 | browser smoke обоих исходов | PASS_G2_BROWSER: real victory, controlled fixture AND natural seeded boss defeat/retry, interrupt |
 | NKV-009 | Сохранение и корректное восстановление PvE | G2/G4 | valid/corrupt/old save tests | PASS_G2_BROWSER: valid/reload, invalid + legacy fail-closed |
 | NKV-010 | Кампания: 5 глав, 50 этапов, 5 боссов | G4 | level coverage, reachable stages | SPECIFIED |
-| NKV-011 | 4 стартовых класса героя и их навыки | G4 | combat balance + class coverage | SPECIFIED |
-| NKV-012 | 12 спутников, 6 синергий, экипировка | G4 | manifest + use-site + tests | SPECIFIED |
+| NKV-011 | **4 selectable distinct main heroes, 1 chosen in a party** | G2-R/G3/G4 | choice, persistence, unique gameplay/art, browser+unit | CONFIRMED_SPEC; NOT_IMPLEMENTED |
+| NKV-012 | **5 unlockable companions in collection, exactly 3 active from unlocked** | G2-R/G3/G4 | 5 unique IDs, unlock, 3 distinct slots, UI and save regression | CONFIRMED_SPEC; NOT_IMPLEMENTED |
 | NKV-013 | Server-authoritative async PvP, replay и защиты | G4/G5 | adversarial request and replay test suite | BLOCKED |
 | NKV-014 | Реальное PvP только асинхронное, без ручных кликов | G4 | multiplayer functional and input-blocking tests | SPECIFIED |
 | NKV-015 | Лиги, leaderboard и 14-дневные сезоны | G4/G5 | server-ranked score, anti-double-claim, rollover | BLOCKED |
@@ -49,7 +49,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 
 ## Art Production 0.1 additions
 - NKV-022: Real PNG image source for hero and location, registered SHA-256, dimensions, and runtime scene mapping. Mechanical tests and actual browser decode/capture are required; artistic/rights do not inherit mechanical PASS.
-- NKV-023: Full roster (1 hero + 3 companions + enemies/boss) consistent illustrated animation assets, separate artistic review and rights documentation. NOT_READY.
+- NKV-023: Full candidate production library **4 main heroes + 5 companions**, with **1+3 active**, plus enemies/boss; full animation and rights acceptance. NOT_READY.
 
 ### Verified Art Production 0.1 evidence
 - **NKV-022 mechanical PASS**: Source SHA-256 and PNG dimension contract in CI [44455017226](https://github.com/m-amirov/Norkavel/actions/runs/44455017226).
@@ -78,3 +78,12 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-029** Strict optional asset registration/Canvas render and deterministic WebP import tooling: `CODE_COMMITTED; ACTUAL_G3_BINARY_IMPORT_NOT_RUN`. Test evidence only after exact SHA workflow success; no false loaded art claims.
 - **NKV-030** Boss, enemies, production pose animations, independent pixel review and usage rights: `BLOCKED`.
 - See [G3 Art Production 0.3](G3-ART-PRODUCTION-0.3.md); do not treat screenshot concept boards as integrated game art.
+
+### 2026-11-19 — Owner-confirmed roster correction (GDD 1.1)
+- **NKV-031:** User chooses one of exactly **4 distinct main heroes**. Selection persists through setup, fight, save/reload and future async PvP snapshot; never field a second main hero. **CONFIRMED / NOT_IMPLEMENTED**.
+- **NKV-032:** Exactly **5 distinct companions** exist in the unlockable collection; unlock occurs gradually through gameplay, and locked companions cannot be put in the team. Specific unlock milestones remain OPEN. **CONFIRMED / NOT_IMPLEMENTED**.
+- **NKV-033:** Active party has **4 units = 1 hero + 3 distinct unlocked companions**, with 2 reserve companions when all five are unlocked; all three companion slots configurable outside fights. **LEGACY_PARTY_SIZE_PASS / CORRECT_COLLECTION_AND_SLOTS_NOT_IMPLEMENTED**.
+- **NKV-034:** Explicit compatibility/migration for schema:1 / local save with one fixed hero and missing unlock data, preserving existing progress without accidental retroactive permanent hero selection. **NOT_IMPLEMENTED**.
+- **NKV-035:** G3 includes **4 separate hero masters + 5 companion masters**, not four renamed candidate companion PNGs. Prior Art 0.3 generated four *companions* only. **BLOCKED_ART**.
+- **NKV-036:** Names/classes/visual personalities of four selectable heroes, fifth companion and schedule of unlocks need content specification. **OPEN_DETAILS / COUNTS_CONFIRMED**.
+- Historical G2 boss, browser and G3 art tests do **not** prove NKV-031–035. Any new PASS requires direct validation on the new code and exact commit SHA.
