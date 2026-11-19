@@ -113,7 +113,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-042 CONFIRMED_REQUIREMENT / NOT_IMPLEMENTED:** fifth companion unlocked once and only once **AFTER first victory over first story boss**. Not at stage entry; not on defeat, repeat victory or speculative stage 7; no premium gate. Validate atomic boss first-clear + unlock on exact SHA.
 - **NKV-043 REQUIREMENT / NOT_IMPLEMENTED:** semantic `first_story_boss_first_clear` event, independent of provisional stage index 10 and existing *technical* G2 boss stage 2; v1 `claimed:[2]` cannot silently grant fifth on migration.
 - **NKV-044 REQUIRED_BALANCE / NOT_TESTED:** all four permanent main heroes must be able to defeat the first story boss using only the first four unlockable companions (three active), without needing the fifth.
-- **OPEN:** fifth's name/appearance and numerical skill tuning (ice controller role is CONFIRMED), plus first story boss's numerical stage. [Gameplay 2.2](GAMEPLAY-DESIGN-2.2.md) and [G2-R Contract](G2-R-CHARACTER-SYSTEM-0.1.md).
+- **OPEN:** fifth's name/appearance and numerical skill tuning (ice controller role is CONFIRMED), plus first story boss stage 10 (owner-approved). [Gameplay 2.2](GAMEPLAY-DESIGN-2.2.md) and [G2-R Contract](G2-R-CHARACTER-SYSTEM-0.1.md).
 
 ### Starter companions confirmed — 2026-11-19
 - **NKV-045 CONFIRMED_SPEC / NOT_IMPLEMENTED**: new playthrough starts with unlocked Ard/sentinel, Mira/ember, Elira/healer, all three active after permanent hero confirmation, regardless of which one of four main heroes selected. Kair and fifth locked until earned.
@@ -127,3 +127,10 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 ### Fifth companion ice-controller role — 2026-11-19
 - **NKV-049 CONFIRMED_SPEC / G2-R_NOT_IMPLEMENTED:** companion #5 is a unique **ice controller** specializing in enemy slow and weakening dangerous attacks. It must not duplicate Ard's shielding, Elira's healing or Mira/Kair damage roles; name, ability rules, cooldowns and numbers remain OPEN. [Design brief](FIFTH-COMPANION-ICE-CONTROL-0.1.md).
 - **NKV-050 DESIGN+BALANCE_PENDING:** cap slow/weaken, prevent boss stunlock; prove observable impact and first-story-boss clear by each permanent main hero without fifth. No new unit/browser receipts yet; older 28/28 PASS tests are legacy and do not prove ice-control abilities.
+
+### Linear campaign map and unique backgrounds — owner confirmed 2026-11-19
+- **NKV-051 / NKV-CMP-01:** exactly five chapters × ten ordered stage nodes (1–50), boss flag on 10,20,30,40,50, with deterministic contiguous progression. **CONFIRMED_SPEC / NOT_IMPLEMENTED**.
+- **NKV-052 / NKV-CMP-02-03:** 5 illustrated maps with linear, non-branching linked nodes and visible player marker traversal; locked nodes cannot be entered, cleared nodes can be revisited per proposed UX, stage preview follows correct node. **CONFIRMED_SPEC / CODE_AND_BROWSER_NOT_RUN**.
+- **NKV-053 / NKV-CMP-04,09:** each of 50 stage IDs has its own original battle backdrop, plus 5 unique maps (55 environment masters; 5 boss arenas included in 50). Check actual files, SHA, stage mapping, rights, visual uniqueness, mobile cropping/decode budgets. **CONFIRMED_ASSET_SCOPE / 55_ORIGINALS_NOT_GENERATED / G3_BLOCKED**.
+- **NKV-054 / NKV-CMP-05-08:** first-clear stage 3 Kair; stage 10 first story boss ice controller, map travel and post-clear chapter opening idempotent; save reload/legacy G2 migration, mouse/touch/portrait. **REQUIRED / G2-R_NOT_IMPLEMENTED**.
+- **WFA agent audit status:** [plan and role routing](AGENT-EXECUTION-G2-R.md) PREPARED, **independent agent runs NOT_STARTED**, no Reviewer/QA agent PASS. CI checks old G2 only.
