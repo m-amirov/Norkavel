@@ -105,3 +105,51 @@ test('G2: boss can defeat the team; retry returns to a playable setup without re
   assert.equal(prepared.stage,2);
   assert.equal(startFight(prepared,91).phase,'fight');
 });
+
+test('G2: corrupted or legacy persisted snapshots fail closed without throwing',()=>{
+  const setup=initialState();
+  const fight=startFight(setup,81);
+  const variants=[
+    {...setup,schema:0},
+    {...setup,party:['sentinel','ember','ember']},
+    {...setup,party:['ember','sentinel','healer']},
+    {...setup,units:[{id:'hero',hp:1,maxHp:205}]},
+    {...setup,gold:Infinity},
+    {...fight,units:[{id:'hero',hp:1,maxHp:205}]},
+    {...fight,units:fight.units.map((u,i)=>i===0?{...u,atk:Infinity}:u)},
+    {...fight,units:fight.units.map((u,i)=>i===1?{...u,shield:-500}:u)},
+    {...fight,units:fight.units.map((u,i)=>i===2?{...u,windup:'20'}:u)},
+    {...fight,units:fight.units.map((u,i)=>i===3?{...u,team:'enemy'}:u)},
+    {...fight,units:fight.units.map((u,i)=>i===4?{...u,id:'hero'}:u)},
+    {...fight,skills:[null,0]},
+    {...fight,events:[{id:1,tick:0,type:'hit'}]},
+    {...fight,target:'nonexistent-enemy'},
+    {...fight,phase:'setup'}
+  ];
+  for(const snapshot of variants)assert.equal(validateState(snapshot),false,
+    'tampered save must be rejected: '+JSON.stringify(snapshot).slice(0,160));
+  assert.equal(validateState(setup),true);
+  assert.equal(validateState(fight),true);
+  assert.equal(validateState(stepCombat(fight,[{type:'click'},{type:'skill2'}])),true);
+  assert.equal(validateState(run(fight,()=>[])),true);
+});
+
+test('G2: 120 reproducible seeds preserve validated save schema and rewards',()=>{
+  for(let seed=0;seed<120;seed++){
+    let s=startFight(initialState(),seed);
+    assert.equal(validateState(s),true);
+    let n=0;
+    while(s.phase==='fight' && n<MAX_TICKS){
+      s=stepCombat(s,n%11===0?[{type:'click'}]:[]);
+      if(n%100===0)assert.equal(validateState(s),true,'seed '+seed+' tick '+n);
+      n++;
+    }
+    assert.notEqual(s.phase,'fight','combat terminates for seed '+seed);
+    assert.equal(validateState(s),true,'final snapshot validated for '+seed);
+    if(s.phase==='victory'){
+      assert.equal(s.gold,45);
+      const repeated=run(startFight(retryStage(s),seed));
+      assert.equal(repeated.gold,45,'no duplicate reward for seed '+seed);
+    }
+  }
+});
