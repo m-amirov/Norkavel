@@ -153,3 +153,35 @@ test('G2: 120 reproducible seeds preserve validated save schema and rewards',()=
     }
   }
 });
+
+test('G2: 1200 seeded composition scenarios terminate with valid rewards and state',()=>{
+  const variants=[
+    ['healer-idle',base=>base,()=>[]],
+    ['healer-click',base=>base,tick=>tick%5===0?[{type:'click'}]:[]],
+    ['ash-idle',base=>chooseCompanion(base,'ash'),()=>[]]
+  ];
+  const stats={};
+  for(const [name,compose,commands] of variants){
+    let wins=0,defeats=0,totalTicks=0;
+    for(let seed=0;seed<400;seed++){
+      const state=run(startFight(compose(initialState()),seed),commands);
+      assert.equal(validateState(state),true,name+' seed '+seed);
+      assert.ok(['victory','defeat'].includes(state.phase),name+' unresolved seed '+seed);
+      assert.ok(state.tick>=1 && state.tick<=MAX_TICKS,name+' invalid duration');
+      if(state.phase==='victory'){
+        wins++;
+        assert.equal(state.gold,45,name+' should earn exactly one first-clear grant');
+        assert.deepEqual(state.claimed,[1]);
+      }else{
+        defeats++;
+        assert.equal(state.gold,0,name+' defeat should not award money');
+        assert.deepEqual(state.claimed,[]);
+      }
+      totalTicks+=state.tick;
+    }
+    stats[name]={wins,defeats,meanTicks:Math.round(totalTicks/400)};
+  }
+  assert.equal(Object.values(stats).reduce((sum,variant)=>sum+variant.wins+variant.defeats,0),1200);
+  console.log('NORKAVEL_G2_BALANCE_SAMPLE_1200 '+JSON.stringify(stats));
+  // This is a deterministic engine/regression sample, NOT proof of fun or final DPS target.
+});
