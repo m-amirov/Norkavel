@@ -49,5 +49,57 @@
     "Boss and attack phases",
     "Independent art review",
     "Fully documented rights clearance"
-  ]
+  ],
+  "stagedG3": {
+    "status": "EXTERNAL_CONVERSATION_ART_PACK_NOT_IN_REPOSITORY",
+    "packageName": "Norkavel-G3-Companions-0.3.zip",
+    "sourceSha256": "00938da98ffe8ab7c33d57042322974cac5f4e2a3d4a7c2bf7beb984712ed3cd",
+    "requiredArtReview": "PENDING_OWNER_APPROVAL",
+    "files": [
+      {
+        "id": "sentinel",
+        "sha256": "75ca09be23b8d9cd6aa21b7965b5e8ca9b6c7a507ace7d54cd8c73b1c2c44727",
+        "path": "assets/art/g3/sentinel-master-0.3.webp",
+        "size": [
+          512,
+          512
+        ],
+        "format": "image/webp",
+        "status": "STAGED_NOT_COMMITTED"
+      },
+      {
+        "id": "ember",
+        "sha256": "ec000497b576aca64ae6cdbe235a80fd17e48d34f83d6721fc9e9e3c8515ab19",
+        "path": "assets/art/g3/ember-master-0.3.webp",
+        "size": [
+          512,
+          512
+        ],
+        "format": "image/webp",
+        "status": "STAGED_NOT_COMMITTED"
+      },
+      {
+        "id": "healer",
+        "sha256": "89f1d12385f67102c624deeae5e5ce3b7d5ae39ad3eed85ab27a5f76a3c36f15",
+        "path": "assets/art/g3/healer-master-0.3.webp",
+        "size": [
+          512,
+          512
+        ],
+        "format": "image/webp",
+        "status": "STAGED_NOT_COMMITTED"
+      },
+      {
+        "id": "ash",
+        "sha256": "487ead97458ad32809d8b5464fa1a2f899849ae8205c55ec0b115e18ecb8965d",
+        "path": "assets/art/g3/ash-master-0.3.webp",
+        "size": [
+          512,
+          512
+        ],
+        "format": "image/webp",
+        "status": "STAGED_NOT_COMMITTED"
+      }
+    ]
+  }
 }
