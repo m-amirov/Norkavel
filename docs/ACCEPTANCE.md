@@ -72,3 +72,9 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - [CI 44461330338 / `fcf3b4a`: SUCCESS](https://github.com/m-amirov/Norkavel/actions/runs/44461330338): 23/23 Node tests PASS including 1800 boss tactics, 200 click damage observations, seeded replay equality, reward idempotency and Core smoke; Chromium natural boss defeat on selected valid stage-two setup, not just a wounded fixture.
 - NKV-027 consecutive PvE attempts use deterministic advancing seeds: **UNIT + BROWSER PASS**; per-player initial entropy is not implemented, production PvP seeds remain server-authoritative by design (not implemented).
 - NKV-026 preliminary engineered balance targets PASS on sampled seeds, final targets and human difficulty sign-off remain OPEN.
+
+### G3 Art Production 0.3 candidate gate
+- **NKV-028** Four individual static companion concept masters generated in the conversation with transparent PNG/WebP and SHA manifest: `SOURCE_PACK_PREPARED_NOT_COMMITTED`.
+- **NKV-029** Strict optional asset registration/Canvas render and deterministic WebP import tooling: `CODE_COMMITTED; ACTUAL_G3_BINARY_IMPORT_NOT_RUN`. Test evidence only after exact SHA workflow success; no false loaded art claims.
+- **NKV-030** Boss, enemies, production pose animations, independent pixel review and usage rights: `BLOCKED`.
+- See [G3 Art Production 0.3](G3-ART-PRODUCTION-0.3.md); do not treat screenshot concept boards as integrated game art.

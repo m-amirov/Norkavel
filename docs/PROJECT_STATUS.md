@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Дата обновления:** 2026-11-19. Current boundary: **G2 EXTENDED BROWSER SMOKE PASS / ART 0.2 CONCEPT / G3 NOT ACCEPTED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2 BOSS BALANCE SAMPLE PASS / G3 0.3 SOURCE PACK + OPT-IN RENDER CODE / G3 NOT ACCEPTED**.
 
 ## Decisions and design
 - G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, one chosen main hero + three companions, async-only PvP, **landscape-only** across mobile game.
@@ -70,3 +70,8 @@
 - 1800 fixed-seed stage-two samples (300 each of 6 tactics): healer idle 118/300 wins, healer interrupt 300/300, healer barrier 298/300, healer both 300/300, ash idle 247/300, ash skills 300/300. First-stage sample and ~18.4% manual-tap damage share remain unchanged by boss-only tuning.
 - **Root cause fixed:** browser PvE previously restarted with a single static seed; each playable start now advances and persists a deterministic LCG seed, so retries vary while explicit-seed simulation/replay remains deterministic. The initial state still uses the fixed 24071 seed for the current prototype; per-player initial entropy is not implemented.
 - Mechanical balance is **PROVISIONAL_SAMPLE_PASS**. Human enjoyment, physical touch devices, complete art, async PvP and release remain not verified.
+
+## G3 Art Production 0.3 (2026-11-19)
+- [Production report](G3-ART-PRODUCTION-0.3.md): a separate chat ZIP contains transparent, 512×512 static companion PNG and WebP masters for Ард, Мира, Элира and Кайр (four assets, 289 788 bytes of WebP total) plus source and SHA evidence.
+- Runtime opt-in registry and drawing route committed; absent image binaries are not loaded or represented as integrated. The ZIP bytes **have not been committed to GitHub**. A validating `scripts/import-g3-art.mjs` is provided but has not been executed with the real ZIP in the repository.
+- Mechanical importer/manifest/browser tests added. Check the exact SHA CI before making any PASS claim. Boss, enemies, true frame animation, depth-layer parallax, rights and human image review remain outstanding. G3 BLOCKED.
