@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY: G2R-F02a:** four archetypes and four 3+ultimate hero kits OWNER_CONFIRMED (names, art and numerical balance OPEN). G2R-S01 persistence foundation complete; F02 battle/UI NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02a AWAITING_CI; NEXT READY после его exact-SHA/CI: G2R-F02b.** Four archetypes and four 3+ultimate hero kits OWNER_CONFIRMED (names, art and numerical balance OPEN). G2R-S01 persistence foundation complete; F02 battle/UI NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
 **Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01+E01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
@@ -247,3 +247,9 @@
 - `G2R-F02` is now **READY** (F02a domain/test first); this commit changes documentation/decision gates only and cannot count as runtime/Save v2 browser onboarding/gameplay implementation.
 - Existing [CI #44581276187](https://github.com/m-amirov/Norkavel/actions/runs/44581276187) 77/77 is S01 storage evidence; [CI #44584454244](https://github.com/m-amirov/Norkavel/actions/runs/44584454244) SUCCESS at Hero Kits review commit `c74e79187fa3b2ab478c8b3bdefe29c6f274a702` confirms only prior tests, not F02 implementation.
 - G3 4+5 character art, 50 encounter content, full Save v2 UI and trusted battle reward producer remain incomplete; no publication.
+
+## G2R-F02a hero-kit domain (2026-11-19)
+
+- Новый изолированный `src/hero-kits-v1.mjs` связывает `hero_slot_1..4` с четырьмя подтверждёнными ролями и всеми 16 подтверждёнными навыками. Рабочие имена явно остаются `provisional`; production numbers не зашиты и поступают только через versioned injected policy.
+- Resolver проверяет полный Profile v2, принадлежность навыка выбранному постоянному герою, level-5 gate ultimate, enemy target и exact battle/policy shape; возвращает детерминированные bounded records для damage, protection, control, combos, counters и marked priority. Invalid/non-finite/duplicate input возвращает `null` без мутации.
+- Локально `npm run check` PASS: 82/82 Node tests и Ludory Core smoke. Exact commit/CI ожидаются. Legacy combat/UI/save не изменены; F02b–F02d, production balance, boss viability и browser acceptance остаются NOT_IMPLEMENTED.
