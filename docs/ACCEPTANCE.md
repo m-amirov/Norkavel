@@ -81,8 +81,8 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 
 ### 2026-11-19 — Owner-confirmed roster correction (GDD 1.1)
 - **NKV-031:** User chooses one of exactly **4 distinct main heroes**. Selection persists through setup, fight, save/reload and future async PvP snapshot; never field a second main hero. **DOMAIN FOUNDATION PASS at `27be4dd`: four provisional slots + immutable one-time selection; UI/combat/save write NOT_IMPLEMENTED**.
-- **NKV-032:** Exactly **5 distinct companions** exist in the unlockable collection; unlock occurs gradually through gameplay, and locked companions cannot be put in the team. **DOMAIN FOUNDATION PASS at `27be4dd`: five records, starter/legacy unlock invariants and locked-party rejection; gameplay unlock events NOT_IMPLEMENTED.**
-- **NKV-033:** Active party has **4 units = 1 hero + 3 distinct unlocked companions**, with 2 reserve companions when all five are unlocked; all three companion slots configurable outside fights. **LEGACY_PARTY_SIZE_PASS / CORRECT_COLLECTION_AND_SLOTS_NOT_IMPLEMENTED**.
+- **NKV-032:** Exactly **5 distinct companions** exist in the unlockable collection; unlock occurs gradually through gameplay, and locked companions cannot be put in the team. **DOMAIN PASS at `e384e5e`: strict stage 3/10 first-clear receipts, locked rejection and idempotency; UI/runtime integration NOT_IMPLEMENTED.**
+- **NKV-033:** Active party has **4 units = 1 hero + 3 distinct unlocked companions**, with 2 reserve companions when all five are unlocked; all three companion slots configurable outside fights. **DOMAIN PASS at `e384e5e`: all three slots replace/swap unlocked IDs outside combat; browser collection UI NOT_IMPLEMENTED**.
 - **NKV-034:** Explicit compatibility/migration for schema:1 / local save with one fixed hero and missing unlock data, preserving existing progress without accidental retroactive permanent hero selection. **READONLY PREPARATION PASS at `27be4dd`; atomic v2 persistence/browser onboarding NOT_IMPLEMENTED**.
 - **NKV-035:** G3 includes **4 separate hero masters + 5 companion masters**, not four renamed candidate companion PNGs. Prior Art 0.3 generated four *companions* only. **BLOCKED_ART**.
 - **NKV-036:** Names/classes/visual personalities of four selectable heroes, fifth companion **name/art/skill details** and first-story-boss stage **10 OWNER_CONFIRMED**; exact hero/companion names and skill details still need specification; fifth **ice-controller role is OWNER_CONFIRMED**; Kair after first-clear stage 3 CONFIRMED; fifth's **boss-clear trigger** is CONFIRMED. **OPEN_DETAILS / COUNTS_AND_FIFTH_TRIGGER_CONFIRMED**.
@@ -105,7 +105,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-037: CONFIRMED_SPEC / NOT_IMPLEMENTED:** 1 of 4 different main heroes chosen **once** per playthrough with explicit confirmation and cannot be changed afterwards; no menu, free swap or premium swap. [Gameplay Design 2.2](GAMEPLAY-DESIGN-2.2.md).
 - **NKV-038: DESIGN_PROPOSAL / NOT_IMPLEMENTED:** optional pre-confirmation test fight must not mutate real save, gold, first-clear, unlocks or committed hero ID.
 - **NKV-039: G2-R_NOT_IMPLEMENTED:** four individual hero profiles must independently complete the campaign, including bosses, with their permanently selected hero and only available companion counters. Do not demand all heroes in one player profile.
-- **NKV-040: READONLY_MIGRATION_FOUNDATION_PASS / ATOMIC_WRITE_NOT_IMPLEMENTED:** `prepareLegacyProfileV2` keeps the generic hero unselected, preserves an intact v1 checkpoint plus gold/level/claimed/party/Kair access, and rejects corrupt or drifting candidates. Runtime onboarding and writing the new key remain open.
+- **NKV-040: MUTABLE_V2_ACTIVATION_DOMAIN_PASS / ATOMIC_WRITE_NOT_IMPLEMENTED:** `prepareLegacyProfileV2` keeps the generic hero unselected; `activateLegacyProfileV2` permits later v2 mutations while retaining the intact checkpoint and imported gold/level/claimed/party/Kair provenance. Runtime onboarding and writing the new key remain open.
 - **NKV-041: UNLOCK_DESIGN_OPEN:** **starter triple Ard/Mira/Elira CONFIRMED**; Kair stage-3 first-clear CONFIRMED; **fifth after first STORY boss first victory is CONFIRMED by owner** (stage 10 OWNER_CONFIRMED). No runtime PASS claim.
 - GitHub CI verifying document changes does not prove permanent hero runtime implementation; G2-R and G3 remain blocked.
 
@@ -116,16 +116,16 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **OPEN:** fifth's name/appearance and numerical skill tuning (ice controller role is CONFIRMED), plus first story boss stage 10 (owner-approved). [Gameplay 2.2](GAMEPLAY-DESIGN-2.2.md) and [G2-R Contract](G2-R-CHARACTER-SYSTEM-0.1.md).
 
 ### Starter companions confirmed — 2026-11-19
-- **NKV-045 DOMAIN_FOUNDATION_PASS / RUNTIME_NOT_IMPLEMENTED**: new schema-2 profile starts with Ard/sentinel, Mira/ember, Elira/healer unlocked and active; Kair and fifth are rejected as forged unlocks until a later milestone API exists.
-- **NKV-046 READONLY_MIGRATION_PASS / PERSISTENCE_NOT_IMPLEMENTED**: valid v1 preparation preserves Kair/ash access and exact selected party without extra unlock payout; no browser v2 write occurs in F01.
+- **NKV-045 DOMAIN_PASS / RUNTIME_NOT_IMPLEMENTED**: new schema-2 profile starts with Ard/sentinel, Mira/ember, Elira/healer unlocked and active; Kair and fifth remain locked until validated stage 3/10 first victories.
+- **NKV-046 ACTIVATION_AND_JSON_RESTORE_PASS / BROWSER_PERSISTENCE_NOT_IMPLEMENTED**: valid v1 activation preserves Kair/ash access, exact party, gold and prototype claims while retaining the recovery checkpoint; no browser v2 write occurs yet.
 - Fourth's trigger (Kair after first-clear stage 3) CONFIRMED; fifth after first story boss first victory is CONFIRMED. Existing G2 tests cannot prove these new state rules.
 
 ### Kair stage 3 — owner confirmed 2026-11-19
-- **NKV-047 CONFIRMED_SPEC / NOT_IMPLEMENTED:** Kair (`ash`) unlocks exactly once after first victorious completion of PvE stage 3. Not on stage entry, loss, retry, reload or duplicate event; no automatic replacement of three active companions.
-- **NKV-048 MIGRATION_REQUIRED / NOT_IMPLEMENTED:** legacy G2 saves retain Kair entitlement even without new stage 3 clear. Test 3/5→4/5→5/5, all four fixed hero profiles, persistence and negative paths.
+- **NKV-047 DOMAIN_PASS at `e384e5e` / UI_NOT_IMPLEMENTED:** Kair (`ash`) unlocks once on first verified stage-3 victory; defeat, unrelated stage, replay and duplicate attempt do not regrant it, and party stays unchanged.
+- **NKV-048 DOMAIN_MIGRATION_PASS / BROWSER_NOT_IMPLEMENTED:** activated legacy profiles retain Kair without stage-3 receipt, then can progress to 5/5 and survive JSON restore without losing imported values.
 
 ### Fifth companion ice-controller role — 2026-11-19
-- **NKV-049 CONFIRMED_SPEC / G2-R_NOT_IMPLEMENTED:** companion #5 is a unique **ice controller** specializing in enemy slow and weakening dangerous attacks. It must not duplicate Ard's shielding, Elira's healing or Mira/Kair damage roles; name, ability rules, cooldowns and numbers remain OPEN. [Design brief](FIFTH-COMPANION-ICE-CONTROL-0.1.md).
+- **NKV-049 CATALOG_AND_UNLOCK_DOMAIN_PASS / COMBAT_NOT_IMPLEMENTED:** companion #5 uses provisional `control` with `role=ice_controller` and unlocks once on first verified stage-10 story-boss victory. Slow/weaken effects, name, ability rules, cooldowns and numbers remain OPEN. [Design brief](FIFTH-COMPANION-ICE-CONTROL-0.1.md).
 - **NKV-050 DESIGN+BALANCE_PENDING:** cap slow/weaken, prevent boss stunlock; prove observable impact and first-story-boss clear by each permanent main hero without fifth. No new unit/browser receipts yet; older 28/28 PASS tests are legacy and do not prove ice-control abilities.
 
 ### Linear campaign map and unique backgrounds — owner confirmed 2026-11-19
@@ -154,7 +154,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 ### Manual gold upgrades for companions — owner confirmed 2026-11-19
 - **NKV-064 / NKV-PRG-07 CONFIRMED_SPEC / NOT_IMPLEMENTED:** each **unlocked** companion has its own level, and player **manually buys a single next level with gold**. No companion XP auto-levels or skill upgrade tree. Show current level and next-level gold cost; reserve companions can retain and manually advance their own level.
 - **NKV-065 / NKV-PRG-08 REQUIRED / NOT_TESTED:** valid purchase atomically debits gold and increments **only** selected companion level once; locked Kair/fifth, insufficient gold, duplicate `purchaseId`, stale `expectedLevel`, cap overflow and invalid save cannot debit/award. Browser and unit tests must demonstrate reload and rapid double-click idempotence.
-- **NKV-066 BALANCE_OPEN:** price curve, level cap, stat scaling, initial Kair/fifth levels and affordability, especially stage-3 / first-boss pacing. Hero level-ups by confirmed-victory XP are now OWNER_CONFIRMED; precise XP curves/replay multiplier remain OPEN; **replay XP reduced and defeat XP 0 CONFIRMED**, ultimate unlock at level 5 and 3 upgrades CONFIRMED; skill tuning OPEN. No G2-R runtime or independent QA PASS.
+- **NKV-066 BALANCE_OPEN:** price curve, level cap, stat scaling, initial Kair/fifth levels and affordability, especially stage-3 / first-boss pacing. Schema validation intentionally has no gameplay cap `100`; its positive safe-integer bound is serialization safety only. Hero XP values, replay coefficient and skill tuning remain OPEN. No G2-R runtime or independent QA PASS.
 
 ### XP from victorious battles — owner confirmed 2026-11-19
 - **NKV-067 / NKV-PRG-09 CONFIRMED_SPEC / NOT_IMPLEMENTED:** verified win grants XP to the one permanently selected main hero. On threshold crossing, hero levels up and player receives an upgrade choice for one of three skills (rank 0..4) or eligible ultimate; **companion levels do not change**.
@@ -167,8 +167,8 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-072 OWNER_REVIEW / BALANCE_OPEN:** XP stage schedule, reduced-XP ratio/rounding, thresholds/caps and PvP/idle XP remain undecided. No G2-R system code or independent QA has been executed.
 
 ### Ultimate progression — owner approval 2026-11-19
-- **NKV-073 / NKV-PRG-13 CONFIRMED_SPEC / NOT_IMPLEMENTED:** ultimate locked through hero level 4; unlocks at **hero level 5**. Exactly **three optional upgrade steps** chosen by the player at hero level-up instead of one of three ordinary skills (4 steps each). No automatic ultimate upgrade at unlock.
-- **NKV-074 / NKV-PRG-14 REQUIRED / NOT_TESTED:** after 4→5, ult is usable, choices at rank 0..3 legal, max 3/3 (fourth upgrade rejected), no cast/upgrade before 5, reload/multi-level-up/legacy migration do not lose or duplicate choices. Must verify 4 unique heroes with distinct ultimate abilities.
+- **NKV-073 / NKV-PRG-13 DOMAIN_GATE_PASS / COMBAT_NOT_IMPLEMENTED:** schema and `upgradeHeroSkill` reject ultimate rank before hero level 5; at level 5 a pending player choice can raise rank 0→1 without an automatic/free rank. Full hero progression remains G2R-P01.
+- **NKV-074 / NKV-PRG-14 PARTIAL_DOMAIN_PASS:** early upgrade is rejected and rank cap remains 3; casting, 4 unique ultimates, XP multi-level settlement and browser reload are NOT_IMPLEMENTED/NOT_TESTED.
 - **NKV-075 BALANCE_OPEN:** hero level cap 16 CONFIRMED, XP thresholds/skill effects, ultimate cooldown, post-cap XP accounting OPEN. Legacy G2 with 2 skills does not establish G2-R pass.
 
 ### Maximum hero level 16 — OWNER CONFIRMED 2026-11-19

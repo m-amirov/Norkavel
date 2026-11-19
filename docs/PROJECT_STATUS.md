@@ -1,9 +1,17 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-F03 (roster/unlock/claim domain)**; G2R-F02 content остаётся BLOCKED_OWNER, хотя независимый persistence-срез разрешён. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-P01 (hero XP/level/choice domain)**; G2R-F02 content остаётся BLOCKED_OWNER, а G2R-E01/C01 также READY после F03. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
-**Дата обновления:** 2026-11-19. Current boundary: **G2R-F01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
+
+## G2R-F03 roster, unlock and migration activation (2026-11-19)
+- Exact implementation `e384e5e` extends only pure `src/profile-v2.mjs`; legacy combat/UI/save key remain unchanged.
+- Strict verified-result contract (`resultVersion`, immutable `attemptId`, `stageId`, victory/defeat) records each attempt once. First victory stage 3 grants Kair receipt once; first victory story-boss stage 10 grants provisional `control` with confirmed `ice_controller` role once. Defeat, replay, duplicate/conflicting attempt and technical G2 stage 2 grant neither unlock.
+- All three companion slots support unlocked replacement/swap outside combat; unlock never rewrites the current party. Legacy activation retains the full recovery checkpoint and imported gold, party, prototype claims and Kair while permitting later v2 mutations and JSON restore.
+- F01 corrections: ultimate upgrades fail closed below hero level 5; companion level validation has no invented gameplay cap 100 (only positive safe-integer serialization bounds).
+- [CI 44531383856](https://github.com/m-amirov/Norkavel/actions/runs/44531383856) SUCCESS on exact `e384e5e`: 55/55 Node tests, Ludory Core smoke, project-scoped WFA bootstrap and headless Chrome legacy G2 smoke. Local Chromium remains unavailable.
+- Remaining: browser v2 storage/onboarding/collection UI, campaign progression authority, actual ice slow/weaken combat effects and independent browser flow evidence. No G2-R runtime or balance PASS is implied.
 
 ## G2R-F01 profile v2 foundation (2026-11-19)
 - Exact implementation `27be4dd`: separate pure `src/profile-v2.mjs`; current `src/combat.mjs`, `web/main.mjs` and `norkavel.g2.save.v1` remain unchanged.
