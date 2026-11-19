@@ -1,5 +1,7 @@
 # Norkavel — Art Production 0.2 / Companion Family
 
+**Correction 19.11.2026:** per [GDD 1.1](GDD-1.1.md), 4 selectable distinct main heroes AND 5 unlockable companions (3 active). The four characters in this historical concept sheet are companion candidates, not the four main hero choices.
+
 **Date:** 2026-11-19. **Gate:** CONCEPT_SHEET_PRODUCED / NOT_IN_REPOSITORY / G3_BLOCKED.
 
 ## Continuity
@@ -31,7 +33,7 @@ The first three characters are **concepts only**. The current composite's overla
 These hashes document the conversation artifact, **not repository contents**; CI cannot verify absent assets.
 
 ## Production decision and next implementation
-1. Generate **individual, unobstructed, consistent side-facing masters** (not cuts) for all 4 companion IDs, 3 enemies and 1 boss. Keep transparent backgrounds, coherent height / eye lines / ground contact, no baked HUD or labels.
+1. Generate **individual, unobstructed, consistent side-facing masters** (not cuts) for **4 main hero choices + 5 total companion IDs** (4 candidates already made and fifth missing), 3 enemies and 1 boss. Keep transparent backgrounds, coherent height / eye lines / ground contact, no baked HUD or labels.
 2. Produce actual attack/hit/death pose sheets (or validated rig), not CSS transform over static art. Add art hash, dimension, copyright/source evidence and real use-site in `assets/art/manifest.json`.
 3. Cleanly separate a 3-depth-layer arena rather than claiming a painted flat background is parallax.
 4. Wire images through explicit static asset allowlist and visible load diagnostics. Validate no opaque rectangles, silhouettes at 640×360 and 844×390, tap-target/telegraph occlusion, decode performance, and browser screenshots.
