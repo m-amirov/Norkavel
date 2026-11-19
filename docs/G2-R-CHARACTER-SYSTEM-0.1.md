@@ -78,10 +78,10 @@ If there are no legacy users in practice the migrator still requires unit fixtur
 
 Design proposal from Gameplay 2.0:
 - OWNER_CONFIRMED: new profile unlocks `[sentinel, ember, healer]` only, and those three fill active companion slots after permanent main-hero confirmation;
-- unlock ash after proposed stage 3;
+- OWNER_CONFIRMED: unlock `ash` only on first successful campaign stage-3 clear;
 - **OWNER CONFIRMED:** unlock fifth companion only on `first_story_boss_first_clear` event, after first confirmed victory over first *story* boss. Do not use old technical G2 boss stage=2, and do not hardcode a provisional campaign stage=10; fifth's identity/role remain OPEN.
 - grant on first verified clear, not every replay.
-The initial starter party and fifth **unlock event** are owner CONFIRMED; Kair/stage-3 milestone, actual first story boss stage ID and fifth's role/identity remain awaiting owner acceptance. A dev-only configuration can support synthetic milestones for testing but may not be described as final game content.
+The initial starter party and fifth **unlock event** are owner CONFIRMED; actual first story boss stage ID and fifth's role/identity remain awaiting owner acceptance. A dev-only configuration can support synthetic milestones for testing but may not be described as final game content.
 
 Unlock must not be purchasable-only. When unlocking, validate new companion definition, update collection atomically, notify UI once, never auto-remove a current member. The default auto-team may suggest a switch; never rewrite player lineup without consent after initial setup.
 
@@ -152,9 +152,14 @@ Do not declare G2-R complete when only data structures or mock buttons exist. A 
 ## 2026-11-19 owner unlock decision
 - Fifth-companion unlock is owner-confirmed **AFTER first successful clear of first story boss**. Persist a semantic first-clear milestone; stage number is unapproved. The tutorial/testing G2 stage-2 boss is not automatically that story boss.
 - Unlock event must be atomic with first-clear reward idempotency, never from repeat/stale/corrupt/failed events. Legacy G2 boss claim must not retroactively mint fifth companion without an explicit stage mapping.
-- Initial 3 companions are owner CONFIRMED; pending design: Kair's unlock timing and the fifth's identity, role and first boss campaign stage.
+- Initial 3 companions are owner CONFIRMED; pending design: the fifth's identity, role and first boss campaign stage.
 
 ## Starter trio — owner approval 2026-11-19
 - New v2 profile: exactly `sentinel`, `ember`, `healer` unlocked, and all three in active `party`; `ash` and fifth are locked. Starting any of four permanent hero profiles must be possible without softlock.
 - Migrated v1 profile: preserve existing `ash` access and party, no retroactive relocking. Fifth unlock remains tied to first *story* boss first clear, never legacy test stage 2.
 - G2R-20: unit and Chromium checks of new profile unlock subset, battle with four hero IDs, locked Kair rejection, legacy Kair preservation, persistence/retry. NOT_IMPLEMENTED.
+
+## 2026-11-19 — Kair stage-3 first-clear requirement
+- For new profiles, the first successful clear of campaign stage 3 must unlock `ash` (fourth companion). No unlock on stage entry, defeat, retry or duplicate event. Persist milestone and unlock atomically; never auto-replace the active party.
+- Migrated valid G2 profiles retain prior `ash` entitlement independently of new campaign stage 3; preserve progression without duplicate rewards. Fifth remains first-story-boss-first-clear only.
+- G2R-21 (NOT IMPLEMENTED): test 3/5 → 4/5 after first stage-3 clear → 5/5 after first story-boss clear, idempotence, reload, defeat, all four permanent hero profiles and legacy migration.
