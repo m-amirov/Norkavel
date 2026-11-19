@@ -1,7 +1,7 @@
 # Norkavel — XP Pacing & Hero Progression 2.5
 
 **Дата:** 2026-11-19  
-**Статус:** QUALITATIVE_CURVE_OWNER_CONFIRMED / NUMERICAL_BALANCE_OPEN / G2-R_NOT_IMPLEMENTED
+**Статус:** QUALITATIVE_CURVE_OWNER_CONFIRMED / CANDIDATE_NUMERICAL_MODEL_COMPUTED / OWNER_NUMBERS_REVIEW / G2-R_NOT_IMPLEMENTED
 
 ## 1. Новое решение владельца
 
@@ -49,11 +49,11 @@
 | ID | Требование | Статус |
 |---|---|---|
 | NKV-XP-01 | 15 положительных последовательно возрастающих `xpToNextLevel` для уровней 1…15, без 16→17 | CONFIRMED_CURVE_POLICY / CONFIG_NOT_PRODUCED |
-| NKV-XP-02 | Ранние level-ups быстрее, поздние требуют больше XP; симуляции по всем 50 этапам, сравнение normal/moderate/intensive replay | REQUIRED_BALANCE_EVIDENCE / NOT_RUN |
+| NKV-XP-02 | 50-stage numerical XP/reward model, normal/moderate/intensive replay | **ARITHMETIC_MODEL_RUN / REAL_COMBAT_NOT_RUN** |
 | NKV-XP-03 | XP first clear > replay > defeat 0 для одного этапа; idempotency и отдельные честные повторы; одна XP-выдача на `attemptId` | CONFIRMED_SPEC / NOT_IMPLEMENTED |
 | NKV-XP-04 | При пороге ровно один player skill-choice; no skill choice after lvl16, pending сохраняются | CONFIRMED_SPEC / NOT_IMPLEMENTED |
 | NKV-XP-05 | Левел 5 ульта доступна, stage10 boss проходим без пятого спутника, обычный маршрут не требует искусственного фарма из-за XP-гейта | GAMEPLAY_VALIDATION / NOT_RUN |
 | NKV-XP-06 | Нет XP для спутников, золотые апгрейды индивидуальные, не затронуты повторный бой/сохранения/migration | REQUIRED_REGRESSION / NOT_RUN |
 | NKV-XP-07 | Фактический browser/integration acceptance по exact HEAD, корректная XP-полоска на капе, повторные победы/поражения/двойные результаты | REQUIRED_BROWSER / NOT_RUN |
 
-Статус: это **дизайн-контракт** и задание на балансировку, а не реализованная XP-система. Реальное выполнение WFA Designer/QA/Reviewer агентами не запускалось; зелёный CI старого G2 не подтверждает новые условия.
+Статус: это **дизайн-контракт**, а не реализованная XP-система. **Предложенная (не утверждённая) численная модель** приведена в [Economy Balance 0.1](ECONOMY-BALANCE-0.1.md) и проверяется [симулятором](../scripts/economy-balance.mjs) и [тестами](../tests/economy-balance.test.mjs): 4534 XP до lvl16, Normal cap stage50, Moderate stage46, Intensive stage33. Требуются owner numeric review и боевые симуляции четырёх героев. Реальное выполнение WFA Designer/QA/Reviewer агентами не запускалось; зелёный CI старого G2 не подтверждает новые условия.
