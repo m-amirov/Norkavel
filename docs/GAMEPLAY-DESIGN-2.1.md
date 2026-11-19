@@ -75,7 +75,7 @@
 
 ## 6. PvE progression — сначала структура, потом числа
 
-**Предложенная общая структура:** 5 глав × 10 этапов = 50; каждый этап 1–3 короткие волны, на 10/20/30/40/50 — босс. Эта структура ПРОЕКТНАЯ, не подтверждённая владельцем.
+**OWNER CONFIRMED:** 5 глав × 10 этапов = 50; bosses 10/20/30/40/50. Каждый этап 1–3 короткие волны — PROPOSED, ещё не утверждено. Для каждой главы утверждена отдельная линейная карта из 10 точек.
 
 Первая глава в деталях (без утверждения финальной сложности):
 
@@ -90,9 +90,9 @@
 | 7 | ослабленные эффекты контроля на сильных врагах | подготовка к боссу |
 | 8 | две волны с разными угрозами | проверка универсальности состава |
 | 9 | telegraph тренировочного мини-босса | научить защите без forced failure |
-| 10 (предлагаемый номер) | босс главы и объяснение поражения | **CONFIRMED:** пятый после первой победы над первым сюжетным боссом; сам номер этапа OPEN |
+| 10 (предлагаемый номер) | босс главы и объяснение поражения | **CONFIRMED:** пятый после первой победы над первым сюжетным боссом именно **этапа 10** |
 
-В Gameplay 2.0 пятый спутник предварительно открывался на этапе 7. **OWNER CONFIRMED 19.11.2026:** пятый спутник выдаётся **за первую победу над первым сюжетным боссом**. Этап 10 здесь только условный номер при пока не утверждённой структуре 5×10. Этап 7 как альтернатива отклонён.
+В Gameplay 2.0 пятый спутник предварительно открывался на этапе 7. **OWNER CONFIRMED 19.11.2026:** пятый спутник выдаётся **за первую победу над первым сюжетным боссом**. **Первый босс теперь owner-confirmed на этапе 10**, так как 5×10 с боссом на каждом десятом утверждено. Этап 7 как альтернатива отклонён.
 
 Главы 2–5 строятся на развитии правил, а не на бесконечном умножении HP:
 - 11–20: приоритет дальних целей, атаки по тылу, противо-построения;
@@ -158,10 +158,14 @@
 
 ## Locked boss-first-clear reward decision — 19.11.2026
 - Reward event for companion #5 is the first confirmed win against the **first story boss**, not a numeric G2 test stage. Reward once and only once; every fixed hero must be able to win before #5 is available.
-- Do not label proposed stage 10 OWNER_CONFIRMED; fifth ice-controller ROLE is owner confirmed but detailed skills are not. Fourth unlock remains pending.
+- Stage 10 as first story boss is now OWNER_CONFIRMED; fifth ice-controller ROLE is owner confirmed but detailed skills are not. Fourth unlock remains pending.
 
 **Owner approval 19.11.2026:** initial party contains exactly `sentinel`, `ember`, `healer`. Kair opens after first clear of stage 3 — OWNER CONFIRMED; fifth after first story boss first clear (confirmed). Existing legacy G2 entitlement to Kair preserved.
 
 **Owner decision (19.11.2026):** Кайр/ash открывается за первую победу на этапе 3. Проигрыш, повторная победа и загрузка не создают повторного открытия. Пятый спутник по-прежнему появляется после победы над первым сюжетным боссом. G2-R требует реализации, а не только документации.
 
 **Ice-controller role confirmation (19.11.2026):** пятому спутнику утверждена ледяная специализация: slow врагов и ослабление сильных атак; точные cooldown/формулы и визуал — design OPEN. [Mechanics brief](FIFTH-COMPANION-ICE-CONTROL-0.1.md).
+
+## Campaign map option A — approved 19.11.2026
+- Five maps with linear ten-node travel, 50 original battle backdrops, boss at 10/20/30/40/50 and stage-10 fifth-companion unlock are OWNER_CONFIRMED. No forks or branching levels.
+- Timing of map travel, preview UI, biome lore, precise level beats and encounter data are PROPOSED. No gameplay code/assets updated. [Campaign Map 2.3](CAMPAIGN-MAP-2.3.md).
