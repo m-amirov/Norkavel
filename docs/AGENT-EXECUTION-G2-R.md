@@ -80,5 +80,12 @@ Each executed role must produce a receipt:
 
 ## Progression scope update — 2026-11-19
 - Owner confirmed: no camp level; every companion has only an individual character level, and one permanent hero has own level with **three skills (four upgrade steps each) plus upgradeable ultimate**. Player personally chooses improvement after every hero level-up. Old 2-hero-skill and camp-level proposals are superseded.
-- Before G2-R Developer agent coding, Designer must clarify XP delivery, companion reserve leveling and ultimate cap/unlock; Reviewer must verify hero choice/upgrade persistence and save v1 migration, QA must validate 4 hero kits + 5 companion level independence and no duplicated skill choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- Before G2-R Developer agent coding, Designer must clarify **hero** XP/level method, companion next-level **gold cost** curve/stat scaling and ultimate cap/unlock (companion XP is REJECTED); Reviewer must verify hero choice/upgrade persistence and save v1 migration, QA must validate 4 hero kits + 5 companion level independence and no duplicated skill choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 - This is updated agent work allocation only, NOT actual agent execution, no WFA independent review receipt or implementation PASS.
+
+## Companion gold upgrade scope confirmed — 2026-11-19
+- Owner confirmed player manually spends **gold** to raise the **individual level of an unlocked companion**. Companions earn **no XP** or automatic levels; there are no companion skill trees and no shared camp level. Existing active/reserve levels remain persistent. Distinct hero level acquisition still OPEN.
+- **Designer:** propose affordable gold-cost curve for five characters unlocked in stages 0/3/10, level caps and stat scaling with 50-stage + repeat-farming economy simulations, avoiding premature hardcoding.
+- **Developer (later):** separate atomic purchase command with unlock validation, cost snapshot, gold balance, purchaseId/retry dedup, save v2 and legacy migration.
+- **QA + Reviewer (later):** verify exact balance spend, no double charge/no duplicated levels under reload/fast taps, no upgrade locked characters, no auto XP, preserve reserve levels; don't mark these roles PASS without separate execution evidence.
+- Status: **AGENT_PLAN_ONLY / G2-R_NOT_IMPLEMENTED**, [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).

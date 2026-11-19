@@ -135,5 +135,10 @@
 
 ## Progression design approved 2026-11-19
 - CONFIRMED: **no camp/squad level**; each of five companions levels separately with no companion skill upgrade trees. Only the selected permanent main hero has own level and **3 skills (4 upgrades each) + an upgradeable ultimate**; after **every hero level-up** player chooses which eligible ability to improve.
-- OLD proposals of shared camp level and just 2 hero skills SUPERSEDED. XP method, rank cap for ultimate, unlock timing, level caps, reserve XP and currency costs OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- OLD proposals of shared camp level and just 2 hero skills SUPERSEDED. **Companion levels purchased manually for gold CONFIRMED**; gold cost curve/limits/stats and **hero XP** method, ultimate rank cap/unlock timing still OPEN. No companion/reserve XP. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 - DESIGN_ONLY: no Save v2, updated 3+ult HUD, level-up choices, new character-level engine or regression have been run. Prior 28/28 legacy G2 tests only establish old runtime.
+
+## Owner approval — companion gold leveling 2026-11-19
+- **CONFIRMED:** each of five companions independently upgrades one level **manually via player-spent gold**. No companion XP or automated level-up, including reserve and idle. No companion skill trees; hero level-up/3+ultimate scheme remains separate.
+- Cost, caps and stat curves OPEN; do not claim a single global gold-only economy or gold hero-level purchase. G2-R must perform atomic/idempotent `gold -= cost` and `companionLevel[id] += 1` per valid unlocked companion, reject insufficient gold/duplicates/corrupt save, and preserve old G2 gold, Kair access and relevant progress.
+- **G2-R NOT_IMPLEMENTED**, new companion upgrade UI and domain tests NOT_RUN; only GDD/agent contract changed. [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).

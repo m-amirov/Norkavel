@@ -21,7 +21,7 @@
 
 ## 3. Рост силы и баланс без переключения героя
 
-- **OWNER CONFIRMED:** нет общего уровня лагеря; каждый спутник прокачивает только свой уровень. Постоянный герой имеет отдельный уровень и 3 способности с 4 улучшениями у каждой + прокачиваемую ульту. Золото/XP не согласованы.
+- **OWNER CONFIRMED:** нет общего уровня лагеря; **каждый спутник прокачивает только свой уровень вручную за золото**, без XP, без деревьев навыков. Постоянный герой имеет отдельный уровень и 3 способности с 4 улучшениями у каждой + прокачиваемую ульту; способ получения hero XP пока OPEN.
 - Индивидуальная прокачка относится **только к выбранному главному герою**. Не нужно открывать или прокачивать три недоступных главных героя внутри этого прохождения.
 - Все четыре варианта — полноценные направления игры, а не выбор неправильной сложности; ни один этап/босс не требует обязательной способности героя другого класса. В частности, shield-bash не может быть единственным способом пережить Хранителя Разлома.
 - Для серьёзной угрозы минимум два реальных контрпути с доступными спутниками и/или навыками текущего героя. Расстановка и улучшения помогают, но не подменяют осмысленные тактические решения.
@@ -99,3 +99,8 @@
 ## Superseding progression model — owner confirmed 19.11.2026
 - No camp level, no companion skill upgrade trees: each of 5 companions simply has an independent level. Selected permanent main hero has own level, three ordinary abilities with 4 upgrade steps each and an upgradeable ultimate; player chooses what to improve after every hero level-up.
 - Source of truth [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). XP, ultimate cap/unlock, skill names and balance still OPEN. Older shared-camp and two-ability text elsewhere is not owner-approved.
+
+## 2026-11-19 — companion gold-leveling owner decision
+- Each of five companions upgrades its own level **manually by the player's explicit gold purchase**; do not grant companion XP from active fights, reserve, idle or any automated service. UI shows per-unit level and next gold cost; no companion ability/talent skill tree.
+- Cost curve and cap OPEN. One purchase must be an atomic **gold debit and one-unit level increment**, fail-closed on insufficient gold, locked unit, stale expected level, duplicate purchase ID or invalid save; preserve purchases across reload/party swap.
+- This does **not** decide whether the main hero earns XP for battles or purchases own levels for gold. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md) authoritative; no G2-R implementation.
