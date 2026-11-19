@@ -104,8 +104,8 @@
 
 ## 7. Экономика и прокачка без лишних систем (PROPOSED)
 
-**SUPERSEDED:** общего уровня лагеря нет. Каждый спутник имеет только свой уровень; герой — отдельный уровень и 3×4 улучшения с ультой, выбранные игроком при каждом hero level-up. Предложение про золото/затраты ниже не утверждено:
-- **OWNER CONFIRMED:** каждый из пяти спутников прокачивает свой уровень без отдельных рангов навыков; общий уровень лагеря отменён. Смена спутника сохраняет его уровень и прогресс.
+**OWNER CONFIRMED:** общего уровня лагеря нет. **Каждый спутник повышает собственный уровень вручную за золото**, без автоматического XP/дерева навыков. Герой — отдельный уровень и 3×4 улучшения с ультой, выбранные игроком при каждом hero level-up. Конкретные цены и получение hero-level по-прежнему OPEN:
+- **OWNER CONFIRMED:** каждый из пяти спутников прокачивает свой уровень **вручную за золото**, без отдельных рангов навыков и автоматического опыта; общий уровень лагеря отменён. Смена спутника сохраняет его уровень и прогресс.
 - **OWNER CONFIRMED:** только постоянный герой имеет выбор улучшений трёх способностей (по 4 ступени) и прокачиваемой ульты после каждого повышения своего уровня; конкретные бонусы баланса пока OPEN.
 
 Экипировка (4 слота героя), материалы и ранги — поздний слой после оценки первых 20 этапов. Один ресурс + понятный апгрейд лучше четырёх одновременно открытых валют/осколков.
@@ -173,3 +173,5 @@
 **Replay owner approval 19.11.2026:** repeatable CLEARED stages CONFIRMED; reduced ordinary rewards for real replay wins, never extra milestones. Need separate per-attempt idempotency and first-clear one-shot claims, exact numerical balance OPEN. G2-R NOT_IMPLEMENTED.
 
 **Owner progression correction 19.11.2026:** all five companions individually level (no companion skill upgrades); main hero has his/her own level and three abilities with four upgrade steps each + upgradeable ultimate; player chooses an improvement after every hero level-up. No camp level. Earlier proposed two-skill kits must expand to 3+ultimate; XP source and ultimate limits remain OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+
+**Companion leveling owner decision (19.11.2026):** each companion's only level is purchased individually, **manually for gold**. No passive/active/reserve companion XP. Hero XP source and skill-choice economy remain OPEN. Gold upgrade must be atomic per purchase, with no double debit/level on retry. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).

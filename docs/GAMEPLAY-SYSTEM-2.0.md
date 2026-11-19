@@ -106,7 +106,7 @@ DEFERRED: косметика, платные покупки, сложная эк
 
 Приоритеты целей: обычные ближние атаки → передняя линия; дальний бой → доступная приоритетная/отмеченная цель; healer → живой союзник с наименьшим относительным HP; игрок в PvE может менять приоритет. После смерти фронта тыл становится доступен. У босса читаемые окна подготовки, удар и восстановление.
 
-Два активных навыка принадлежат ВЫБРАННОМУ главному герою; они меняются при выборе другого героя (не «щитовой удар» у мага и следопыта). Пассивные навыки спутников срабатывают автоматически. Auto-cast использует класс-специфические правила и не должен при включении ухудшать команду из-за бессмысленного использования навыков.
+**OWNER CONFIRMED: три способности (по 4 улучшения) и отдельная прокачиваемая ульта** принадлежат ВЫБРАННОМУ главному герою; они меняются при выборе другого героя (не «щитовой удар» у мага и следопыта). Пассивные навыки спутников срабатывают автоматически. Auto-cast использует класс-специфические правила и не должен при включении ухудшать команду из-за бессмысленного использования навыков.
 
 Кликер: ограниченные ручные атаки/выбор цели только PvE, без спама/неуязвимости/автоматического преимущества в PvP. Ориентир 10–25% среднего суммарного DPS при максимальном допустимом клике для тестовых сборок; это гипотеза, а не универсальная гарантия.
 
@@ -132,9 +132,9 @@ DEFERRED: косметика, платные покупки, сложная эк
 Три сло́я:
 - Аккаунт: открытые главы/спутники, достижения, доступные функции.
 - Главный герой: индивидуальная прокачка и экипировка **только одного выбранного постоянного героя**. Остальных трёх недоступных героев в рамках текущего профиля не прокачивают.
-- **Спутники OWNER_CONFIRMED:** только отдельный уровень каждого, без деревьев улучшений способностей, в резерве уровень сохраняется.
+- **Спутники OWNER_CONFIRMED:** каждый прокачивается **только вручную за золото**; отдельный уровень каждого, никакого автоопыта/дерева навыков, в резерве купленный уровень сохраняется.
 
-Рекомендуемый старт MVP: один расходуемый ресурс — золото, **общего уровня отряда НЕТ** (OWNER CONFIRMED): каждый спутник и герой прокачиваются отдельно; золото и связанные цены OPEN. Не вводить одновременно 5 видов валют, ранги, осколки и гачу. Экипировка/материалы добавляются только если создают внятный выбор, а не обязательную рутину.
+**Золото как валюта ручной прокачки спутников OWNER CONFIRMED**; общего уровня отряда нет. **Не утверждено**, что золото будет единственной валютой игры или что герой тоже покупает уровни; конкретные цены спутников и способ получения уровня героя OPEN. Не вводить одновременно 5 видов валют, ранги, осколки и гачу. Экипировка/материалы добавляются только если создают внятный выбор, а не обязательную рутину.
 
 Предлагаемая экономика:
 | Источник | Награда | Правило |
@@ -251,3 +251,8 @@ Release flags остаются false. Ни одна предложенная м�
 ## Owner-approved progression override (19.11.2026)
 - **No camp level**; 5 companions have their own levels only, including reserves, with no separate skill upgrade choices. One permanent hero has separate heroLevel, exactly **three skills with four upgrade tiers each, plus an upgradeable ultimate**. Player chooses improvement after each hero level-up.
 - Legacy two-skill hero and shared camp progression suggestions are SUPERSEDED. XP, caps, ult ranks/unlock and resource economy remain OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); G2-R NOT_IMPLEMENTED.
+
+## Companion manual gold leveling confirmed — 2026-11-19
+- Each unlocked companion has a persistent **individual level**; the player intentionally purchases its next level **with gold**. No companion XP, no automatic leveling in fights/idle, no companion ability-upgrade trees. Reserve companions can be upgraded manually without needing to be active; their purchased levels never disappear on party swap.
+- Exact price curve, cap, stat growth, starting level of later-unlocked Kair/ice controller and UI batching are OPEN. At the time of purchase, require adequate gold, valid unlocked character and an atomic, idempotent `gold -= cost; companionLevel[id] += 1` transaction. Double taps, stale saves and duplicate purchase IDs must never double-charge or mint levels.
+- This is **NOT** approval of hero gold-level purchases, universal single-currency policy or existing G2 gold values. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md); G2-R NOT_IMPLEMENTED.
