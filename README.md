@@ -39,11 +39,12 @@ npm run test:browser
 ## Документация
 
 - [Agent Workflow](docs/AGENT-WORKFLOW.md) — автономный цикл Codex, источники требований, WFA/Ludory, доказательства и main-first.
-- [Task Queue](docs/TASK_QUEUE.md) — единственное место выбора следующей задачи, сейчас G2R-F01.
+- [Task Queue](docs/TASK_QUEUE.md) — единственное место выбора следующей задачи, сейчас **G2R-F02a (четыре hero kits)**.
 - [GDD 1.1](docs/GDD-1.1.md) — **актуальные подтверждённые правила состава**.
 - [Gameplay Design 2.0](docs/GAMEPLAY-SYSTEM-2.0.md) — проект полной игровой системы, OWNER_REVIEW.
 - [Gameplay Design 2.2](docs/GAMEPLAY-DESIGN-2.2.md) — **подтверждён постоянный выбор героя**, предложена прогрессия пяти спутников.
 - [G2-R Character System](docs/G2-R-CHARACTER-SYSTEM-0.1.md) — технический план до начала реализации.
+- [Hero Kits 0.1](docs/HERO-KITS-REVIEW-0.1.md) — утверждённые архетипы и наборы способностей, рабочие имена, баланс/арт OPEN.
 - [GDD 1.0](docs/GDD-1.0.md) — архив прежней модели.
 - [GDD index](GDD.md) — короткая карта утверждённых систем.
 - [Статус и проверки](docs/PROJECT_STATUS.md).

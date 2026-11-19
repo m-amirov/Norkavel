@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**NO INDEPENDENT READY TASK.** **Текущая граница:** G2 legacy browser playable; **G2R-F01, F03, P01, E01, C01 и S01 foundation проверены**, включая отдельный атомарный browser Save v2 store, но G2-R runtime/UI, onboarding migration и trusted combat-result producer ещё не реализованы. Economy Balance 0.1 проверен арифметически, но его **численные значения не утверждены окончательно**, G3 production art не принят. См. [Project Status](PROJECT_STATUS.md), [Acceptance](ACCEPTANCE.md) и [WFA agent routing](AGENT-EXECUTION-G2-R.md).
+**NEXT READY: G2R-F02a (four hero-kit domain slice).** **Текущая граница:** G2 legacy browser playable; **G2R-F01, F03, P01, E01, C01 и S01 foundation проверены**, включая отдельный атомарный browser Save v2 store, но G2-R runtime/UI, onboarding migration и trusted combat-result producer ещё не реализованы. Economy Balance 0.1 проверен арифметически, но его **численные значения не утверждены окончательно**, G3 production art не принят. См. [Project Status](PROJECT_STATUS.md), [Acceptance](ACCEPTANCE.md) и [WFA agent routing](AGENT-EXECUTION-G2-R.md).
 
 ## Правила очереди
 
@@ -12,7 +12,7 @@
 | Приоритет | ID | Задача | Зависимости | Текущий статус |
 |---|---|---|---|---|
 | 1 | G2R-F01 | Проверяемый foundation: модель профиля v2 и безопасная совместимость с G2 v1 | действующие GDD/DECISIONS и actual Ludory Core | **DONE_VERIFIED — `27be4dd`, CI 44526368550** |
-| 2 | G2R-F02 | Постоянный выбор 1 из 4 героев + 3 уникальных обычных навыка/ульта каждому в UI и бою | G2R-F01; **идентичности и exact skill kits — OWNER_OPEN**, предложения для решения: [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md) | **BLOCKED_OWNER (content), independent persistence work permitted** |
+| 2 | G2R-F02 | Постоянный выбор 1 из 4 героев + 3 уникальных обычных навыка/ульта каждому в UI и бою | F01/S01 DONE; **4 kits and stable mapping OWNER_CONFIRMED** [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md), names/art/numeric balance OPEN | **READY — start F02a, full runtime NOT_IMPLEMENTED** |
 | 3 | G2R-F03 | Roster 5, 3 активных/2 резервных, unlock stage3/10, безопасные first-clear claim receipts | G2R-F01 | **DONE_VERIFIED — `e384e5e`, CI 44531383856** |
 | 4 | G2R-P01 | Отдельная прогрессия героя (lvl1–16, XP за победы, 15 player choices, ultimate lvl5) | G2R-F01; skill effects when moving to combat; economy values remain CANDIDATE | **DONE_VERIFIED — `85114c6`, CI 44535563965** |
 | 5 | G2R-E01 | Ручная прокачка каждого спутника за золото, atomic purchase ledger, denied/double-purchase cases | G2R-F01 + G2R-F03; числа Economy 0.1 **CANDIDATE** | **DONE_VERIFIED — `4af6c6f`, CI 44537806684** |
@@ -113,4 +113,15 @@
 
 **G2R-S01 DOMAIN+CHROMIUM_STORAGE_PASS:** exact `fa2498dbbb23702fbecba191f00ff958bbb5307b`, [CI #44581276187](https://github.com/m-amirov/Norkavel/actions/runs/44581276187) SUCCESS, 77/77 Node, Ludory Core, legacy G2 and standalone two-page IndexedDB CAS Chromium PASS. Saves are *not* integrated with `web/main.mjs` and not cross-device authoritative. No additional independent READY task is assumed.
 
-**NEXT OWNER REVIEW:** [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md). Proposed four classes and **3 normal abilities + ultimate each** plus optional working names. This proposal does NOT unblock F02 without owner's explicit approval. Owner may approve mechanics while leaving names/art for separate review; do not change stable saved hero-slot IDs. Once accepted, update `DECISIONS.md` and queue, then Codex proceeds via ordinary short prompt. 
+**NEXT OWNER REVIEW:** [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md). Proposed four classes and **3 normal abilities + ultimate each** plus optional working names. This proposal does NOT unblock F02 without owner's explicit approval. Owner may approve mechanics while leaving names/art for separate review; do not change stable saved hero-slot IDs. Once accepted, update `DECISIONS.md` and queue, then Codex proceeds via ordinary short prompt.
+
+## G2R-F02 — approved gameplay kits / next READY task (2026-11-19)
+
+Owner approved four distinct archetypes and all 16 named abilities in [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md); the four character names are provisional. Begin one **verifiable slice** at a time, not an undocumented full G2-R rewrite.
+
+1. **F02a READY:** inspect actual source/Ludory contracts and add versioned kit catalogue keyed by stable `hero_slot_1..4`; implement deterministic bounded combat-effect semantics for each of 3 regular skills + unique ultimate and unit/regression tests. Reject invalid hero/skill/rank/level and non-finite effects. Use injected/test balance policies while numerical production balance remains OPEN. **Do not switch legacy runtime/save yet.**
+2. **F02b DEPENDS F02a:** real choice UI with four distinct class/weakness cards and explicit irreversible confirmation; new profile and legacy `selectionRequired` must use Save v2 transactional IndexedDB CAS, v1 checkpoint stays intact. Test reload, two tabs, corrupt/future record and stale commit; no silent hero auto-choice. Trial fights remain optional and cannot award/persist.
+3. **F02c DEPENDS F02b:** selected kit drives actual side-view 1+3 autobattle, 3 regular actions + level-5 ultimate, manual 3×4+3 rank choices across hero levels 2..16, deterministic event/replay semantics. Preserve unlock and settlement integrity, never fabricate XP/gold or trust unauthenticated client rewards.
+4. **F02d DEPENDS F02c:** all four hero profiles versus story boss at stage 10 using companions available before ice-controller, >=2 observable counterplays each, wins and losses on seeded fixtures; real Chromium landscape 640×360 / 844×390, portrait block, touch/keyboard, Save v2 browser restore/two-tab/CAS and legacy regression.
+
+**Full F02 exit:** actual gameplay, browser and migration receipts on exact SHA; unit/core/legacy smoke PASS; CI success if required; 4 unique kits wired, immutable hero chosen once, no 5th companion required for first boss, no unapproved production art/economy/PvP or release claims. Report partial gates accurately (F02a DOMAIN_PASS != full F02). Update [Acceptance](ACCEPTANCE.md) and [Project Status](PROJECT_STATUS.md). Follow WFA main-first.

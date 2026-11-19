@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NO INDEPENDENT READY TASK:** G2R-S01 persistence foundation завершён; G2R-F02 content всё ещё BLOCKED_OWNER, G2R-INT — BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY: G2R-F02a:** four archetypes and four 3+ultimate hero kits OWNER_CONFIRMED (names, art and numerical balance OPEN). G2R-S01 persistence foundation complete; F02 battle/UI NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
 **Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01+E01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
@@ -240,3 +240,10 @@
 ## G2R-S01 independent verification and F02 owner gate (2026-11-19)
 - [CI #44581276187](https://github.com/m-amirov/Norkavel/actions/runs/44581276187) SUCCESS on exact `fa2498dbbb23702fbecba191f00ff958bbb5307b`: **77/77** Node, Core, legacy G2 browser and standalone IndexedDB multi-page CAS smoke PASS. `compareAndSet` does read/compare/put within one `readwrite` transaction; competing revisions yield one commit and one `STALE_REVISION`; abort/corrupt/unsupported handling and readonly v1 candidate are verified. **STORE_PASS**, not full v2 onboarding or G2-R runtime.
 - Next blocking **owner decision**, not another artificial domain-only task: [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md) proposes four 3+ultimate skill sets + candidate identities, but remains **NOT_APPROVED**. F02 remains BLOCKED_OWNER and G2R-INT blocked by actual gameplay implementation. No independent READY task at this boundary.
+
+## G2R-F02 owner approval (2026-11-19)
+
+- Owner explicitly approved four archetypes and skill kits from [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md) with fixed Save v2 mapping: `hero_slot_1` defender (Ровен, provisional), `hero_slot_2` elemental mage (Астера), `hero_slot_3` duelist (Сайрен), `hero_slot_4` ranger (Валис). Art, names, numerical balance remain OPEN.
+- `G2R-F02` is now **READY** (F02a domain/test first); this commit changes documentation/decision gates only and cannot count as runtime/Save v2 browser onboarding/gameplay implementation.
+- Existing [CI #44581276187](https://github.com/m-amirov/Norkavel/actions/runs/44581276187) 77/77 is S01 storage evidence; [CI #44584454244](https://github.com/m-amirov/Norkavel/actions/runs/44584454244) SUCCESS at Hero Kits review commit `c74e79187fa3b2ab478c8b3bdefe29c6f274a702` confirms only prior tests, not F02 implementation.
+- G3 4+5 character art, 50 encounter content, full Save v2 UI and trusted battle reward producer remain incomplete; no publication.

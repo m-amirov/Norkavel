@@ -9,7 +9,7 @@
 | D-005 | **Ровно 4 разных главных героя на выбор; в бою один выбранный герой + 3 спутника** | CONFIRMED 19.11.2026 |
 | D-006 | PvP исключительно асинхронное | CONFIRMED |
 | D-007 | Подключить Ludory и WFA, соблюдать их контракты | CONFIRMED |
-| D-008 | Идентичности/классы четырёх главных героев OPEN; **50 PvE этапов CONFIRMED** | PARTIAL_CONFIRMED 19.11.2026 |
+| D-008 | **Классы и 4 hero kits OWNER_CONFIRMED; финальные имена/арт OPEN; 50 PvE этапов CONFIRMED** | PARTIAL_CONFIRMED 19.11.2026 |
 | D-009 | Ручные PvE клики и 2 активных навыка, авто-режим | PROPOSED |
 | D-010 | PvP авторитетная детерминированная симуляция на backend | PROPOSED |
 | D-011 | Только альбомная (landscape) ориентация во всей мобильной игре; портретная показывает запрос поворота без доступного игрового процесса | CONFIRMED |
@@ -33,7 +33,7 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 ## 2026-11-19 — Gameplay 2.0 design proposals (NOT owner-confirmed)
 | ID | Предложение | Статус |
 |---|---|---|
-| D-026 | Архетипы четырёх главных героев: защитник, стихийный маг, дуэлянт, следопыт | PROPOSED |
+| D-026 | Архетипы четырёх главных героев: защитник, стихийный маг, дуэлянт, следопыт | **OWNER_CONFIRMED 19.11.2026** |
 | D-027 | Бесплатная смена главного героя между боями | REJECTED / SUPERSEDED by owner variant B |
 | D-028 | Ард/Мира/Элира на старте CONFIRMED; Кайр после этапа 3 CONFIRMED | PARTIAL_CONFIRMED 19.11.2026 |
 | D-029 | **Пятый спутник — ледяной контролёр (замедление и ослабление опасных атак)** | **OWNER_CONFIRMED / 19.11.2026** |
@@ -46,7 +46,7 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 ## Gameplay Design 2.1 — additional proposal
 | ID | Предложение | Статус |
 |---|---|---|
-| D-033 | Разные hero-specific навыки, passives и способы counterplay первого босса | PROPOSED / GAMEPLAY 2.1 |
+| D-033 | Unique 3 regular + ultimate hero kits and two counters per hero for first story boss CONFIRMED; extra passives/numerics remain OPEN | PARTIAL_OWNER_CONFIRMED 19.11.2026 |
 | D-034 | **Пятый спутник открывается только после первой победы над первым сюжетным боссом** | **CONFIRMED / OWNER 19.11.2026**; **номер этапа 10 CONFIRMED** |
 | D-035 | Общий уровень лагеря — REJECTED / SUPERSEDED. Единая валюта золото остаётся PROPOSED | SUPERSEDED by D-064…067 |
 | D-036 | Детерминированные статусы Burn/Slow/Mark/Shield/Dodge/Interrupt/Heal и front/back AI | DESIGN_DRAFT / NOT_IMPLEMENTED |
@@ -199,3 +199,14 @@ CONFIRMED нельзя изменять без владельца. PROPOSED и A
 | D-097 | Normal 50 wins → hero lvl16 stage50, XP 4800, gold 13000; Moderate 66 wins → cap stage46; Intensive 200 wins → cap stage33 | **ARITHMETIC_MODEL_RESULT / NOT_LIVE_COMBAT_PROOF** |
 
 Экономика численно рассчитана, но **не утверждена владельцем** и не внедрена в G2-R. [Economy Balance 0.1](ECONOMY-BALANCE-0.1.md) · [Simulator](../scripts/economy-balance.mjs) · [Tests](../tests/economy-balance.test.mjs). Последняя подтверждённая владельцем форма XP-кривой — «ранние быстрее, поздние требуют больше», а не эти коэффициенты.
+
+## Owner approval — Hero Kits 0.1 (2026-11-19)
+| ID | Decision | Status |
+|---|---|---|
+| D-098 | **Fixed persisted mapping:** `hero_slot_1` защитник, `hero_slot_2` стихийный маг, `hero_slot_3` дуэлянт, `hero_slot_4` следопыт | OWNER_CONFIRMED |
+| D-099 | **Unique kits (3 skills + ultimate):** защитник — Разлом щита / Купол бастиона / Знамя стойкости / Последний рубеж; маг — Огненный круг / Сковывание / Цепь искр / Стихийный разлом; дуэлянт — Теневой рывок / Исчезновение / Роковая метка / Ночь клинков; следопыт — Прицельный выстрел / Капкан / Град стрел / Звёздный залп | OWNER_CONFIRMED_MECHANICS |
+| D-100 | Ровен, Астера, Сайрен, Валис — **working names only**, respectively. Final names, art/silhouettes, biographies and G3 art sources/rights NOT approved | NAMES_PROVISIONAL / ART_OPEN |
+| D-101 | Each of four heroes must offer >=2 observable tactics versus first story boss stage 10 with only pre-boss companions (no fifth ice-controller); finite bounded effects | APPROVED_DIRECTION / COMBAT_NOT_IMPLEMENTED |
+| D-102 | Damage/cooldowns/duration/energy/boss resistance/rank coefficients, XP/gold balance and production assets remain OPEN; approval unblocks F02 implementation only | F02_READY / NUMERICAL_BALANCE_OPEN |
+
+Canonical kit specification: [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md). Preserve immutable selection and `hero_slot_1..4` in Save v2. No G2-R/G3/release PASS inferred.

@@ -1,6 +1,6 @@
 # Norkavel — Hero Kits 0.1: owner decision pack
 
-**Date:** 2026-11-19. **Status:** `PROPOSED / OWNER_REVIEW / NOT_APPROVED`.  
+**Date:** 2026-11-19. **Status:** `OWNER_CONFIRMED_KITS / NAMES_PROVISIONAL / NUMERICAL_BALANCE_OPEN`.  
 **Purpose:** unblock `G2R-F02` without inventing hero identity or rewriting confirmed Norkavel design.
 
 ## Confirmed constraints (not a proposal)
@@ -11,9 +11,9 @@
 - Stable persisted slot IDs `hero_slot_1..4` already exist in Save v2. **Do not rename persisted identifiers without a proven migration.**
 - The two-skill proposals in [Gameplay Design 2.1](GAMEPLAY-DESIGN-2.1.md) are superseded by the confirmed **3 skills + ultimate** progression requirement.
 
-## Proposed heroes and differentiation — NOT OWNER CONFIRMED
+## Owner-approved archetypes and unique hero kits — names provisional
 
-Names, identities, 3+ultimate kits, and silhouettes below are design candidates, **not** authorization to implement or publish.
+OWNER CONFIRMED 2026-11-19: the four fixed archetypes, role mapping and described mechanical kits (three normal skills plus one unique ultimate each) are approved for implementation. **Ровен / Астера / Сайрен / Валис are provisional working names**; silhouettes remain art-direction proposals, not approved production assets. Exact cooldowns, damage, duration, energy, resistance and skill rank coefficients remain OPEN.
 
 | Stable ID | Candidate name | Archetype | Strategic advantage | Weakness | Art identity |
 |---|---|---|---|---|---|
@@ -66,7 +66,7 @@ Names, identities, 3+ultimate kits, and silhouettes below are design candidates,
 
 **Stage-10 boss counterplay:** limited trap mitigation **or** tank/heal composition while maintaining marked-target damage. Does not require defender's interrupt.
 
-## Proposed balancing / implementation gates
+## Implementation and balancing gates (mechanics confirmed, numbers OPEN)
 
 1. Each regular skill has four **selected improvements**, not four additional active buttons. The ultimate has three selected improvements and is locked before level 5. All ranks persist in the same immutable hero profile and Save v2 CAS.
 2. Exact cooldowns, damage, duration, energy, status resistance and rank increments remain `NUMERICAL_BALANCE_OPEN`. WFA testing must measure real combat logs on fixed seeds, not assert balancing by specification.
@@ -74,14 +74,12 @@ Names, identities, 3+ultimate kits, and silhouettes below are design candidates,
 4. Hero buttons, VFX and silhouette must be different, not a reskin of the old generic G2 warrior or images of companions. Production assets and rights require G3 visual gate.
 5. The confirmation UX must describe the permanent choice and show each archetype's strengths/weaknesses. A trial fight, if later approved, must never commit permanent choice, award gold/XP, unlock or mutate saves.
 6. Numerical XP, gold and upgrade costs from Economy Balance 0.1 remain **candidate values**. No unapproved IAP, PvP results or balance coefficients.
-7. Keep current `hero_slot_1..4` stable: choose mapping once owner confirms; migration of committed slot identity to changed role is separately gated.
+7. Approved fixed role mapping: `hero_slot_1` defender, `hero_slot_2` mage, `hero_slot_3` duelist, `hero_slot_4` ranger. Preserve persisted slots; changing mappings later requires a separately approved migration.
 
-## Required owner decision
+## Owner decision — APPROVED 2026-11-19
 
-**Recommended:** approve the four archetypes and the four 3+ultimate kits together; separately approve or replace the working names `Ровен / Астера / Сайрен / Валис`. It is acceptable to **approve mechanics but leave names/art OPEN**, but then G3 production remains gated.
+Owner approved the four archetypes and all four 3-normal-skill + ultimate kits. The hero names are temporary, production art and character biographies are not yet approved, and exact numeric balance remains open. This unblocks implementation of `G2R-F02` but does not prove it complete.
 
-Until explicit approval, `G2R-F02` stays `BLOCKED_OWNER`. Do **not** silently update `DECISIONS.md` to OWNER_CONFIRMED, change the persisted hero slots, or declare G2-R implemented.
-
-After approval, Codex may use the short command `Продолжай Norkavel.` to implement F02 in verifiable substeps: four kits domain, hero choice/onboarding with Save v2 CAS, battle integration, real browser tests, then G3 art review.
+Codex shall implement F02 in testable slices: versioned four-kit domain, explicit immutable hero selection and Save v2 CAS onboarding, side-view battle integration, real Chromium QA, then separate G3 art gate. Do not silently migrate the old save or introduce a production balance policy without approval.
 
 Sources: [GDD 1.1](GDD-1.1.md), [Decisions](DECISIONS.md), [Gameplay 2.1](GAMEPLAY-DESIGN-2.1.md), [Gameplay 2.2](GAMEPLAY-DESIGN-2.2.md), [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
