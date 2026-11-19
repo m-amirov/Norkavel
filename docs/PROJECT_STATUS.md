@@ -91,7 +91,7 @@
 
 ## Gameplay Design 2.1 — 2026-11-19
 - [Gameplay Design 2.1](GAMEPLAY-DESIGN-2.1.md) details 4 distinct proposed hero skill kits, 5 companion niches, front/back targeting, deterministic tick/status rules, first ten campaign stage beats, gold/progression, metrics and explicit design gates.
-- **OWNER CONFIRMED MILESTONE / NOT_IMPLEMENTED.** Fifth companion unlocks after FIRST story-boss victory (boss stage number remains OPEN); technical G2 stage-2 boss is not proof. Earlier stage-7 unlock proposal is rejected.
+- **OWNER CONFIRMED MILESTONE / NOT_IMPLEMENTED.** Fifth companion unlocks after FIRST story-boss victory (first story boss confirmed at stage 10); technical G2 stage-2 boss is not proof. Earlier stage-7 unlock proposal is rejected.
 - Hero-switching policy RESOLVED: owner confirms **variant B, one permanent selected main hero per playthrough**. Next owner review: campaign structure/first story boss stage, fifth companion exact abilities/identity; do not change G2-R engine/UI/save until gameplay scope is agreed.
 
 ## Gameplay 2.2 — owner-approved permanent hero (2026-11-19)
@@ -135,7 +135,7 @@
 
 ## Progression design approved 2026-11-19
 - CONFIRMED: **no camp/squad level**; each of five companions levels separately with no companion skill upgrade trees. Only the selected permanent main hero has own level and **3 skills (4 upgrades each) + an upgradeable ultimate**; after **every hero level-up** player chooses which eligible ability to improve.
-- OLD proposals of shared camp level and just 2 hero skills SUPERSEDED. **Companion levels purchased manually for gold CONFIRMED**; gold cost curve/limits/stats and **hero XP** method, **ultimate opens at hero level 5, 3 upgrades OWNER_CONFIRMED**; other balance OPEN. No companion/reserve XP. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- OLD proposals of shared camp level and just 2 hero skills SUPERSEDED. **Companion levels purchased manually for gold CONFIRMED**; gold cost curve/limits/stats and **hero XP source from confirmed victories, reduced replay XP and loss 0 CONFIRMED**, as is **ultimate level 5 / 3 upgrades**; XP amounts and other balance OPEN. No companion/reserve XP. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 - DESIGN_ONLY: no Save v2, updated 3+ult HUD, level-up choices, new character-level engine or regression have been run. Prior 28/28 legacy G2 tests only establish old runtime.
 
 ## Owner approval — companion gold leveling 2026-11-19

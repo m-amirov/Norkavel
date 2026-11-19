@@ -79,7 +79,7 @@
 ## Owner approval 2026-11-19 — first story boss reward
 - **Confirmed:** the fifth companion is granted on the **first clear of the first story boss**; it cannot be required to beat that boss and must never be unlocked merely by reaching the stage.
 - The first boss `stageId` is OPEN. The 2nd battle in legacy G2 is a technical demo, not a confirmed first story boss; migration must not silently grant #5 from its `claimed:[2]`.
-- Award/achievement/unlock is idempotent and persists across reload, retries and profile migration. Fifth companion identity/role and fourth milestone stay OPEN.
+- Award/achievement/unlock is idempotent and persists across reload, retries and profile migration. Fifth companion name/art remain OPEN; ice-controller role, Kair stage-3 milestone and fifth stage-10 first-clear milestone CONFIRMED.
 
 ## Owner approval 2026-11-19 — initial trio
 - New profile unlocked set equals `sentinel`, `ember`, `healer`. All three fill active companion slots once hero selected; `ash` and fifth are locked for new profiles.
@@ -98,7 +98,7 @@
 
 ## Superseding progression model — owner confirmed 19.11.2026
 - No camp level, no companion skill upgrade trees: each of 5 companions simply has an independent level. Selected permanent main hero has own level, three ordinary abilities with 4 upgrade steps each and an upgradeable ultimate; player chooses what to improve after every hero level-up.
-- Source of truth [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). XP, ultimate cap/unlock, skill names and balance still OPEN. Older shared-camp and two-ability text elsewhere is not owner-approved.
+- Source of truth [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). Numerical XP, ultimate skill effects/names and balance OPEN; ultimate unlock at heroLevel 5 and 3 upgrades CONFIRMED. Older shared-camp and two-ability text elsewhere is not owner-approved.
 
 ## 2026-11-19 — companion gold-leveling owner decision
 - Each of five companions upgrades its own level **manually by the player's explicit gold purchase**; do not grant companion XP from active fights, reserve, idle or any automated service. UI shows per-unit level and next gold cost; no companion ability/talent skill tree.
@@ -107,7 +107,7 @@
 
 ## Owner decision: hero XP on battle victory — 2026-11-19
 - Героический уровень повышается **за XP, полученный при победе**, не за покупку уровней спутников. Каждый геройский level-up даёт **осознанный выбор** улучшения 3 скиллов или доступной ульты. Все пять спутников повышаются **только вручную за золото**, без автоопыта.
-- XP thresholds, **reduced reward XP for replay victories and zero XP for losses confirmed**, amounts/ratio and PvP/idle and ultimate gating remain OPEN. One battle result cannot grant XP or upgrade choice twice. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- XP thresholds, **reduced reward XP for replay victories and zero XP for losses confirmed**, amounts/ratio and PvP/idle XP and ultimate effect balance remain OPEN; **ultimate unlock at heroLevel 5 and three upgrades CONFIRMED**. One battle result cannot grant XP or upgrade choice twice. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 
 ## XP farming: owner decision 2026-11-19
 - Replay wins award **reduced positive XP** to the permanent hero compared with first-clear of the same stage. Defeats award **0 hero XP**. Companion XP does not exist; gold purchases are the only companion-level path. Exactly-once reward per verified `attemptId`; repeated valid victories may farm XP.

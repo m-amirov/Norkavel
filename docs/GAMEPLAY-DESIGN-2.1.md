@@ -104,7 +104,7 @@
 
 ## 7. Экономика и прокачка без лишних систем (PROPOSED)
 
-**OWNER CONFIRMED:** общего уровня лагеря нет. **Каждый спутник повышает собственный уровень вручную за золото**, без автоматического XP/дерева навыков. Герой — отдельный уровень и 3×4 улучшения с ультой, выбранные игроком при каждом hero level-up. Конкретные цены и получение hero-level по-прежнему OPEN:
+**OWNER CONFIRMED:** общего уровня лагеря нет. **Каждый спутник повышает собственный уровень вручную за золото**, без автоматического XP/дерева навыков. Герой — отдельный уровень и 3×4 улучшения с ультой, выбранные игроком при каждом hero level-up. Конкретные цены спутников и XP-кривая героя по-прежнему OPEN (герой получает XP за победы, включая уменьшенный XP за реплеи):
 - **OWNER CONFIRMED:** каждый из пяти спутников прокачивает свой уровень **вручную за золото**, без отдельных рангов навыков и автоматического опыта; общий уровень лагеря отменён. Смена спутника сохраняет его уровень и прогресс.
 - **OWNER CONFIRMED:** только постоянный герой имеет выбор улучшений трёх способностей (по 4 ступени) и прокачиваемой ульты после каждого повышения своего уровня; конкретные бонусы баланса пока OPEN.
 
@@ -144,7 +144,7 @@
 3. **РЕШЕНО ВЛАДЕЛЬЦЕМ:** пятый спутник после первой победы над первым сюжетным боссом, независимо от номера этапа. Кайр открывается после первой победы на этапе 3 — OWNER CONFIRMED.
 4. **РЕШЕНО ВЛАДЕЛЬЦЕМ:** пятый — **ледяной контролёр** (slow + ослабление опасных атак). Только точные навыки, баланс и художественная идентичность остаются OPEN.
 5. **РЕШЕНО ВЛАДЕЛЬЦЕМ:** полная кампания 5×10=50, боссы на 10/20/30/40/50; последовательные линейные карты и 50 уникальных stage backgrounds. Порядок производства частей можно обсудить отдельно.
-6. **РЕШЕНО ВЛАДЕЛЬЦЕМ:** только отдельные уровни спутников и отдельный уровень героя (3×4 улучшений + ульта); общего уровня лагеря нет. XP/ульта/стоимости OPEN.
+6. **РЕШЕНО ВЛАДЕЛЬЦЕМ:** только отдельные уровни спутников и отдельный уровень героя (3×4 улучшений + ульта); общего уровня лагеря нет. Численные XP-награды, конкретные ульта-эффекты и стоимости спутников OPEN; ульта открывается на 5-м уровне и имеет 3 улучшения.
 7. **РЕШЕНО ВЛАДЕЛЬЦЕМ:** replay ранее пройденных этапов для ресурсов/прокачки; уменьшенная обычная награда за новую победу, first-clear bonus отдельно и только однажды. Точные размеры и капы OPEN.
 
 Не привязывать персонажей, G3 арты, баланс боссов, необратимую миграцию и денежные цены к OPEN значениям до подтверждения. Завершение G2-R = реально работающие и проверенные на exact commit SHA код, интерфейс, сохранения и новая балансировка, а не это описание.
@@ -172,9 +172,9 @@
 
 **Replay owner approval 19.11.2026:** repeatable CLEARED stages CONFIRMED; reduced ordinary rewards for real replay wins, never extra milestones. Need separate per-attempt idempotency and first-clear one-shot claims, exact numerical balance OPEN. G2-R NOT_IMPLEMENTED.
 
-**Owner progression correction 19.11.2026:** all five companions individually level (no companion skill upgrades); main hero has his/her own level and three abilities with four upgrade steps each + upgradeable ultimate; player chooses an improvement after every hero level-up. No camp level. Earlier proposed two-skill kits must expand to 3+ultimate; XP source and ultimate limits remain OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+**Owner progression correction 19.11.2026:** all five companions individually level (no companion skill upgrades); main hero has his/her own level and three abilities with four upgrade steps each + upgradeable ultimate; player chooses an improvement after every hero level-up. No camp level. Earlier proposed two-skill kits must expand to 3+ultimate; Hero XP за победы, reduced replay XP и defeat XP=0 CONFIRMED; ульта открывается на lvl 5 с 3 улучшениями, конкретные XP/эффекты OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 
-**Companion leveling owner decision (19.11.2026):** each companion's only level is purchased individually, **manually for gold**. No passive/active/reserve companion XP. Hero XP source and skill-choice economy remain OPEN. Gold upgrade must be atomic per purchase, with no double debit/level on retry. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+**Companion leveling owner decision (19.11.2026):** each companion's only level is purchased individually, **manually for gold**. No passive/active/reserve companion XP. Hero XP from verified wins CONFIRMED, companion gold level purchases CONFIRMED; numerical XP/skill effects remain OPEN. Gold upgrade must be atomic per purchase, with no double debit/level on retry. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 
 ## Hero XP award — OWNER CONFIRMED 2026-11-19
 - Главный герой получает **XP за подтверждённую победу в бою**, автоматически повышая свой уровень при накоплении нужного XP. После каждого hero level-up игрок **сам** выбирает улучшение одной из 3 обычных способностей (по 4 апгрейда) или доступной ульты. Спутники не получают XP, только ручные покупки уровней за золото.
