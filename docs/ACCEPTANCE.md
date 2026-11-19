@@ -85,7 +85,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-033:** Active party has **4 units = 1 hero + 3 distinct unlocked companions**, with 2 reserve companions when all five are unlocked; all three companion slots configurable outside fights. **LEGACY_PARTY_SIZE_PASS / CORRECT_COLLECTION_AND_SLOTS_NOT_IMPLEMENTED**.
 - **NKV-034:** Explicit compatibility/migration for schema:1 / local save with one fixed hero and missing unlock data, preserving existing progress without accidental retroactive permanent hero selection. **NOT_IMPLEMENTED**.
 - **NKV-035:** G3 includes **4 separate hero masters + 5 companion masters**, not four renamed candidate companion PNGs. Prior Art 0.3 generated four *companions* only. **BLOCKED_ART**.
-- **NKV-036:** Names/classes/visual personalities of four selectable heroes, fifth companion, first-story-boss stage index still needs content specification; Kair after first-clear stage 3 CONFIRMED; fifth's **boss-clear trigger** is CONFIRMED. **OPEN_DETAILS / COUNTS_AND_FIFTH_TRIGGER_CONFIRMED**.
+- **NKV-036:** Names/classes/visual personalities of four selectable heroes, fifth companion **name/art/skill details** and first-story-boss stage index still need content specification; fifth **ice-controller role is OWNER_CONFIRMED**; Kair after first-clear stage 3 CONFIRMED; fifth's **boss-clear trigger** is CONFIRMED. **OPEN_DETAILS / COUNTS_AND_FIFTH_TRIGGER_CONFIRMED**.
 - Historical G2 boss, browser and G3 art tests do **not** prove NKV-031–035. Any new PASS requires direct validation on the new code and exact commit SHA.
 
 - Current [G3 scope correction 0.4](G3-ART-PRODUCTION-0.4.md) is **PLAN_ONLY**, not a proof of actual nine ally masters or animations.
@@ -93,7 +93,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 ### 2026-11-19 — G2-R design-first records
 - [Gameplay Design 2.0](GAMEPLAY-SYSTEM-2.0.md) supplies a complete high-level game-system proposal. **DESIGN_DRAFT / OWNER_REVIEW_REQUIRED**, not gameplay implementation.
 - [G2-R Character System 0.1](G2-R-CHARACTER-SYSTEM-0.1.md) specifies Save v2, v1 migration and G2R-01..G2R-14 verifiable acceptance criteria. **IMPLEMENTATION_NOT_STARTED / TESTS_NOT_RUN**.
-- Approval still needed for hero-swapping policy, character identities and skill kits, 3 initial companions, fourth companion milestone/fifth role and first boss stage ID, campaign length and economy. Confirmed roster quantities are not pending.
+- Already approved: permanent hero choice (no swapping), starter companions Ard/Mira/Elira, Kair stage-3 first-clear, fifth after first story-boss first-clear, fifth role **ice controller**. Approval still needed for hero/companion identities, exact skill kits, first story boss stage ID, campaign length and economy. Confirmed roster quantities are not pending.
 - Historical 28/28 test PASS must not be counted as proof that player can select 4 distinct heroes or unlock 5 companions.
 
 ### Gameplay Design 2.1 — scope clarification
@@ -113,7 +113,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-042 CONFIRMED_REQUIREMENT / NOT_IMPLEMENTED:** fifth companion unlocked once and only once **AFTER first victory over first story boss**. Not at stage entry; not on defeat, repeat victory or speculative stage 7; no premium gate. Validate atomic boss first-clear + unlock on exact SHA.
 - **NKV-043 REQUIREMENT / NOT_IMPLEMENTED:** semantic `first_story_boss_first_clear` event, independent of provisional stage index 10 and existing *technical* G2 boss stage 2; v1 `claimed:[2]` cannot silently grant fifth on migration.
 - **NKV-044 REQUIRED_BALANCE / NOT_TESTED:** all four permanent main heroes must be able to defeat the first story boss using only the first four unlockable companions (three active), without needing the fifth.
-- **OPEN:** fifth's identity/role and first story boss's numerical stage. [Gameplay 2.2](GAMEPLAY-DESIGN-2.2.md) and [G2-R Contract](G2-R-CHARACTER-SYSTEM-0.1.md).
+- **OPEN:** fifth's name/appearance and numerical skill tuning (ice controller role is CONFIRMED), plus first story boss's numerical stage. [Gameplay 2.2](GAMEPLAY-DESIGN-2.2.md) and [G2-R Contract](G2-R-CHARACTER-SYSTEM-0.1.md).
 
 ### Starter companions confirmed — 2026-11-19
 - **NKV-045 CONFIRMED_SPEC / NOT_IMPLEMENTED**: new playthrough starts with unlocked Ard/sentinel, Mira/ember, Elira/healer, all three active after permanent hero confirmation, regardless of which one of four main heroes selected. Kair and fifth locked until earned.
@@ -123,3 +123,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 ### Kair stage 3 — owner confirmed 2026-11-19
 - **NKV-047 CONFIRMED_SPEC / NOT_IMPLEMENTED:** Kair (`ash`) unlocks exactly once after first victorious completion of PvE stage 3. Not on stage entry, loss, retry, reload or duplicate event; no automatic replacement of three active companions.
 - **NKV-048 MIGRATION_REQUIRED / NOT_IMPLEMENTED:** legacy G2 saves retain Kair entitlement even without new stage 3 clear. Test 3/5→4/5→5/5, all four fixed hero profiles, persistence and negative paths.
+
+### Fifth companion ice-controller role — 2026-11-19
+- **NKV-049 CONFIRMED_SPEC / G2-R_NOT_IMPLEMENTED:** companion #5 is a unique **ice controller** specializing in enemy slow and weakening dangerous attacks. It must not duplicate Ard's shielding, Elira's healing or Mira/Kair damage roles; name, ability rules, cooldowns and numbers remain OPEN. [Design brief](FIFTH-COMPANION-ICE-CONTROL-0.1.md).
+- **NKV-050 DESIGN+BALANCE_PENDING:** cap slow/weaken, prevent boss stunlock; prove observable impact and first-story-boss clear by each permanent main hero without fifth. No new unit/browser receipts yet; older 28/28 PASS tests are legacy and do not prove ice-control abilities.

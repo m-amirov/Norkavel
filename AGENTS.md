@@ -31,7 +31,7 @@ Current stage: G2 browser-playable legacy slice; G2-R needed for new owner-confi
 
 ## G2-R design-first boundary (2026-11-19)
 - Confirmed roster quantities remain in GDD 1.1. Full gameplay mechanics are proposed, NOT owner-approved, in docs/GAMEPLAY-SYSTEM-2.0.md; technical implementation design in docs/G2-R-CHARACTER-SYSTEM-0.1.md.
-- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, fifth identity, boss stage number, currency sinks and migration details are PROPOSED until owner review. **Fifth companion unlock after first STORY boss first victory is CONFIRMED**; avoid granting from the legacy technical G2 stage-2 boss. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
+- User asked to work through the gameplay system before moving to further production; hero selection permanence IS owner CONFIRMED (variant B); do NOT introduce switching. Trial fights, fifth NAME/ART/EXACT SKILLS, boss stage number, currency sinks and migration details are PROPOSED until owner review. Fifth ice-controller ROLE (slow and dangerous-attack weakening) is OWNER CONFIRMED. **Fifth companion unlock after first STORY boss first victory is CONFIRMED**; avoid granting from the legacy technical G2 stage-2 boss. Implementing the new immutable hero profile still requires actual G2-R code, tests and migration acceptance.
 - Existing legacy green G2 tests do not establish new G2-R implementation or owner approval; G3 remains BLOCKED.
 
 ## 2026-11-19 owner variant B
@@ -46,3 +46,7 @@ The fifth companion must unlock only on first **story-boss victory**, not before
 
 ## Owner confirmation 2026-11-19 — Kair unlock
 - Fourth companion Kair (`ash`) unlocks on first successful clear of PvE campaign stage 3, not on entry, loss, repeat or reload. Preserve `ash` entitlement for valid legacy G2 save migrations. All three active party slots remain unchanged until player chooses a swap outside combat; fifth remains first story-boss first-clear reward. G2-R runtime remains NOT IMPLEMENTED.
+
+## Fifth-companion ice-control owner decision (19.11.2026)
+- Companion #5 must have distinct role `ice_controller`: enemy slowdown and dangerous-attack weakening. It unlocks only after first story-boss first clear, **never as a requirement for beating that boss**. New official name, art, final skills, stacking/caps, numerical balance still OPEN. Provisional catalog ID `control` does not count as approved name.
+- Consult docs/FIFTH-COMPANION-ICE-CONTROL-0.1.md; reject infinite freeze/boss lockdown, require deterministic event proof and G2-R browser regression. G3 art production is BLOCKED, not implemented by this decision.
