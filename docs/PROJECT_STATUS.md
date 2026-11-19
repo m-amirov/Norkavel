@@ -142,3 +142,8 @@
 - **CONFIRMED:** each of five companions independently upgrades one level **manually via player-spent gold**. No companion XP or automated level-up, including reserve and idle. No companion skill trees; hero level-up/3+ultimate scheme remains separate.
 - Cost, caps and stat curves OPEN; do not claim a single global gold-only economy or gold hero-level purchase. G2-R must perform atomic/idempotent `gold -= cost` and `companionLevel[id] += 1` per valid unlocked companion, reject insufficient gold/duplicates/corrupt save, and preserve old G2 gold, Kair access and relevant progress.
 - **G2-R NOT_IMPLEMENTED**, new companion upgrade UI and domain tests NOT_RUN; only GDD/agent contract changed. [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+
+## Hero XP confirmation — 2026-11-19
+- OWNER_CONFIRMED: permanent main hero earns XP from verified battle victories; when `heroXp` reaches a threshold, `heroLevel` advances and the player personally selects which of three skills (4 improvement ranks each) or eligible ultimate to upgrade. No auto distribution.
+- Companions earn no XP; levels manually purchased with gold. Hero XP quantities/thresholds, replay/defeat/PvP/idle XP, ultimate unlock/rank cap are OPEN.
+- No G2-R skill allocation, new XP/reward logic, Save v2, event-based XP dedup or browser acceptance has been implemented; legacy G2 28/28 PASS does not cover them. [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).

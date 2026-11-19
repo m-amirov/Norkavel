@@ -175,3 +175,8 @@
 **Owner progression correction 19.11.2026:** all five companions individually level (no companion skill upgrades); main hero has his/her own level and three abilities with four upgrade steps each + upgradeable ultimate; player chooses an improvement after every hero level-up. No camp level. Earlier proposed two-skill kits must expand to 3+ultimate; XP source and ultimate limits remain OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 
 **Companion leveling owner decision (19.11.2026):** each companion's only level is purchased individually, **manually for gold**. No passive/active/reserve companion XP. Hero XP source and skill-choice economy remain OPEN. Gold upgrade must be atomic per purchase, with no double debit/level on retry. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+
+## Hero XP award — OWNER CONFIRMED 2026-11-19
+- Главный герой получает **XP за подтверждённую победу в бою**, автоматически повышая свой уровень при накоплении нужного XP. После каждого hero level-up игрок **сам** выбирает улучшение одной из 3 обычных способностей (по 4 апгрейда) или доступной ульты. Спутники не получают XP, только ручные покупки уровней за золото.
+- Открытые вопросы: конкретные XP за победу, повторные победы и поражения, hero level thresholds/caps, PvP/idle XP, ultimate unlock/ranks. Нельзя без согласования выдавать XP за реплей лишь потому, что золотая повторная награда уже утверждена.
+- Вознаграждение XP должно быть идемпотентным по `attemptId` и сохранять несколько unspent hero upgrade choices, если уровень поднялся дважды одной победой. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.

@@ -21,7 +21,7 @@
 
 ## 3. Рост силы и баланс без переключения героя
 
-- **OWNER CONFIRMED:** нет общего уровня лагеря; **каждый спутник прокачивает только свой уровень вручную за золото**, без XP, без деревьев навыков. Постоянный герой имеет отдельный уровень и 3 способности с 4 улучшениями у каждой + прокачиваемую ульту; способ получения hero XP пока OPEN.
+- **OWNER CONFIRMED:** нет общего уровня лагеря; **каждый спутник прокачивает только свой уровень вручную за золото**, без XP, без деревьев навыков. Постоянный герой имеет отдельный уровень и 3 способности с 4 улучшениями у каждой + прокачиваемую ульту; hero XP за победы CONFIRMED; конкретные XP/пороги, повторы и поражения OPEN.
 - Индивидуальная прокачка относится **только к выбранному главному герою**. Не нужно открывать или прокачивать три недоступных главных героя внутри этого прохождения.
 - Все четыре варианта — полноценные направления игры, а не выбор неправильной сложности; ни один этап/босс не требует обязательной способности героя другого класса. В частности, shield-bash не может быть единственным способом пережить Хранителя Разлома.
 - Для серьёзной угрозы минимум два реальных контрпути с доступными спутниками и/или навыками текущего героя. Расстановка и улучшения помогают, но не подменяют осмысленные тактические решения.
@@ -104,3 +104,7 @@
 - Each of five companions upgrades its own level **manually by the player's explicit gold purchase**; do not grant companion XP from active fights, reserve, idle or any automated service. UI shows per-unit level and next gold cost; no companion ability/talent skill tree.
 - Cost curve and cap OPEN. One purchase must be an atomic **gold debit and one-unit level increment**, fail-closed on insufficient gold, locked unit, stale expected level, duplicate purchase ID or invalid save; preserve purchases across reload/party swap.
 - This does **not** decide whether the main hero earns XP for battles or purchases own levels for gold. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md) authoritative; no G2-R implementation.
+
+## Owner decision: hero XP on battle victory — 2026-11-19
+- Героический уровень повышается **за XP, полученный при победе**, не за покупку уровней спутников. Каждый геройский level-up даёт **осознанный выбор** улучшения 3 скиллов или доступной ульты. Все пять спутников повышаются **только вручную за золото**, без автоопыта.
+- XP thresholds, rewards from replayed victories/losses, PvP, idle and ultimate gating remain OPEN. One battle result cannot grant XP or upgrade choice twice. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).

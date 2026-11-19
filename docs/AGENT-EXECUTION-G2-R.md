@@ -80,7 +80,7 @@ Each executed role must produce a receipt:
 
 ## Progression scope update — 2026-11-19
 - Owner confirmed: no camp level; every companion has only an individual character level, and one permanent hero has own level with **three skills (four upgrade steps each) plus upgradeable ultimate**. Player personally chooses improvement after every hero level-up. Old 2-hero-skill and camp-level proposals are superseded.
-- Before G2-R Developer agent coding, Designer must clarify **hero** XP/level method, companion next-level **gold cost** curve/stat scaling and ultimate cap/unlock (companion XP is REJECTED); Reviewer must verify hero choice/upgrade persistence and save v1 migration, QA must validate 4 hero kits + 5 companion level independence and no duplicated skill choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- Before G2-R Developer agent coding, Designer must balance the OWNER_CONFIRMED hero XP from victories (thresholds and first-clear/replay/loss/PvP/idle policy still OPEN), companion next-level gold cost curve/stat scaling and ultimate cap/unlock (companion XP is REJECTED); Reviewer must verify hero choice/upgrade persistence and save v1 migration, QA must validate 4 hero kits + 5 companion level independence and no duplicated skill choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
 - This is updated agent work allocation only, NOT actual agent execution, no WFA independent review receipt or implementation PASS.
 
 ## Companion gold upgrade scope confirmed — 2026-11-19
@@ -89,3 +89,9 @@ Each executed role must produce a receipt:
 - **Developer (later):** separate atomic purchase command with unlock validation, cost snapshot, gold balance, purchaseId/retry dedup, save v2 and legacy migration.
 - **QA + Reviewer (later):** verify exact balance spend, no double charge/no duplicated levels under reload/fast taps, no upgrade locked characters, no auto XP, preserve reserve levels; don't mark these roles PASS without separate execution evidence.
 - Status: **AGENT_PLAN_ONLY / G2-R_NOT_IMPLEMENTED**, [Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+
+## Hero XP owner decision — 2026-11-19
+- Main hero earns XP on verified battle victory, levels at XP thresholds, and receives a player-controlled choice after **each** levelup among three 4-tier skills and eligible ultimate. Companion levels remain bought manually for gold, never gain XP.
+- **Designer task:** XP threshold curve and reward differentiation, hero-level caps, action pacing across 50 stages and replay-farming impact; no gold-only hero-level purchase assumed.
+- **Developer task (after gate):** versioned XP/levelup/pending choice ledger, atomic idempotent reward settlement keyed by `attemptId`, separate companion gold purchase ledger, legacy v1 migration.
+- **QA/Reviewer:** evidence for multi-levelup, duplicate/reload, defeats, replay policy restrictions, 4 main hero kits, companions unaffected. Agent tasks are only descriptions; **AGENT_NOT_LAUNCHED / G2-R_NOT_IMPLEMENTED**.
