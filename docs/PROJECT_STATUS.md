@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Дата обновления:** 2026-11-19. Current boundary: **G2 TECHNICAL PLAYABLE / ART PRODUCTION 0.1 CANDIDATES / G3 NOT ACCEPTED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2 EXTENDED BROWSER SMOKE PASS / ART 0.2 CONCEPT / G3 NOT ACCEPTED**.
 
 ## Decisions and design
 - G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, one chosen main hero + three companions, async-only PvP, **landscape-only** across mobile game.
@@ -21,14 +21,14 @@
 |---|---|---|
 | G0 | CONFIRMED | genre/party/PvP/orientation |
 | G1 | DESIGN_DRAFT | pending owner acceptance |
-| G2 | **TECHNICAL_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | real first playable, but browser defeat path and additional landscape viewports/real-device coverage still to verify |
+| G2 | **EXTENDED_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | victory/defeat/retry, touch, saves, viewports tested in Chromium; actual hardware, 1000+ balance scenarios and owner playtest outstanding |
 | G3 | BLOCKED_ART_PRODUCTION | replace temporary procedural actor geometry with production-quality characters, backgrounds, VFX and animations; rights/visual review |
 | G4 | NOT_STARTED | full content and trusted server PvP |
 | G5–G7 | NOT_STARTED | real users, SDK/platform, rights, release approval |
 
 ## Remaining work (ordered)
-1. Close G2 acceptance gaps: browser defeat/retry, corrupt/old save recovery, more landscape viewports, touch input/console diagnostics, gameplay balance sampling and screenshot QA.
-2. Art Direction owner approval, character bible and art production of 1 main hero, 3 companions, 3 enemies, 1 boss and 1 painted environment. No primitives can be accepted as G3 art.
+1. Close remaining G2 acceptance gaps: real-device input and safe areas, 1000+ balance samples, human playtest and readability at 640×360. Extended Chromium smoke already covers browser defeat/retry, corrupt/legacy saves, touch, orientation, diagnostics.
+2. Art Direction owner approval; create individual transparent masters, animation sheets and rights evidence for 3 active companions + alternate, 3 enemies and 1 boss. Art 0.2 concept lineup is conversation-only, not committed or runtime-integrated. No primitives can be accepted as G3 art.
 3. Determine Ludory Studio trust/origin and host boundaries for non-narrative 2D runtime; Core alone is real, Studio/Connect is not authorized by a hand-written manifest.
 4. Build an authenticated server-authoritative asynchronous PvP backend **only after** separate architecture decision; do not fake online arena.
 5. Actual Codex activation test is NOT_RUN (CI installs WFA Skills but is not Codex runtime).
@@ -45,3 +45,14 @@
 - [SHA-256 and PNG dimension tests run 44455017226](https://github.com/m-amirov/Norkavel/actions/runs/44455017226): both original files match the source-bound manifest.
 - [Landscape browser checks run 44455353856](https://github.com/m-amirov/Norkavel/actions/runs/44455353856): 640×360, 667×375 and 915×412 screenshots with no viewport overflow or offscreen action bar; 390×844 portrait remains blocked.
 - Screenshot review: painted environment and transparent hero improve the scene, but companions, enemies and boss remain geometry placeholders. Small text at 640×360 requires follow-up. **No independent artistic PASS.**
+
+## G2 extended browser coverage (2026-11-19)
+- [Exact HEAD `a2d1d5d` — CI SUCCESS, run 44458525616](https://github.com/m-amirov/Norkavel/actions/runs/44458525616).
+- Node 22: **19/19 tests PASS**, including malformed/legacy snapshots and 120 reproducible combat seeds (not a 1000+ balance proof). Ludory Core lifecycle/save smoke PASS.
+- Chromium CDP: mouse + true emulated touch, skill activation, pause, portrait blocking at 360×640, 390×844, 768×1024, 1024×1366; mobile landscape 640×360, 667×375, 844×390, 915×412; victory, retry, no duplicate rewards, boss warning and interruption, **controlled valid browser defeat fixture**, browser defeat/retry; corrupted/legacy save recovery and browser console diagnostics.
+- Corrected teardown race of Chromium's temporary profile and missing favicon 404 noise. These were actual failed CI checks first, then repaired and rerun; no inference from code alone.
+- Scope: Chrome emulation and source tests, **not** physical touch devices, independent playtesting, artistic sign-off or live Yandex platform acceptance.
+
+## Art Production 0.2 scope
+- [Companion concept and art gate](ART_PRODUCTION-0.2.md): original transparent art lineup of Ард, Мира, Элира; source file and candidate crops were packaged as a downloadable chat artifact, **not present in this repository**.
+- Кайр, враги и босс, frame-based animations and parallax asset separation remain not produced/integrated; Art Production 0.2 is NOT_COMPLETE, G3 remains BLOCKED.
