@@ -1,10 +1,10 @@
 # Norkavel — project status
 
-**Дата обновления:** 2026-11-19. Current boundary: **G2 BOSS BALANCE SAMPLE PASS / G3 0.3 SOURCE PACK + OPT-IN RENDER CODE / G3 NOT ACCEPTED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2 LEGACY_PLAYABLE / ROSTER_CONTRACT_G2-R_BLOCKED / G3 NOT ACCEPTED**.
 
 ## Decisions and design
-- G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, one chosen main hero + three companions, async-only PvP, **landscape-only** across mobile game.
-- G1: [GDD 1.0](GDD-1.0.md) drafted; class swapping, art atmosphere, PvP backend, monetization and numeric content scope remain proposals or OPEN. **PENDING_OWNER_REVIEW**.
+- G0 confirmed by owner: «Норкавель», Яндекс Игры, 2D side-view autobattler + clicker + Idle RPG, **4 distinct main heroes to choose from (exactly one selected), 5 progressively unlockable companions (3 active), 1+3=4 in combat**, async-only PvP, **landscape-only**. See [GDD 1.1](GDD-1.1.md).
+- G1: [GDD 1.1](GDD-1.1.md) has owner-confirmed roster counts, choice and gradual unlock. Specific hero identities, fifth companion, unlock triggers, switching hero remain OPEN. GDD 1.0 is superseded.
 - Ludory Core pinned at `933c73b195eaf3bfffd12a31ab1cbadb27989eea`; WFA pinned at `6c8d80d15155cd8ccfbd245fce9450f61b5133f3`.
 
 ## Verified implementation
@@ -19,16 +19,16 @@
 ## Gate status
 | Gate | Status | Boundary |
 |---|---|---|
-| G0 | CONFIRMED | genre/party/PvP/orientation |
-| G1 | DESIGN_DRAFT | pending owner acceptance |
-| G2 | **BOSS_BALANCE_SAMPLE_PASS / EXTENDED_BROWSER_SMOKE_PASS / PARTIAL_ACCEPTANCE** | retuned boss 1800 seeded fights + real browser natural defeat PASS; human balance and physical-device acceptance remain open |
+| G0 | CONFIRMED | 4 hero choices; 5 unlockable companions; active party 1+3; PvP/orientation |
+| G1 | ROSTER_COUNTS_CONFIRMED / CONTENT_OPEN | GDD 1.1 defines composition; characters/unlock timing not final |
+| G2 | **LEGACY_BROWSER_PASS / OWNER_ROSTER_NOT_IMPLEMENTED** | Existing fixed hero and 4 companions do not implement selectable 4 heroes and 5 unlockable companions; previous boss results remain legacy evidence |
 | G3 | BLOCKED_ART_PRODUCTION | replace temporary procedural actor geometry with production-quality characters, backgrounds, VFX and animations; rights/visual review |
 | G4 | NOT_STARTED | full content and trusted server PvP |
 | G5–G7 | NOT_STARTED | real users, SDK/platform, rights, release approval |
 
 ## Remaining work (ordered)
 1. Close remaining G2 acceptance gaps: independent first-boss playtest, physical-device input/safe areas, human comprehension and readability at 640×360. Mechanical boss balance sample is PASS, not user acceptance.
-2. Art Direction owner approval; create individual transparent masters, animation sheets and rights evidence for 3 active companions + alternate, 3 enemies and 1 boss. Art 0.2 concept lineup is conversation-only, not committed or runtime-integrated. No primitives can be accepted as G3 art.
+2. G2-R: implement choosing 1 of 4 heroes, 5-companion collection/unlock, 3 active companion slots and explicit save migration. Then G3: produce/approve 4 different main hero masters + 5 companion masters (plus 3 enemies and boss), true animations and rights. Existing four candidate companions are not four hero choices.
 3. Determine Ludory Studio trust/origin and host boundaries for non-narrative 2D runtime; Core alone is real, Studio/Connect is not authorized by a hand-written manifest.
 4. Build an authenticated server-authoritative asynchronous PvP backend **only after** separate architecture decision; do not fake online arena.
 5. Actual Codex activation test is NOT_RUN (CI installs WFA Skills but is not Codex runtime).
@@ -75,3 +75,8 @@
 - [Production report](G3-ART-PRODUCTION-0.3.md): a separate chat ZIP contains transparent, 512×512 static companion PNG and WebP masters for Ард, Мира, Элира and Кайр (four assets, 289 788 bytes of WebP total) plus source and SHA evidence.
 - Runtime opt-in registry and drawing route committed; absent image binaries are not loaded or represented as integrated. The ZIP bytes **have not been committed to GitHub**. A validating `scripts/import-g3-art.mjs` is provided but has not been executed with the real ZIP in the repository.
 - Mechanical importer/manifest/browser tests added. Check the exact SHA CI before making any PASS claim. Boss, enemies, true frame animation, depth-layer parallax, rights and human image review remain outstanding. G3 BLOCKED.
+
+## Owner correction (19.11.2026) — precedence over historical G2/G3 reports
+- [GDD 1.1](GDD-1.1.md) confirms **4 selectable main heroes**, **5 companions available through gradual unlock**, **1 hero + 3 companions active**. Existing G2 uses one fixed hero, a four-companion catalog and a third-slot switch, without hero selection or unlock logic. Therefore historical 28/28 green CI does NOT verify this new requirement.
+- Current art includes **1 candidate hero master** and **4 candidate companion masters** (the latter still external conversation ZIP). Still missing **3 hero masters** and **the fifth companion**, plus 3 enemies, boss, animation and art review. G3 remains BLOCKED; do not relabel existing companion images as selectable heroes.
+- Next implementation gate: G2-R roster + save migration + headless Chrome with both hero choice and unlock/party invariants; then revised G3 visual/animation production. Initial unlock counts and unlock milestones are OPEN; do not hardcode guesses as canon.
