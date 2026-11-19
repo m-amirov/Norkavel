@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**Текущая граница:** G2 legacy browser playable; **G2R-F01, F03, P01 и E01 domain foundation проверены**, но G2-R runtime/UI, trusted combat-result producer и атомная запись v2 в browser storage ещё не реализованы. Economy Balance 0.1 проверен арифметически, но его **численные значения не утверждены окончательно**, G3 production art не принят. См. [Project Status](PROJECT_STATUS.md), [Acceptance](ACCEPTANCE.md) и [WFA agent routing](AGENT-EXECUTION-G2-R.md).
+**Текущая граница:** G2 legacy browser playable; **G2R-F01, F03, P01, E01 и C01 domain foundation проверены**, но G2-R runtime/UI, trusted combat-result producer и атомная запись v2 в browser storage ещё не реализованы. Economy Balance 0.1 проверен арифметически, но его **численные значения не утверждены окончательно**, G3 production art не принят. См. [Project Status](PROJECT_STATUS.md), [Acceptance](ACCEPTANCE.md) и [WFA agent routing](AGENT-EXECUTION-G2-R.md).
 
 ## Правила очереди
 
@@ -16,7 +16,7 @@
 | 3 | G2R-F03 | Roster 5, 3 активных/2 резервных, unlock stage3/10, безопасные first-clear claim receipts | G2R-F01 | **DONE_VERIFIED — `e384e5e`, CI 44531383856** |
 | 4 | G2R-P01 | Отдельная прогрессия героя (lvl1–16, XP за победы, 15 player choices, ultimate lvl5) | G2R-F01; skill effects when moving to combat; economy values remain CANDIDATE | **DONE_VERIFIED — `85114c6`, CI 44535563965** |
 | 5 | G2R-E01 | Ручная прокачка каждого спутника за золото, atomic purchase ledger, denied/double-purchase cases | G2R-F01 + G2R-F03; числа Economy 0.1 **CANDIDATE** | **DONE_VERIFIED — `4af6c6f`, CI 44537806684** |
-| **NOW** | **G2R-C01** | **Доменная линейная кампания 5×10, 50 stage IDs, 5 chapter map IDs, маршруты/preview/explicit fight/replay** | G2R-F01 + G2R-F03, недостающие stage details фиксировать как OPEN | **READY** |
+| 6 | G2R-C01 | Доменная линейная кампания 5×10, 50 stage IDs, 5 chapter map IDs, маршруты/preview/explicit fight/replay | G2R-F01 + G2R-F03, недостающие stage details фиксировать как OPEN | **DONE_VERIFIED — `6813b98`, CI 44577561998** |
 | 7 | G2R-INT | Сведение 4 hero kits / 50 encounter battle balance / все награды / browser UX landscape / migration | Предыдущие задачи + реальный контент и результаты | BLOCKED_DEPENDENCY |
 | 8 | G3-ART | Production art 4 hero+5 companions+враги/боссы, 50 уникальных полей боя и 5 карт глав | Арт-решения, реальные source/rights assets, отдельная визуальная приёмка | BLOCKED_OWNER / ART_PRODUCTION |
 | 9 | G4–G7 | Полный контент, серверный async PvP, QA и релизный кандидат Яндекс Игр | Настоящие G2-R/G3 gates и platform decisions | BLOCKED_DEPENDENCY |
@@ -77,4 +77,10 @@
 **Интеграционные гейты (не новые блокеры чистой доменной задачи):**
 - **RISK-G2R-04 / TRUSTED_GOLD_COST_POLICY:** первая покупка принимает любую структурно допустимую внешнюю `companionUpgradePolicy` от caller; snapshot policy защищает будущие изменения, **но не аутентифицирует происхождение исходных цен**. Перед production UI покупками связать их с доверенной, утверждённой политикой приложения, с проверяемым version/content identity; отклонять подмену цен и защититься от client-side spoofing, особенно при async PvP/ranking. Не внедрять стоимость Economy Balance 0.1 как OWNER_CONFIRMED.
 - **RISK-G2R-05 / MULTI_TAB_CAS:** при двух вкладках с одной исходной копией профиля и purchaseSequence=1 оба независимых in-memory вызова могут успешно вернуть разные профили, а простая last-write-wins запись потеряет один результат/состояние кошелька. При подключении `Save v2` нужна serializable persist/CAS (или обоснованная single-writer coordination) с revision, stale-write rejection, transaction retry и регрессией simultaneous purchases/reload. **Нет кросс-вкладочной транзакционности в текущем F01–E01.**
-- Приоритет очереди **NOW = G2R-C01 (5×10 карта/кампания)**. Гейты RISK-G2R-04/05 должны закрываться на соответствующем этапе persistence/integration; не уводить C01 в большой рефакторинг. Gold first/replay награды для нового runtime и UI ещё не внедрены.
+- На момент аудита E01 приоритетом был **G2R-C01 (5×10 карта/кампания)**; теперь его domain-срез завершён. Гейты RISK-G2R-04/05 должны закрываться на соответствующем этапе persistence/integration. Gold first/replay награды для нового runtime и UI ещё не внедрены.
+
+## Фактический выход G2R-C01
+
+`src/campaign-v1.mjs` добавляет валидируемый неизменяемый каталог из 5 глав, 50 последовательных `stage-001..050`, 5 уникальных `mapId`, 50 уникальных `encounterId`/`backgroundId`/`firstClearClaimId` и boss-флагов строго 10/20/30/40/50. Чистая navigation state machine реализует `chapter_map → travelling → stage_preview → explicit beginCampaignAttempt`, не запускает бой по tap/arrival, фиксирует первый быстрый tap, безопасно отменяет travel, запрещает locked stage и разрешает CLEARED replay через существующий canonical attempt ledger. [CI 44577561998](https://github.com/m-amirov/Norkavel/actions/runs/44577561998) на exact `6813b98`: 72/72 Node, Ludory Core, project WFA bootstrap и legacy Chromium smoke PASS.
+
+**Граница:** это DOMAIN_PASS. Реальный chapter-map UI, видимая анимация/marker, mouse/touch/keyboard/portrait browser acceptance, navigation persistence/CAS, trusted combat outcome, production rewards, 50 encounters и 55 art assets не реализованы. Следующая интеграционная задача G2R-INT остаётся `BLOCKED_DEPENDENCY`; G2R-F02 content — `BLOCKED_OWNER`, поэтому новой независимой READY-задачи сейчас нет.

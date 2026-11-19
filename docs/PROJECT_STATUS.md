@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-C01 (linear 5×10 campaign domain)**; G2R-F02 content остаётся BLOCKED_OWNER. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NO INDEPENDENT READY TASK:** G2R-C01 domain завершён; G2R-F02 content остаётся BLOCKED_OWNER, G2R-INT — BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
 **Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01+E01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
@@ -220,3 +220,9 @@
 
 - Domain work verified on `370dd43919ee6cce3669aad0c730bab1bd981e60`: [CI #44538317550](https://github.com/m-amirov/Norkavel/actions/runs/44538317550) SUCCESS, 66/66 Node PASS, Ludory Core and legacy Chromium smoke PASS. `upgradeCompanion` performs a pure in-memory atomic purchase, persistent policy snapshot and monotonic duplicate protection; XP reward-table identity correction also verified. **E01 DOMAIN_PASS**.
 - Future integration risks: initial gold-cost policy must come from an authoritative config (domain accepts structurally valid caller-supplied policy) and multi-tab browser Save v2 must provide CAS/single-writer transaction semantics; independent copies can otherwise cause last-write-wins. Real win-gold source/UI and live purchase flow not implemented. See [acceptance](ACCEPTANCE.md) and [task queue](TASK_QUEUE.md). Next READY G2R-C01.
+
+## G2R-C01 linear campaign domain — 2026-11-19
+
+- `src/campaign-v1.mjs` defines and validates 5 linear chapters × 10 stages, stable `stage-001..050`, five maps, unique encounter/background/claim identities and boss nodes 10/20/30/40/50. Navigation is explicit `map → travel → preview → fight`; locked nodes and implicit fight starts fail closed, cleared stages remain replayable through the existing attempt ledger.
+- Exact code SHA `6813b98a40bbddf47083f709e0e8443bded860e7`, [CI #44577561998](https://github.com/m-amirov/Norkavel/actions/runs/44577561998) SUCCESS: 72/72 Node, Ludory Core, WFA bootstrap and legacy Chromium smoke. **C01 DOMAIN_PASS**, not browser-map acceptance.
+- Still missing: visible map/marker/travel UI, navigation persistence and multi-tab CAS, real mouse/touch/keyboard/portrait checks, trusted combat producer, production rewards/encounters, 50 battle backgrounds and 5 chapter-map artworks. G2R runtime/UI remains NOT_IMPLEMENTED; no independent READY task remains without owner content decisions or integration prerequisites.
