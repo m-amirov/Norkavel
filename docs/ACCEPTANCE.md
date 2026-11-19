@@ -165,3 +165,8 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-070 / NKV-PRG-11 CONFIRMED_SPEC / NOT_IMPLEMENTED:** on first clear of a positive-XP stage, selected hero gets regular XP; on **new valid replay win**, selected hero gets **smaller positive XP**. On defeat, abandoned or invalid attempt, hero gets **zero XP**, no level-up or pending upgrade choices. Companions never earn XP.
 - **NKV-071 / NKV-PRG-12 NOT_TESTED:** multiple distinct legitimate replay victories can each grant XP once; reprocessing the **same** attempt cannot grant XP/gold/levels/skill choice again through reload, retry double callback or navigation. No first-clear milestone reissue; 4 hero profiles and boss replay covered.
 - **NKV-072 OWNER_REVIEW / BALANCE_OPEN:** XP stage schedule, reduced-XP ratio/rounding, thresholds/caps and PvP/idle XP remain undecided. No G2-R system code or independent QA has been executed.
+
+### Ultimate progression — owner approval 2026-11-19
+- **NKV-073 / NKV-PRG-13 CONFIRMED_SPEC / NOT_IMPLEMENTED:** ultimate locked through hero level 4; unlocks at **hero level 5**. Exactly **three optional upgrade steps** chosen by the player at hero level-up instead of one of three ordinary skills (4 steps each). No automatic ultimate upgrade at unlock.
+- **NKV-074 / NKV-PRG-14 REQUIRED / NOT_TESTED:** after 4→5, ult is usable, choices at rank 0..3 legal, max 3/3 (fourth upgrade rejected), no cast/upgrade before 5, reload/multi-level-up/legacy migration do not lose or duplicate choices. Must verify 4 unique heroes with distinct ultimate abilities.
+- **NKV-075 BALANCE_OPEN:** hero level cap, XP thresholds/skill effects, ultimate cooldown and policy after all 15 upgrades spent. Legacy G2 with 2 skills does not establish G2-R pass.
