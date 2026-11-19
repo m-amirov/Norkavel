@@ -9,11 +9,11 @@
 | NKV-002 | WFA project Skill routing и activation | bootstrap | dry-run/installed receipts, positive/negative Codex calls | PARTIAL_CI_INSTALL; CODEX_ACTIVATION_NOT_RUN |
 | NKV-003 | Один главный герой + 3 спутника участвуют в бою | G2 | runtime state + browser playback | PASS_G2_BROWSER |
 | NKV-004 | 2D бой с видом сбоку | G2/G3 | реальная запись экрана + independent pixel review | G2_SIDEVIEW_PASS / G3_ART_BLOCKED |
-| NKV-005 | Deterministic fixed-tick simulation и replay | G2 | seeded equality + 1000+ scenario tests | PARTIAL_UNIT_DETERMINISM / BULK_SCENARIOS_NOT_RUN |
+| NKV-005 | Deterministic fixed-tick simulation и replay | G2 | seeded equality + 1000+ scenario tests | PARTIAL: 120 SEEDS UNIT_PASS; 1000+ SCENARIOS_NOT_RUN |
 | NKV-006 | PvE autoattack, click cap и 2 активных скилла | G2 | script input, cooldown cap tests | PASS_G2_BROWSER_AND_UNIT |
 | NKV-007 | Замена спутника/позиции/синергии влияет на исход | G2 | deterministic A/B outcome | PASS_G2_UNIT |
-| NKV-008 | Boss telegraph, victory/defeat/retry | G2 | browser smoke обоих исходов | PARTIAL: WIN/BOSS_BROWSER_PASS; DEFEAT_UNIT_ONLY |
-| NKV-009 | Сохранение и корректное восстановление PvE | G2/G4 | valid/corrupt/old save tests | PARTIAL: RELOAD_BROWSER_PASS; INVALID/OLD_NOT_RUN |
+| NKV-008 | Boss telegraph, victory/defeat/retry | G2 | browser smoke обоих исходов | PASS_G2_BROWSER: real victory and controlled near-defeat fixture, retry + boss interrupt |
+| NKV-009 | Сохранение и корректное восстановление PvE | G2/G4 | valid/corrupt/old save tests | PASS_G2_BROWSER: valid/reload, invalid + legacy fail-closed |
 | NKV-010 | Кампания: 5 глав, 50 этапов, 5 боссов | G4 | level coverage, reachable stages | SPECIFIED |
 | NKV-011 | 4 стартовых класса героя и их навыки | G4 | combat balance + class coverage | SPECIFIED |
 | NKV-012 | 12 спутников, 6 синергий, экипировка | G4 | manifest + use-site + tests | SPECIFIED |
@@ -25,7 +25,7 @@
 | NKV-018 | Optional rewarded / cosmetics без PvP pay-to-win | G6 | trusted payment/ads integration evidence if enabled | BLOCKED |
 | NKV-019 | Production 2D art, лицензии, анимации, адаптивность | G3/G6 | source/rights + visual reviews + device QA | BLOCKED |
 | NKV-020 | Yandex local candidate / platform approval | G6/G7 | ZIP receipt, source hash, live SDK, real moderation, owner approval | BLOCKED |
-| NKV-021 | Вся мобильная игра только landscape; portrait — экран поворота | G2/G3 | real browser orientation change tests, screen capture, no hidden inputs, state/reward invariants, fallback when orientation lock unavailable | PARTIAL: 390×844 + 1024×1366 PORTRAIT / 844×390 LANDSCAPE_BROWSER_PASS; OTHER_VIEWPORTS_NOT_RUN |
+| NKV-021 | Вся мобильная игра только landscape; portrait — экран поворота | G2/G3 | real browser orientation change tests, screen capture, no hidden inputs, state/reward invariants, fallback when orientation lock unavailable | PARTIAL: EXTENDED_CHROMIUM_PASS 360/390/768/1024 portrait, 640/667/844/915 landscape + touch; PHYSICAL_DEVICE_NOT_RUN |
 
 ## Набор оставшихся проверок (выполненное отделено от плана)
 - Domain: damage, statuses, AI target priority, critical PRNG, seed replay determinism, save migration, cooldown, idle duplicate grants.
@@ -55,3 +55,9 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-022 mechanical PASS**: Source SHA-256 and PNG dimension contract in CI [44455017226](https://github.com/m-amirov/Norkavel/actions/runs/44455017226).
 - **NKV-022 runtime PASS (bounded)**: Image decode, current browser gameplay and viewport capture in CI [44455353856](https://github.com/m-amirov/Norkavel/actions/runs/44455353856). Three landscape viewport screenshots (640, 667, 915) checked for structural overflow.
 - **NKV-023 still BLOCKED**: no illustrated full roster, true animation sheets, independent art review or rights certificate. No G3 closure.
+
+## 2026-11-19 — Extended G2 receipts
+- [CI 44458525616 on `a2d1d5d`: SUCCESS](https://github.com/m-amirov/Norkavel/actions/runs/44458525616); 19/19 Node tests, Core smoke, real Chromium mouse/touch/portrait/landscape, victory and controlled defeat/retry, validation of invalid/legacy saves, console diagnostics.
+- NKV-009 validation **rejects structurally incomplete unit payloads**, malformed events and impossible party composition before restoring into the session. This is crash/integrity hardening, **not** anti-cheat for client-controlled currency or PvP.
+- NKV-024 Art Production 0.2: companion lineup candidate was generated and provided outside source control; `docs/ART_PRODUCTION-0.2.md` registers SHA/visual brief but no runtime or CI asset proof. STATUS CONCEPT_ONLY / ART_GATE_BLOCKED.
+- Pending before G2 owner acceptance: physical devices, touch-safe-area QA, independent usability test, 1000+ seeded balance samples. G3 full roster animation/rights remains BLOCKED. Release flags remain false.
