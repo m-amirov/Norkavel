@@ -34,6 +34,7 @@ npm run test:browser
 - [Статус и проверки](docs/PROJECT_STATUS.md).
 - [G2 визуальный аудит](docs/qa/G2-visual-audit-2026-11-18.md).
 - [Art Production 0.1 — реальные исходники, статус и ограничения](docs/ART_PRODUCTION-0.1.md).
+- [G3 Art Production 0.4 — исправленный план 4 героев и 5 спутников](docs/G3-ART-PRODUCTION-0.4.md).
 - [Технический bootstrap](docs/TECHNICAL_BOOTSTRAP.md).
 - [Пайплайн и критерии приёмки](docs/ACCEPTANCE.md).
 
