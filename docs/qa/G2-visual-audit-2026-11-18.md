@@ -30,3 +30,9 @@
 2. Canonical hero illustrations (front/side silhouette), idle/attack/cast/hit/death sequences, 1 boss.
 3. One premium painted combat environment (background/midground/foreground) and skills VFX.
 4. Independent screenshot comparisons at mobile landscape + desktop, original-source provenance and rights ledger.
+
+## Addendum — Art Production 0.1 (2026-11-19)
+- Source art now includes a real 1536×1024 transparent warrior and 1672×941 painted arena background. See [the production register](../ART_PRODUCTION-0.1.md).
+- Browser pixel evidence: [CI 44455353856](https://github.com/m-amirov/Norkavel/actions/runs/44455353856), PNG screenshot artifact including 640×360, 667×375 and 915×412 landscape viewports.
+- Observed: no structural action bar overflow; hero/arena visual quality improved, yet remaining units and boss are still flat procedural stand-ins. Small labels at 640×360 degrade legibility.
+- G3 visual consistency remains **BLOCKED_ART**; no independent approval has been performed.

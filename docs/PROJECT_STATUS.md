@@ -39,3 +39,9 @@
 - Source-bound candidates: transparent warrior master 1536×1024 and clean landscape battlefield background 1672×941. Original PNG bytes are committed under `assets/art/` with SHA-256/provenance in `assets/art/manifest.json`.
 - Browser now preloads the two real assets; canvas renderer uses actual images when decoded. Geometric fallback and other seven temporary units remain, so not an art-complete slice.
 - See [production register](ART_PRODUCTION-0.1.md). Mechanical/runtime checks must run against latest commit; rights and independent artistic review remain NOT_RUN.
+
+## Verified art and mobile viewport follow-up
+- [Art integration + browser smoke run 44454437539](https://github.com/m-amirov/Norkavel/actions/runs/44454437539): hero and arena images actually load as decoded PNG and are displayed in the Canvas battle.
+- [SHA-256 and PNG dimension tests run 44455017226](https://github.com/m-amirov/Norkavel/actions/runs/44455017226): both original files match the source-bound manifest.
+- [Landscape browser checks run 44455353856](https://github.com/m-amirov/Norkavel/actions/runs/44455353856): 640×360, 667×375 and 915×412 screenshots with no viewport overflow or offscreen action bar; 390×844 portrait remains blocked.
+- Screenshot review: painted environment and transparent hero improve the scene, but companions, enemies and boss remain geometry placeholders. Small text at 640×360 requires follow-up. **No independent artistic PASS.**

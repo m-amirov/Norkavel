@@ -26,3 +26,9 @@ The two source images are served from an explicit allowlist with correct `image/
 2. Produce companion masters and boss, plus actual coherent pose sheets; avoid cloning the warrior.
 3. Separate arena depth into independently renderable layers and introduce attack/hit/cast motion.
 4. Compare real browser screenshots before/after with owner-approved direction; measure asset budget and load times.
+
+## Executed evidence (not just a plan)
+- Source image hash + dimensions regression: [Node CI 44455017226](https://github.com/m-amirov/Norkavel/actions/runs/44455017226) — mechanical PASS.
+- Actual browser PNG decoding and rendered screenshots: [Chromium CI 44455353856](https://github.com/m-amirov/Norkavel/actions/runs/44455353856) — runtime PASS for the tested viewports and two registered images only.
+- Captured at 1280×720 and mobile landscape 640×360, 667×375, 844×390, 915×412. The 640px screen has particularly small status text; fixing typography and replacing primitive units is a visual QA action.
+- Artistic review/rights/animation/owner signoff: NOT_RUN / BLOCKED. No promotion to G3 or production-ready.

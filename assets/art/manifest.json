@@ -37,8 +37,8 @@
     }
   ],
   "gates": {
-    "mechanical": "NOT_RUN",
-    "runtime": "NOT_RUN",
+    "mechanical": "PASS_NODE_SHA256_DIMENSIONS_44455017226",
+    "runtime": "PASS_CHROMIUM_IMAGE_DECODE_AND_CAPTURE_44455353856",
     "artistic": "PENDING_OWNER_APPROVAL",
     "rights": "NOT_VERIFIED",
     "animation": "MISSING"

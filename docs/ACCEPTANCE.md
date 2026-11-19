@@ -50,3 +50,8 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 ## Art Production 0.1 additions
 - NKV-022: Real PNG image source for hero and location, registered SHA-256, dimensions, and runtime scene mapping. Mechanical tests and actual browser decode/capture are required; artistic/rights do not inherit mechanical PASS.
 - NKV-023: Full roster (1 hero + 3 companions + enemies/boss) consistent illustrated animation assets, separate artistic review and rights documentation. NOT_READY.
+
+### Verified Art Production 0.1 evidence
+- **NKV-022 mechanical PASS**: Source SHA-256 and PNG dimension contract in CI [44455017226](https://github.com/m-amirov/Norkavel/actions/runs/44455017226).
+- **NKV-022 runtime PASS (bounded)**: Image decode, current browser gameplay and viewport capture in CI [44455353856](https://github.com/m-amirov/Norkavel/actions/runs/44455353856). Three landscape viewport screenshots (640, 667, 915) checked for structural overflow.
+- **NKV-023 still BLOCKED**: no illustrated full roster, true animation sheets, independent art review or rights certificate. No G3 closure.
