@@ -92,7 +92,7 @@ Each executed role must produce a receipt:
 
 ## Hero XP owner decision — 2026-11-19
 - Main hero earns XP on verified battle victory, levels at XP thresholds, and receives a player-controlled choice after **each** levelup among three 4-tier skills and eligible ultimate. Companion levels remain bought manually for gold, never gain XP.
-- **Designer task:** XP threshold curve and **owner-approved reduced XP for replay wins / zero XP on defeats**, hero-level caps, action pacing across 50 stages and replay-farming impact; no gold-only hero-level purchase assumed.
+- **Designer task:** XP threshold curve and **owner-approved reduced XP for replay wins / zero XP on defeats**, **hero-level cap 16 CONFIRMED**, action pacing across 50 stages and replay-farming impact; no gold-only hero-level purchase assumed.
 - **Developer task (after gate):** versioned XP/levelup/pending choice ledger, atomic idempotent reward settlement keyed by `attemptId`, separate companion gold purchase ledger, legacy v1 migration.
 - **QA/Reviewer:** evidence for multi-levelup, duplicate/reload, defeats, replay policy restrictions, 4 main hero kits, companions unaffected. Agent tasks are only descriptions; **AGENT_NOT_LAUNCHED / G2-R_NOT_IMPLEMENTED**.
 
@@ -103,6 +103,11 @@ Each executed role must produce a receipt:
 - AGENT_PLAN_ONLY; no independent agents executed, G2-R NOT_IMPLEMENTED.
 
 ## Ultimate level 5 / three improvements — owner-approved 2026-11-19
-- **Game Designer**: four distinct ultimate kits and readability/balance, unlocked at heroLevel 5 with exactly 3 player-chosen upgrades; 3 normal skills each 4 upgrades, 15 possible choices combined. Hero cap or alternative to surplus choices after skill max is separate OPEN decision.
+- **Game Designer**: four distinct ultimate kits and readability/balance, unlocked at heroLevel 5 with exactly 3 player-chosen upgrades; 3 normal skills each 4 upgrades, 15 possible choices combined. **Owner-approved hero cap 16**, so 15 level-up choices precisely cover all skill improvements; post-cap XP accounting and threshold balancing remain OPEN.
 - **Developer** (later): versioned `ultimateUnlocked` / `ultimateUpgradeRank=0..3`, level gate, no auto-spend upon unlock, atomic chosen upgrade action, Save v2 migration and deterministic snapshot.
 - **QA / Reviewer** (later): test lv4 locked vs lv5 usable, choosing normal skill instead of ult, ult max 3, no rank4, double callback/reload/multi-level-up, all 4 hero IDs, hero XP reward behavior. Actual agent runs and tests NOT_RUN; this file is task routing only.
+
+## Hero level 16 approval — agent work contract 2026-11-19
+- **OWNER_CONFIRMED:** permanent hero starts lvl1, max lvl16, earns exactly 15 player-selected upgrade choices on reaching levels 2..16, with 3×4 normal skills plus 3 ultimate upgrades. Ultimate unlocks lvl5 and does not auto-spend. No new level17/16th choice, pending choices remain claimable after cap.
+- **Designer:** simulate 15 XP thresholds and 50-stage+replay pacing; avoid hero cap before meaningful late content without economy reasoning. **Developer:** save/check cap and `earnedChoices = heroLevel - 1` for fresh profiles, pending and per-attempt idempotency; preserve legacy G2 rights. **QA/Reviewer:** prove stage progression, 4 hero paths, multi-levelup, 15→16, invalid 17, all improvements fully spent, reload pending at cap, continued replay/gold farming at max.
+- This only assigns **future agent tasks**. No independent agent has been launched here, no code or QA run; G2-R NOT_IMPLEMENTED.
