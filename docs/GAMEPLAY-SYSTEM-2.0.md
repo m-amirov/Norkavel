@@ -262,3 +262,8 @@ Release flags остаются false. Ни одна предложенная м�
 - Companions never earn XP: their one level track is upgraded **manually with gold**.
 - XP from losses, replayed cleared levels, async PvP, idle and numerical values/curves remain owner-OPEN. A reduced gold replay reward does not itself specify XP replay rules. `attemptId` must prevent duplicate hero XP, level or skill choice on repeat callback/reload.
 - [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md) defines detailed data/QA contract, G2-R NOT_IMPLEMENTED.
+
+## Owner approval 2026-11-19 — replay XP and defeat XP
+- The immutable selected hero gets regular XP for a first successful stage clear and **reduced positive XP for each newly validated replay win** on the same already-cleared stage. Replays still award reduced ordinary gold; first-clear bonuses and companion/chapter unlocks never repeat. **Defeat/abandonment earns 0 hero XP**; companion XP is never a source of progression.
+- Unspecified replay XP multiplier, per-stage XP base, thresholds and PvP/idle rules remain OPEN. No automatic XP from defeats, never 0 XP for actual replay wins when regular stage XP is positive.
+- `attemptId`/stage/status/rewardRevision must guard exactly-once XP, level changes and unspent improvement choices. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md). G2-R NOT_IMPLEMENTED.
