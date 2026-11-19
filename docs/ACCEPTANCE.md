@@ -81,7 +81,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 
 ### 2026-11-19 — Owner-confirmed roster correction (GDD 1.1)
 - **NKV-031:** User chooses one of exactly **4 distinct main heroes**. Selection persists through setup, fight, save/reload and future async PvP snapshot; never field a second main hero. **CONFIRMED / NOT_IMPLEMENTED**.
-- **NKV-032:** Exactly **5 distinct companions** exist in the unlockable collection; unlock occurs gradually through gameplay, and locked companions cannot be put in the team. Specific unlock milestones remain OPEN. **CONFIRMED / NOT_IMPLEMENTED**.
+- **NKV-032:** Exactly **5 distinct companions** exist in the unlockable collection; unlock occurs gradually through gameplay, and locked companions cannot be put in the team. **Fifth unlock after first story boss clear CONFIRMED; earlier unlock milestones OPEN.** **CONFIRMED / NOT_IMPLEMENTED**.
 - **NKV-033:** Active party has **4 units = 1 hero + 3 distinct unlocked companions**, with 2 reserve companions when all five are unlocked; all three companion slots configurable outside fights. **LEGACY_PARTY_SIZE_PASS / CORRECT_COLLECTION_AND_SLOTS_NOT_IMPLEMENTED**.
 - **NKV-034:** Explicit compatibility/migration for schema:1 / local save with one fixed hero and missing unlock data, preserving existing progress without accidental retroactive permanent hero selection. **NOT_IMPLEMENTED**.
 - **NKV-035:** G3 includes **4 separate hero masters + 5 companion masters**, not four renamed candidate companion PNGs. Prior Art 0.3 generated four *companions* only. **BLOCKED_ART**.
@@ -93,7 +93,7 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 ### 2026-11-19 — G2-R design-first records
 - [Gameplay Design 2.0](GAMEPLAY-SYSTEM-2.0.md) supplies a complete high-level game-system proposal. **DESIGN_DRAFT / OWNER_REVIEW_REQUIRED**, not gameplay implementation.
 - [G2-R Character System 0.1](G2-R-CHARACTER-SYSTEM-0.1.md) specifies Save v2, v1 migration and G2R-01..G2R-14 verifiable acceptance criteria. **IMPLEMENTATION_NOT_STARTED / TESTS_NOT_RUN**.
-- Approval still needed for hero-swapping policy, character identities and skill kits, 3 initial companions, milestone/5th role, campaign length and economy. Confirmed roster quantities are not pending.
+- Approval still needed for hero-swapping policy, character identities and skill kits, 3 initial companions, fourth companion milestone/fifth role and first boss stage ID, campaign length and economy. Confirmed roster quantities are not pending.
 - Historical 28/28 test PASS must not be counted as proof that player can select 4 distinct heroes or unlock 5 companions.
 
 ### Gameplay Design 2.1 — scope clarification
@@ -106,5 +106,11 @@ G5 actual browser/device/human evidence; G6 exact SHA and package receipt plus a
 - **NKV-038: DESIGN_PROPOSAL / NOT_IMPLEMENTED:** optional pre-confirmation test fight must not mutate real save, gold, first-clear, unlocks or committed hero ID.
 - **NKV-039: G2-R_NOT_IMPLEMENTED:** four individual hero profiles must independently complete the campaign, including bosses, with their permanently selected hero and only available companion counters. Do not demand all heroes in one player profile.
 - **NKV-040: MIGRATION_NOT_IMPLEMENTED:** legacy save generic hero cannot be silently treated as chosen permanent warrior. Explicit one-time user choice before atomic schema v2 confirm, preserving old gold/level/claimed and four previously accessible companions; reject conflicting confirm, duplicate reward and corrupted payloads.
-- **NKV-041: UNLOCK_DESIGN_OPEN:** proposed three starting companions, Kair after stage 3, fifth after first boss stage 10, but alternatives stage 7 or later remain open. No PASS claim or final content for unapproved milestones.
+- **NKV-041: UNLOCK_DESIGN_OPEN:** proposed starting triple and Kair stage 3 remain OPEN; **fifth after first STORY boss first victory is CONFIRMED by owner** (stage index 10 only PROPOSED). No runtime PASS claim.
 - GitHub CI verifying document changes does not prove permanent hero runtime implementation; G2-R and G3 remain blocked.
+
+### Boss-first-clear unlock decision — owner confirmed 2026-11-19
+- **NKV-042 CONFIRMED_REQUIREMENT / NOT_IMPLEMENTED:** fifth companion unlocked once and only once **AFTER first victory over first story boss**. Not at stage entry; not on defeat, repeat victory or speculative stage 7; no premium gate. Validate atomic boss first-clear + unlock on exact SHA.
+- **NKV-043 REQUIREMENT / NOT_IMPLEMENTED:** semantic `first_story_boss_first_clear` event, independent of provisional stage index 10 and existing *technical* G2 boss stage 2; v1 `claimed:[2]` cannot silently grant fifth on migration.
+- **NKV-044 REQUIRED_BALANCE / NOT_TESTED:** all four permanent main heroes must be able to defeat the first story boss using only the first four unlockable companions (three active), without needing the fifth.
+- **OPEN:** starting triple, fourth companion unlock trigger, fifth's identity/role and first story boss's numerical stage. [Gameplay 2.2](GAMEPLAY-DESIGN-2.2.md) and [G2-R Contract](G2-R-CHARACTER-SYSTEM-0.1.md).
