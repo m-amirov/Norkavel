@@ -1,9 +1,17 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-P01 (hero XP/level/choice domain)**; G2R-F02 content остаётся BLOCKED_OWNER, а G2R-E01/C01 также READY после F03. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **NEXT READY = G2R-E01 (manual companion gold upgrades)**; G2R-F02 content остаётся BLOCKED_OWNER, а G2R-C01 также READY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Текущий G2-R runtime/UI NOT_IMPLEMENTED.
 
 
-**Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
+**Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
+
+## G2R-P01 hero progression domain (2026-11-19)
+- Exact implementation `85114c6886fae8cda80d1ed9efb6e1ae6d9d4e0f` extends pure `src/profile-v2.mjs`; legacy combat/UI/save key remain unchanged.
+- Active campaign attempts now bind sequence, reachable stage and first-clear/replay class. A monotonic settled cursor replaces the 10 000-entry receipt array and remains idempotent after JSON reload. Early stage 10, mismatched, stale and duplicate results fail closed.
+- Victory XP comes only from an injected policy v1 with 15 increasing cumulative thresholds and 50 positive first/replay pairs where replay is smaller. Policy identity and thresholds persist in the profile; no Economy Balance 0.1 numbers are embedded.
+- Hero level remains 1–16; multi-level wins retain every pending choice, post-cap XP is preserved without level 17, and exactly 15 manual ranks fit 3×4 regular plus 3 ultimate with the existing level-5 gate.
+- [CI 44535563965](https://github.com/m-amirov/Norkavel/actions/runs/44535563965) SUCCESS on exact `85114c6`: 60/60 Node tests, Ludory Core smoke, project-scoped WFA bootstrap and headless Chrome legacy G2 smoke. Local Chromium remains unavailable.
+- Remaining: trusted combat-session producer for the outcome itself, approved production XP numbers, browser v2 persistence/UI and four real skill kits/effects. This is domain verification, not full G2-R runtime or balance PASS.
 
 ## G2R-F03 roster, unlock and migration activation (2026-11-19)
 - Exact implementation `e384e5e` extends only pure `src/profile-v2.mjs`; legacy combat/UI/save key remain unchanged.
