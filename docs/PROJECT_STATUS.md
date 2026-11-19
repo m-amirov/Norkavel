@@ -132,3 +132,8 @@
 - OWNER CONFIRMED: CLEARED stages can be selected on chapter maps and fought repeatedly for resources and leveling; each genuine repeat victory gives a reduced ordinary reward, first-clear/companion/chapter unlocks never repeat.
 - G2-R requires separate per-attempt and first-clear idempotency, regression for reload/defeat/duplicate callbacks and exact balancing. The current legacy G2 yields 0 on repeats, so this is **DESIGN_CONFIRMED / NOT_IMPLEMENTED**. Economy quantities are OPEN.
 - Separate WFA agents have NOT been executed; design changes are committed directly, not peer review evidence.
+
+## Progression design approved 2026-11-19
+- CONFIRMED: **no camp/squad level**; each of five companions levels separately with no companion skill upgrade trees. Only the selected permanent main hero has own level and **3 skills (4 upgrades each) + an upgradeable ultimate**; after **every hero level-up** player chooses which eligible ability to improve.
+- OLD proposals of shared camp level and just 2 hero skills SUPERSEDED. XP method, rank cap for ultimate, unlock timing, level caps, reserve XP and currency costs OPEN. [Character Progression 2.4](CHARACTER-PROGRESSION-2.4.md).
+- DESIGN_ONLY: no Save v2, updated 3+ult HUD, level-up choices, new character-level engine or regression have been run. Prior 28/28 legacy G2 tests only establish old runtime.
