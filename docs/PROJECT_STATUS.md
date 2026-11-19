@@ -125,5 +125,10 @@
 
 ## Map-entry interaction approved — 2026-11-19
 - OWNER CONFIRMED: click/tap available node → short travel along the linear route → stage preview → explicit «В бой». Do not start combat on node click or animation completion; same stable stage ID throughout.
-- OPEN: replay of cleared stages, duration/easing, camera-follow, skip. Double taps, portrait/background, save restore require regression before implementation can pass. No new map runtime or art implemented; independent WFA agent runs have NOT occurred.
+- OWNER CONFIRMED: replay of CLEARED stages for reduced ordinary rewards. OPEN: amounts, duration/easing, camera-follow, skip. Double taps, portrait/background, save restore require regression before implementation can pass. No new map runtime or art implemented; independent WFA agent runs have NOT occurred.
 - See [Campaign Map 2.3](CAMPAIGN-MAP-2.3.md) and [Acceptance](ACCEPTANCE.md).
+
+## Repeatable CLEARED stages — approved 2026-11-19
+- OWNER CONFIRMED: CLEARED stages can be selected on chapter maps and fought repeatedly for resources and leveling; each genuine repeat victory gives a reduced ordinary reward, first-clear/companion/chapter unlocks never repeat.
+- G2-R requires separate per-attempt and first-clear idempotency, regression for reload/defeat/duplicate callbacks and exact balancing. The current legacy G2 yields 0 on repeats, so this is **DESIGN_CONFIRMED / NOT_IMPLEMENTED**. Economy quantities are OPEN.
+- Separate WFA agents have NOT been executed; design changes are committed directly, not peer review evidence.
