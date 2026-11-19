@@ -212,3 +212,38 @@ test('G2: sampled active-click damage share stays bounded under maximum legal ta
   // A soft engineering envelope around the proposed 15–25% GDD share, not human balance approval.
   assert.ok(fraction>=0.08 && fraction<=0.30,'manual input should be relevant but not dominant: '+fraction);
 });
+
+test('G2: stage-two boss balance sample covers idle and readable counterplay',()=>{
+  const tactics=[
+    ['healer-idle',base=>base,()=>[]],
+    ['healer-skills',base=>base,(tick,state)=>{
+      if(state.units.some(u=>u.id==='boss-0' && u.windup>0) && state.skills[0]===0)
+        return [{type:'target',id:'boss-0'},{type:'skill1'}];
+      return state.skills[1]===0?[{type:'skill2'}]:[];
+    }],
+    ['ash-idle',base=>chooseCompanion(base,'ash'),()=>[]]
+  ];
+  const metrics={};
+  for(const [name,compose,commands] of tactics){
+    let wins=0,defeats=0,totalTicks=0;
+    for(let seed=0;seed<200;seed++){
+      const stageOne=run(startFight(compose(initialState()),seed));
+      assert.equal(stageOne.phase,'victory','stage 1 prerequisite seed '+seed);
+      const second=run(startFight(nextStage(stageOne),seed+10000),commands);
+      assert.equal(validateState(second),true,name+' seed '+seed);
+      assert.ok(['victory','defeat'].includes(second.phase),'stage 2 must resolve');
+      if(second.phase==='victory'){
+        wins++;
+        assert.equal(second.gold,155,'stage 2 victory adds exactly 110');
+        assert.deepEqual(second.claimed,[1,2]);
+      }else{
+        defeats++;
+        assert.equal(second.gold,45,'stage 2 defeat grants nothing');
+        assert.deepEqual(second.claimed,[1]);
+      }
+      totalTicks+=second.tick;
+    }
+    metrics[name]={wins,defeats,meanTicks:Math.round(totalTicks/200)};
+  }
+  console.log('NORKAVEL_G2_BOSS_SAMPLE_600 '+JSON.stringify(metrics));
+});
