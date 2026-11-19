@@ -1,4 +1,5 @@
 import { defineGame, createGameSession } from '../vendor/ludory/packages/core/src/browser.mjs';
+import { readyG3Actors } from './art-registry.mjs';
 import { TICK_MS, ROSTER, initialState, validateState, startFight, stepCombat, nextStage, retryStage,
   chooseCompanion, changeFront, upgradeHero, setAutoCast, selectTarget, nextEncounterSeed } from '../src/combat.mjs';
 
@@ -14,6 +15,19 @@ art.hero.decoding = 'async';
 art.background.decoding = 'async';
 art.hero.src = '/assets/art/warrior-concept-01.png';
 art.background.src = '/assets/art/arena-ruins-01.png';
+// G3 actor assets are opt-in. Missing/unreviewed files never trigger 404s or
+// get silently promoted to production art: the versioned registry is explicit.
+const g3Actors = Object.create(null);
+const artManifest = await fetch('/assets/art/manifest.json').then(r => {
+  if(!r.ok)throw new Error('art manifest unavailable');
+  return r.json();
+});
+for(const candidate of readyG3Actors(artManifest)){
+  const sprite=new Image();
+  sprite.decoding='async';
+  sprite.src=candidate.url;
+  g3Actors[candidate.id]={image:sprite,expectedSize:candidate.size};
+}
 const gate = $('turn-device'), pauseCurtain = $('pause-curtain');
 const SAVE_KEY = 'norkavel.g2.save.v1';
 const params = await fetch('/ludory.project.json').then(r => {if(!r.ok)throw new Error('manifest unavailable');return r.json();});
@@ -249,6 +263,37 @@ function drawWorld(time,s){
   }
 }
 function drawFigure(u,x,y,t,s) {
+  const kind=u.id.replace(/-\\d+$/,'');
+  const candidate=g3Actors[kind];
+  if(candidate && artLoaded(candidate.image) &&
+    candidate.image.naturalWidth===candidate.expectedSize[0] &&
+    candidate.image.naturalHeight===candidate.expectedSize[1]) {
+    const isEnemy=u.team==='enemy',boss=kind==='boss';
+    const width=boss?275:isEnemy?168:188;
+    const height=boss?275:isEnemy?168:188;
+    ctx.save();
+    ctx.globalAlpha=u.hp>0?1:.28;
+    ctx.shadowColor='#071418af';ctx.shadowBlur=12;
+    // One still illustration per actor: not a fabricated frame animation.
+    ctx.drawImage(candidate.image,x-width/2,y-height+16,width,height);
+    ctx.restore();
+    const barWidth=boss?135:82,barY=y-height+3;
+    ctx.fillStyle='#102124df';ctx.fillRect(x-barWidth/2,barY,barWidth,7);
+    ctx.fillStyle=isEnemy?'#d7a07a':'#94c9a6';
+    ctx.fillRect(x-barWidth/2+1,barY+1,Math.max(0,(barWidth-2)*u.hp/u.maxHp),5);
+    ctx.strokeStyle='#d1cab47a';ctx.lineWidth=1;ctx.strokeRect(x-barWidth/2,barY,barWidth,7);
+    if(u.shield>0){ctx.strokeStyle='#a0d1d8';ctx.strokeRect(x-barWidth/2-2,barY-2,barWidth+4,11);}
+    if(boss && u.windup>0){
+      ctx.strokeStyle='#ff7063';ctx.lineWidth=4;ctx.beginPath();
+      ctx.arc(x,y-height*.5,72+(20-u.windup)*2.4,0,Math.PI*2);ctx.stroke();
+    }
+    const names={sentinel:'Ард',ember:'Мира',healer:'Элира',ash:'Кайр',
+      crawler:'Скиталец',wisp:'Дух',raider:'Осквернитель',boss:'Хранитель Разлома'};
+    ctx.save();ctx.font='bold 12px Arial';ctx.textAlign='center';
+    ctx.fillStyle='#fff0d8';ctx.shadowColor='#071018';ctx.shadowBlur=5;
+    ctx.fillText(names[kind]||u.name,x,barY-12);ctx.restore();
+    return;
+  }
   if (u.id === 'hero' && artLoaded(art.hero)) {
     ctx.save();
     ctx.globalAlpha=u.hp>0?1:.26;
@@ -270,7 +315,6 @@ function drawFigure(u,x,y,t,s) {
     return;
   }
   const isEnemy=u.team==='enemy',boss=u.id.startsWith('boss-');
-  const kind=u.id.replace(/-\d+$/,'');
   const colors={hero:['#c3a06e','#3a525e','#f3dba2'],sentinel:['#798f97','#324655','#d5e1d4'],ember:['#b7645c','#482b53','#e8a570'],healer:['#d8ca9c','#4d7773','#edf1dc'],ash:['#7f839e','#2d4151','#c3bacb'],
     crawler:['#879079','#3c473c','#c6b89d'],wisp:['#87b2bb','#335d64','#a1eded'],raider:['#be9276','#513f46','#d9bca2'],boss:['#936876','#2a3442','#e8a19b']};
   const palette=colors[kind]||colors.crawler;
@@ -356,5 +400,10 @@ window.__norkavelDebug = Object.freeze({
   getArtStatus:()=>({
     hero:{loaded:artLoaded(art.hero),width:art.hero.naturalWidth,height:art.hero.naturalHeight},
     background:{loaded:artLoaded(art.background),width:art.background.naturalWidth,height:art.background.naturalHeight}
-  })
+  }),
+  getG3ActorArtStatus:()=>Object.fromEntries(['sentinel','ember','healer','ash'].map(id=>{
+    const asset=g3Actors[id];
+    return [id,{registered:Boolean(asset),decoded:Boolean(asset&&artLoaded(asset.image)),
+      dimensions:asset?[asset.image.naturalWidth,asset.image.naturalHeight]:null}];
+  }))
 });
