@@ -8,7 +8,10 @@ const validHash='a'.repeat(64);
 test('G3 actors do not load uncommitted concept sources in game',()=>{
   assert.equal(G3_ACTORS.length,4);
   assert.deepEqual(G3_ACTORS.map(a=>a.id),['sentinel','ember','healer','ash']);
-  assert.deepEqual(readyG3Actors(manifest),[]);
+  const matches=readyG3Actors(manifest);
+  if(manifest.stagedG3?.status==='EXTERNAL_CONVERSATION_ART_PACK_NOT_IN_REPOSITORY')
+    assert.deepEqual(matches,[]);
+  else assert.equal(matches.length,4,'once imported all four images must be valid');
 });
 test('G3 manifest allows only matching reviewed paths, sizes and unique records',()=>{
   const sentinel=G3_ACTORS[0];
