@@ -1,6 +1,6 @@
 # G2R-INT-04a — Combat Persistence & Recovery
 
-Status: AWAITING_CI. Full G2R-INT, authoritative settlement and production rewards remain blocked.
+Status: DONE_VERIFIED. Implementation `9b2b3492d66b018971c20e197817a850fe83a671` passed 124/124 Node tests, Ludory, all browser gates and the dedicated recovery Chromium smoke locally and in [exact-SHA CI](https://github.com/m-amirov/Norkavel/actions/runs/44795549860). The first CI job hit a pre-existing `touch cast` timeout; one unchanged-SHA rerun passed the full workflow. Full G2R-INT, authoritative settlement and production rewards remain blocked.
 
 ## Root cause and correction
 

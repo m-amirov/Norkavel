@@ -1,15 +1,16 @@
 # Norkavel — project status
 
-**Codex handoff:** G2R-INT-04a combat persistence and recovery are implemented locally and await exact-SHA CI. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
+**Codex handoff:** G2R-INT-04a implementation `9b2b3492d66b018971c20e197817a850fe83a671` passed 124/124 Node tests, Ludory and all Chromium gates locally and in [exact-SHA CI](https://github.com/m-amirov/Norkavel/actions/runs/44795549860). Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
 
 
-**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-04a AWAITING_CI / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-04a DONE_VERIFIED / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
 
-## G2R-INT-04a combat persistence (2026-11-20; AWAITING_CI)
+## G2R-INT-04a combat persistence (2026-11-20; DONE_VERIFIED)
 - Sandbox format v2 atomically binds campaign attempt and initial G2-R combat, then CAS-commits engine-derived casts/ticks and terminal pending result.
 - Restore replays the bounded operation log and rejects schema-valid HP, tick, RNG, outcome, hero, ranks, party, stage or encounter drift.
 - Format-v1 active attempts enter explicit `legacy_missing_combat` recovery; only a confirmed idempotent defeat with zero rewards can close them.
 - Chromium recovery covers exact state comparison across reload, boss telegraph, stale tabs, tab close, transaction abort, defeat/retry/replay, portrait and production isolation. See [recovery report](G2R-INT-04A-COMBAT-RECOVERY.md).
+- Implementation `9b2b3492d66b018971c20e197817a850fe83a671`: 124/124 Node, Ludory and all local browser gates PASS; [CI 44795549860](https://github.com/m-amirov/Norkavel/actions/runs/44795549860) SUCCESS after one unchanged-SHA rerun of a pre-existing touch timeout.
 
 ## G2R-INT-03 DEV progression sandbox (2026-11-20; DONE_VERIFIED)
 - Separate DEV IndexedDB and command CAS hold a clean Profile v2 copy fixed to local-untrusted, engineering-candidate, noncompetitive and non-release metadata.
