@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**G2R-INT-01 DONE_VERIFIED; full G2R-INT remains BLOCKED_DEPENDENCY.** Implementation `c28d0b8`, evidence `c7037e8`, [CI 44715870159](https://github.com/m-amirov/Norkavel/actions/runs/44715870159) SUCCESS. Chapter-01 QA shell, Save v2 CAS и реальный G2-R combat связаны без persistent settlement. Production rewards, 50 encounters, authority и G3 art остаются OPEN/BLOCKED.
+**G2R-INT-02 IN_PROGRESS; full G2R-INT remains BLOCKED_DEPENDENCY.** Campaign-session transition integrity, explicit legacy activation, recovery/error UX and sequential stage-001→010 QA are the active bounded hardening slice. Production rewards, 50 production encounters, authority and G3 remain OPEN/BLOCKED.
 
 ## Правила очереди
 
@@ -20,6 +20,7 @@
 | 6a | G2R-S01 | Независимый browser Save v2 foundation: versioned persistence, безопасная подготовка v1 и защита от stale/parallel writes | G2R-F01/F03/P01/E01/C01 domain; не требует утверждения hero kits или economy | **DONE_VERIFIED — `5cb4700`, CI 44580816549** |
 | 7 | G2R-INT | Сведение 4 hero kits / 50 encounter battle balance / все награды / browser UX landscape / migration | Предыдущие задачи + реальный контент и результаты | BLOCKED_DEPENDENCY |
 | 7a | G2R-INT-01 | Chapter-01 QA shell → preview → real combat → local result; atomic session CAS, no profile rewards | C01/S01/F02d | **DONE_VERIFIED — `c28d0b8`, CI 44715870159** |
+| 7b | G2R-INT-02 | Campaign state transition integrity, recovery, explicit legacy activation and sequential QA reachability | G2R-INT-01 | **IN_PROGRESS — local focused tests PASS, full gates pending** |
 | 8 | G3-ART | Production art 4 hero+5 companions+враги/боссы, 50 уникальных полей боя и 5 карт глав | Арт-решения, реальные source/rights assets, отдельная визуальная приёмка | BLOCKED_OWNER / ART_PRODUCTION |
 | 9 | G4–G7 | Полный контент, серверный async PvP, QA и релизный кандидат Яндекс Игр | Настоящие G2-R/G3 gates и platform decisions | BLOCKED_DEPENDENCY |
 

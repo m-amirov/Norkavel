@@ -52,6 +52,8 @@ jobs:
         run: node scripts/g2r-combat-browser-smoke.mjs
       - name: Browser G2-R campaign integration smoke in headless Chrome
         run: node scripts/g2r-campaign-browser-smoke.mjs
+      - name: Browser G2-R campaign integrity smoke in headless Chrome
+        run: node scripts/g2r-campaign-integrity-browser-smoke.mjs
       - name: Archive captured browser scenes
         if: always()
         uses: actions/upload-artifact@v4

@@ -1,6 +1,6 @@
 import { prepareLegacyProfileV2, validateProfileV2 } from './profile-v2.mjs';
 import { validateG2RCombatState } from './g2r-combat-v1.mjs';
-import { validateG2RCampaignSession } from './g2r-campaign-integration-v1.mjs';
+import { validateG2RCampaignSession, validateG2RCampaignSessionTransition } from './g2r-campaign-integration-v1.mjs';
 
 export const SAVE_V2_FORMAT_VERSION = 1;
 export const SAVE_V2_DATABASE = 'norkavel.g2r.save.v2';
@@ -297,8 +297,12 @@ export async function openSaveV2Store({
       return new Promise((resolve,reject)=>{
         const transaction=database.transaction('saves','readonly');
         const request=transaction.objectStore('saves').get(SAVE_V2_INTEGRATION_KEY); let outcome;
-        request.onsuccess=()=>outcome=request.result===undefined?null:
-          inspectSaveV2IntegrationRecord(request.result)??new SaveV2StoreError('RESTORE_CORRUPT','Integration save is corrupt');
+        request.onsuccess=()=>{
+          if(request.result===undefined)outcome=null;
+          else if(ownInteger(request.result,'formatVersion')!==SAVE_V2_FORMAT_VERSION)
+            outcome=new SaveV2StoreError('RESTORE_UNSUPPORTED','Integration save format is unsupported');
+          else outcome=inspectSaveV2IntegrationRecord(request.result)??new SaveV2StoreError('RESTORE_CORRUPT','Integration save is corrupt');
+        };
         request.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Integration read failed',request.error);
         transaction.onabort=()=>reject(transactionError(transaction,'STORAGE_UNAVAILABLE','Integration read aborted'));
         transaction.onerror=()=>{};transaction.oncomplete=()=>outcome instanceof Error?reject(outcome):resolve(outcome);
@@ -325,6 +329,9 @@ export async function openSaveV2Store({
             const current=request.result===undefined?null:inspectSaveV2IntegrationRecord(request.result);
             if(request.result!==undefined&&!current){outcome=new SaveV2StoreError('RESTORE_CORRUPT','Integration save cannot be overwritten');return;}
             if((current?.revision??null)!==expectedRevision){outcome={ok:false,code:'STALE_REVISION',actualRevision:current?.revision??null};return;}
+            if(!validateG2RCampaignSessionTransition(current?.session??null,detached,profileRecord.profile)){
+              outcome={ok:false,code:'INVALID_TRANSITION',actualRevision:current?.revision??null};return;
+            }
             const revision=expectedRevision===null?0:expectedRevision+1;
             const put=store.put({formatVersion:SAVE_V2_FORMAT_VERSION,revision,profileRevision,session:detached},SAVE_V2_INTEGRATION_KEY);
             put.onsuccess=()=>outcome={ok:true,revision};put.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Integration write failed',put.error);

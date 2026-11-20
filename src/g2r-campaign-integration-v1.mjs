@@ -1,5 +1,6 @@
 import { CAMPAIGN_V1, createCampaignNavigation, validateCampaignNavigation } from './campaign-v1.mjs';
-import { validateG2RCombatState } from './g2r-combat-v1.mjs';
+import { castG2RHeroSkill, createG2RCombat, stepG2RCombat, validateG2RCombatState } from './g2r-combat-v1.mjs';
+import { HERO_KIT_CATALOG_V1 } from './hero-kits-v1.mjs';
 import { resolveG2REncounterV1 } from './g2r-encounters-v1.mjs';
 import { validateProfileV2 } from './profile-v2.mjs';
 
@@ -8,9 +9,11 @@ const clone = value => structuredClone(value);
 const exact = (value, fields) => value && typeof value === 'object' && !Array.isArray(value) &&
   Object.keys(value).length === fields.length && fields.every(field => Object.hasOwn(value, field));
 const stageNumber = id => /^stage-\d{3}$/.test(id ?? '') ? Number(id.slice(6)) : NaN;
+const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
 
 export function createG2RCampaignSession(profile, profileRevision) {
-  if (!validateProfileV2(profile) || profile.selectedHeroId === null || !Number.isSafeInteger(profileRevision)) return null;
+  if (!validateProfileV2(profile) || profile.selectedHeroId === null ||
+      (profile.legacyProgress!==null&&!profile.legacyProgress.activated)||!Number.isSafeInteger(profileRevision)) return null;
   return { integrationVersion:1, profileRevision, selectedHeroId:profile.selectedHeroId, party:[...profile.party],
     phase:'map', navigation:createCampaignNavigation(), qaClearedStageIds:[], attempt:null, combat:null, localResult:null };
 }
@@ -33,6 +36,12 @@ export function arriveG2RIntegrationStage(session) {
   if(!validateG2RCampaignSession(session)||session.phase!=='travelling')return session;
   const next=clone(session),id=next.navigation.targetStageId; next.phase='preview';
   next.navigation={navigationVersion:1,phase:'stage_preview',lastVisitedStageId:id,targetStageId:null,previewStageId:id}; return next;
+}
+
+export function cancelG2RIntegrationPreview(session) {
+  if(!validateG2RCampaignSession(session)||session.phase!=='preview')return session;
+  const next=clone(session);next.phase='map';next.navigation={navigationVersion:1,phase:'chapter_map',
+    lastVisitedStageId:session.navigation.lastVisitedStageId,targetStageId:null,previewStageId:null};return next;
 }
 
 export function beginG2RIntegrationFight(session, attemptId, combat) {
@@ -77,6 +86,49 @@ export function validateG2RCampaignSession(session) {
   return session.combat.phase!=='fight'&&exact(session.localResult,['resultVersion','attemptId','outcome','trust','profileSettlement'])&&
     session.localResult.resultVersion===1&&session.localResult.attemptId===session.attempt.attemptId&&session.localResult.outcome===session.combat.outcome&&
     session.localResult.trust==='local-untrusted'&&session.localResult.profileSettlement==='none';
+}
+
+function reachableCombat(current, next) {
+  if(!validateG2RCombatState(current)||!validateG2RCombatState(next)||current.phase!=='fight')return false;
+  const immutable=['combatVersion','policyId','encounterId','stageId','profileRevision','selectedHeroId','heroLevel','skillRanks','party','seed'];
+  if(immutable.some(key=>!same(current[key],next[key])))return false;
+  let stepped=current;
+  for(let count=1;count<=4;count++){
+    stepped=stepG2RCombat(stepped);
+    if(same(stepped,next))return true;
+    if(stepped.phase!=='fight')break;
+  }
+  const kit=HERO_KIT_CATALOG_V1.find(hero=>hero.id===current.selectedHeroId);
+  for(const skill of kit.skills)for(const targetId of ['boss','raider','wisp']){
+    const cast=castG2RHeroSkill(current,{combatCommandVersion:1,skillId:skill.id,targetId});
+    if(cast!==current&&same(cast,next))return true;
+  }
+  return false;
+}
+
+export function validateG2RCampaignSessionTransition(current, next, profile) {
+  if(!validateG2RCampaignSession(next)||!validateProfileV2(profile)||next.profileRevision<0||
+      next.selectedHeroId!==profile.selectedHeroId||!same(next.party,profile.party))return false;
+  if(current===null)return same(next,createG2RCampaignSession(profile,next.profileRevision));
+  if(!validateG2RCampaignSession(current)||current.profileRevision!==next.profileRevision||
+      current.selectedHeroId!==next.selectedHeroId||!same(current.party,next.party))return false;
+  if(next.qaClearedStageIds.length<current.qaClearedStageIds.length||
+      !current.qaClearedStageIds.every((id,index)=>next.qaClearedStageIds[index]===id))return false;
+  if(current.phase!=='result'&&!same(current.qaClearedStageIds,next.qaClearedStageIds))return false;
+  if(current.phase==='map')return Array.from({length:10},(_,index)=>`stage-${String(index+1).padStart(3,'0')}`)
+    .some(stageId=>same(next,selectG2RIntegrationStage(current,stageId))&&next!==current);
+  if(current.phase==='travelling')return same(next,arriveG2RIntegrationStage(current));
+  if(current.phase==='preview'){
+    if(same(next,cancelG2RIntegrationPreview(current)))return true;
+    if(next.phase!=='fight')return false;
+    const encounter=resolveG2REncounterV1(current.navigation.previewStageId,next.attempt?.encounterId);
+    const expected=encounter?createG2RCombat(profile,current.profileRevision,next.combat?.seed,undefined,encounter):null;
+    return expected!==null&&same(expected,next.combat)&&
+      same(next,beginG2RIntegrationFight(current,next.attempt.attemptId,expected));
+  }
+  if(current.phase==='fight')return reachableCombat(current.combat,next.combat)&&
+    same(next,updateG2RIntegrationCombat(current,next.combat));
+  return same(next,returnG2RIntegrationToMap(current));
 }
 
 export function integrationStage(stageId){return CAMPAIGN_V1.stages.find(stage=>stage.id===stageId)??null;}

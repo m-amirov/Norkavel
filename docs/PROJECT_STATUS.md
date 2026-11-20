@@ -1,9 +1,16 @@
 # Norkavel — project status
 
-**Codex handoff:** G2R-INT-01 is DONE_VERIFIED at implementation `c28d0b8`, evidence `c7037e8`, [CI 44715870159](https://github.com/m-amirov/Norkavel/actions/runs/44715870159) SUCCESS. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
+**Codex handoff:** G2R-INT-02 is the active campaign-integrity hardening slice. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
 
 
-**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-01 DONE_VERIFIED / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION_BALANCE OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-02 IN_PROGRESS / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+
+## G2R-INT-02 campaign integrity (2026-11-20; verification in progress)
+- Integration CAS now validates the proposed session against the previous committed state and rejects valid-schema but unreachable transitions, combat forgeries, immutable attempt drift and QA-ledger rollback.
+- Campaign UI explicitly activates prepared legacy profiles through the existing domain function; no hidden activation, hero selection or rewards occur, and the v1 checkpoint remains unchanged.
+- Error UX distinguishes stale profile/session, failed commit, corrupt/unsupported restore and unavailable storage without presenting an uncommitted victory/progress state.
+- A sequential real-engine test clears stages 1–10 without direct ledger injection and verifies `stage-010` → `first-story-boss-v1`. Candidate XP arithmetic reaches level 5 at 243 XP before stage 10, while the QA runtime itself writes no XP.
+- New Chromium integrity smoke covers portrait blocking in every phase, aborted persistence, legacy activation and storage recovery. Full gates and exact-SHA CI pending.
 
 ## G2R-INT-01 vertical integration slice (2026-11-20; DONE_VERIFIED)
 - A separate chapter-01 QA shell links Campaign v1 stage IDs, a visible 10-node route, marker travel, preview confirmation, actual G2-R combat and local result/return flow.
