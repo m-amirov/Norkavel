@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#08141c">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2308141c'/%3E%3Cpath d='M32 6 42 26 58 32 42 38 32 58 22 38 6 32 22 26Z' fill='%23d9b478'/%3E%3C/svg%3E">
+  <meta name="description" content="Норкавель — постоянный выбор главного героя.">
+  <title>Норкавель — выбор героя</title>
+  <link rel="stylesheet" href="/onboarding.css">
+</head>
+<body>
+  <main class="onboarding" id="onboarding" aria-labelledby="page-title">
+    <header class="masthead">
+      <div class="brand"><span aria-hidden="true">✦</span><div><strong>НОРКАВЕЛЬ</strong><small>ПРОФИЛЬ G2-R · ВЫБОР ГЕРОЯ</small></div></div>
+      <div class="save-state" id="save-state" aria-live="polite">Проверяем сохранение…</div>
+    </header>
+    <section class="intro">
+      <div><p class="eyebrow">НАЧАЛО ПУТИ</p><h1 id="page-title">Выберите главного героя</h1></div>
+      <p>Он останется с вами навсегда в этом прохождении. Сменить героя после подтверждения нельзя.</p>
+    </section>
+    <section class="hero-grid" id="hero-grid" aria-label="Четыре главных героя">
+      <button class="hero-card defender" type="button" data-hero-id="hero_slot_1" aria-pressed="false">
+        <span class="sigil" aria-hidden="true">⬡</span><span class="card-copy"><small>ЗАЩИТНИК</small><strong>Ровен <em>рабочее имя</em></strong><span>Щиты, снижение урона и прерывание опасных атак.</span><b>Слабость: низкий урон по одной цели.</b></span>
+      </button>
+      <button class="hero-card mage" type="button" data-hero-id="hero_slot_2" aria-pressed="false">
+        <span class="sigil" aria-hidden="true">✦</span><span class="card-copy"><small>СТИХИЙНЫЙ МАГ</small><strong>Астера <em>рабочее имя</em></strong><span>Урон по площади, горение и комбинации эффектов.</span><b>Слабость: уязвима без передней линии.</b></span>
+      </button>
+      <button class="hero-card duelist" type="button" data-hero-id="hero_slot_3" aria-pressed="false">
+        <span class="sigil" aria-hidden="true">◆</span><span class="card-copy"><small>ТЕНЕВОЙ ДУЭЛЯНТ</small><strong>Сайрен <em>рабочее имя</em></strong><span>Взрывной урон по приоритетной цели и короткое уклонение.</span><b>Слабость: большие волны врагов.</b></span>
+      </button>
+      <button class="hero-card ranger" type="button" data-hero-id="hero_slot_4" aria-pressed="false">
+        <span class="sigil" aria-hidden="true">➶</span><span class="card-copy"><small>СЛЕДОПЫТ</small><strong>Валис <em>рабочее имя</em></strong><span>Метки и давление на самую опасную цель.</span><b>Слабость: давление в ближнем бою.</b></span>
+      </button>
+    </section>
+    <footer class="action-bar">
+      <p id="selection-summary">Выберите карточку, чтобы увидеть решение перед подтверждением.</p>
+      <button id="continue-button" type="button" disabled>ПРОДОЛЖИТЬ С ЭТИМ ГЕРОЕМ</button>
+    </footer>
+  </main>
+
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-copy">
+    <form method="dialog">
+      <p class="eyebrow">НЕОБРАТИМОЕ РЕШЕНИЕ</p>
+      <h2 id="confirm-title">Выбор останется навсегда</h2>
+      <p id="confirm-copy">После подтверждения героя нельзя будет сменить в этом прохождении.</p>
+      <div class="dialog-actions"><button type="button" id="cancel-button">Вернуться</button><button type="button" id="confirm-button">ПОДТВЕРДИТЬ НАВСЕГДА</button></div>
+    </form>
+  </dialog>
+
+  <section class="result-screen" id="result-screen" hidden aria-live="polite">
+    <span class="result-sigil" aria-hidden="true">✦</span><p class="eyebrow">ВЫБОР ЗАФИКСИРОВАН</p>
+    <h1 id="result-title">Герой выбран</h1><p id="result-copy"></p>
+    <div class="boundary">Боевой G2-R runtime ещё не подключён. Старый G2-бой не запускается из этого экрана.</div>
+  </section>
+
+  <section class="error-screen" id="error-screen" hidden role="alert">
+    <span aria-hidden="true">!</span><h1>Сохранение требует восстановления</h1>
+    <p id="error-copy">Выбор заблокирован, чтобы не перезаписать данные.</p>
+  </section>
+
+  <div id="turn-device" class="turn-device" role="dialog" aria-modal="true" aria-label="Поверните устройство" hidden>
+    <div aria-hidden="true">↻</div><h1>Поверните устройство</h1>
+    <p>Выбор героя доступен только в альбомной ориентации. Никакие действия в портретном режиме не выполняются.</p>
+  </div>
+  <script type="module" src="/onboarding.mjs"></script>
+</body>
+</html>

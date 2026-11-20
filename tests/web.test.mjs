@@ -47,6 +47,35 @@ test('G2 orientation policy exists in markup, script, and CSS', async (t) => {
   assert.match(css,/turn-device/);
 });
 
+test('G2R-F02b onboarding shell is separate from legacy combat and exposes four accessible choices', async (t) => {
+  const server=createStaticServer();
+  t.after(()=>server.close());
+  server.listen(0,'127.0.0.1');
+  await once(server,'listening');
+  const root='http://127.0.0.1:'+server.address().port;
+  for (const [route,type] of [
+    ['/onboarding.html','text/html'],['/onboarding.css','text/css'],
+    ['/onboarding.mjs','text/javascript'],['/src/hero-onboarding-v1.mjs','text/javascript'],
+    ['/src/hero-kits-v1.mjs','text/javascript']
+  ]) {
+    const response=await fetch(root+route);
+    assert.equal(response.status,200,route);
+    assert.ok(response.headers.get('content-type').includes(type),route);
+  }
+  const html=await(await fetch(root+'/onboarding.html')).text();
+  const onboarding=await(await fetch(root+'/onboarding.mjs')).text();
+  const legacy=await(await fetch(root+'/main.mjs')).text();
+  assert.equal((html.match(/class="hero-card\s/g)||[]).length,4);
+  assert.match(html,/id="confirm-dialog"/);
+  assert.match(html,/Выбор останется навсегда/);
+  assert.match(html,/id="turn-device"/);
+  assert.match(onboarding,/openSaveV2Store/);
+  assert.match(onboarding,/compareAndSet/);
+  assert.match(onboarding,/innerHeight > innerWidth/);
+  assert.doesNotMatch(legacy,/hero-onboarding-v1|save-v2-store|onboarding/,
+    'legacy G2 runtime must not import or start G2-R onboarding');
+});
+
 test('G3 uncommitted art is not requested or exposed as real files',async(t)=>{
   const server=createStaticServer();
   t.after(()=>server.close());
