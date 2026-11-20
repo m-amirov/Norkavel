@@ -136,6 +136,9 @@ async function main() {
     const committed = await b.js('store.load()');
     assert.equal(committed.revision, 1);
     assert.ok([101, 102].includes(committed.profile.gold));
+    assert.equal(await a.js(`store.compareAndSet(1,{...${JSON.stringify(committed.profile)},selectedHeroId:'hero_slot_3'}).then(()=>null,e=>e.code)`),
+      'IMMUTABLE_HERO', 'arbitrary valid CAS cannot replace the permanent hero');
+    assert.equal((await a.js('store.load()')).profile.selectedHeroId, 'hero_slot_2');
     assert.equal(await a.js(`store.compareAndSet(0,{...makeProfile(),gold:999}).then(x=>x.code)`), 'STALE_REVISION');
     assert.equal((await a.js('store.load()')).profile.gold, committed.profile.gold, 'stale retry cannot overwrite');
 

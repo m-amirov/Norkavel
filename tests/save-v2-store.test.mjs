@@ -5,6 +5,7 @@ import { createProfileV2, selectPermanentHero } from '../src/profile-v2.mjs';
 import {
   SAVE_V2_FORMAT_VERSION,
   inspectSaveV2Record,
+  validateSaveV2Transition,
   openSaveV2Store,
   readLegacyProfileCandidate
 } from '../src/save-v2-store.mjs';
@@ -50,6 +51,16 @@ test('G2R-S01: Save v2 record requires exact version, revision, commit identity 
     { ...record, extra: true }
   ];
   for (const value of invalid) assert.equal(inspectSaveV2Record(value), null);
+});
+
+test('G2R-F02c regression: Save v2 transition cannot replace or clear a permanent hero', () => {
+  const selected = selectPermanentHero(createProfileV2(), 'hero_slot_2');
+  assert.equal(validateSaveV2Transition(selected, structuredClone(selected)), true);
+  assert.equal(validateSaveV2Transition(selected, { ...selected, selectedHeroId: 'hero_slot_3' }), false);
+  assert.equal(validateSaveV2Transition(selected, {
+    ...createProfileV2(), gold: selected.gold
+  }), false);
+  assert.equal(validateSaveV2Transition(null, selected), true, 'first committed selection remains allowed');
 });
 
 test('G2R-S01: valid legacy v1 is prepared read-only without selecting hero or minting progression', () => {

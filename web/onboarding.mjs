@@ -46,6 +46,10 @@ function render() {
 function reevaluateOrientation() {
   portrait = innerHeight > innerWidth;
   $('turn-device').hidden = !portrait;
+  if (portrait && $('confirm-dialog').open) {
+    $('confirm-dialog').close('orientation');
+    if (state?.status === 'confirming') state = cancelHeroConfirmation(state);
+  }
   if (!$('result-screen').hidden || !$('error-screen').hidden) return;
   $('onboarding').inert = portrait;
   render();

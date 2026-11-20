@@ -164,6 +164,14 @@ async function main() {
     await mouse(first, '#continue-button');
     await until(() => first.js('window.__norkavelOnboardingDebug.getDialogOpen()'), 3000, 'confirmation dialog');
     assert.equal(await first.js('window.__norkavelOnboardingDebug.getState().profile.selectedHeroId'), null, 'dialog does not persist');
+    await first.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true, screenOrientation: { type: 'portraitPrimary', angle: 0 } });
+    await until(() => first.js('window.__norkavelOnboardingDebug.getOrientation().portrait'), 3000, 'portrait during confirmation');
+    assert.equal(await first.js('window.__norkavelOnboardingDebug.getDialogOpen()'), false, 'portrait closes confirmation');
+    assert.equal(await first.js('window.__norkavelOnboardingDebug.getState().status'), 'selecting');
+    await first.send('Emulation.setDeviceMetricsOverride', { width: 844, height: 390, deviceScaleFactor: 1, mobile: true, screenOrientation: { type: 'landscapePrimary', angle: 90 } });
+    await until(() => first.js('window.__norkavelOnboardingDebug.getOrientation().portrait===false'), 3000, 'landscape after modal rotation');
+    await mouse(first, '#continue-button');
+    await until(() => first.js('window.__norkavelOnboardingDebug.getDialogOpen()'), 3000, 'confirmation after rotation');
     await mouse(first, '#cancel-button');
     await until(() => first.js('window.__norkavelOnboardingDebug.getState().status==="selecting"'), 3000, 'cancel');
     await first.send('Page.reload', { ignoreCache: true });

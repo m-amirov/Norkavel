@@ -76,6 +76,20 @@ test('G2R-F02b onboarding shell is separate from legacy combat and exposes four 
     'legacy G2 runtime must not import or start G2-R onboarding');
 });
 
+test('G2R-F02c combat shell is separate, serves real engine modules and keeps legacy imports unchanged', async(t)=>{
+  const server=createStaticServer();t.after(()=>server.close());server.listen(0,'127.0.0.1');await once(server,'listening');
+  const root='http://127.0.0.1:'+server.address().port;
+  for(const route of ['/g2r-combat.html','/g2r-combat.css','/g2r-combat.mjs','/src/g2r-combat-v1.mjs']){
+    const response=await fetch(root+route);assert.equal(response.status,200,route);
+  }
+  const html=await(await fetch(root+'/g2r-combat.html')).text();
+  const runtime=await(await fetch(root+'/g2r-combat.mjs')).text();
+  const legacy=await(await fetch(root+'/main.mjs')).text();
+  assert.match(html,/id="allies"/);assert.match(html,/id="enemies"/);assert.match(html,/id="skills"/);
+  assert.match(runtime,/compareAndSetCombat/);assert.match(runtime,/castG2RHeroSkill/);assert.match(runtime,/stepG2RCombat/);
+  assert.doesNotMatch(legacy,/g2r-combat|hero-kits-v1|save-v2-store/);
+});
+
 test('G3 uncommitted art is not requested or exposed as real files',async(t)=>{
   const server=createStaticServer();
   t.after(()=>server.close());

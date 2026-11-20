@@ -1,9 +1,11 @@
 import { prepareLegacyProfileV2, validateProfileV2 } from './profile-v2.mjs';
+import { validateG2RCombatState } from './g2r-combat-v1.mjs';
 
 export const SAVE_V2_FORMAT_VERSION = 1;
 export const SAVE_V2_DATABASE = 'norkavel.g2r.save.v2';
 export const SAVE_V2_RECORD_KEY = 'profile';
 export const LEGACY_SAVE_KEY = 'norkavel.g2.save.v1';
+export const SAVE_V2_COMBAT_KEY = 'combat';
 
 const RECORD_FIELDS = Object.freeze(['formatVersion', 'revision', 'commitId', 'profile']);
 
@@ -30,6 +32,22 @@ export function inspectSaveV2Record(record) {
       !Number.isSafeInteger(record.revision) || record.revision < 0 ||
       typeof record.commitId !== 'string' || record.commitId.length < 1 || record.commitId.length > 128 ||
       !validateProfileV2(record.profile)) return null;
+  return clone(record);
+}
+
+export function validateSaveV2Transition(currentProfile, nextProfile) {
+  if (!validateProfileV2(nextProfile)) return false;
+  if (currentProfile === null) return true;
+  if (!validateProfileV2(currentProfile)) return false;
+  return currentProfile.selectedHeroId === null ||
+    nextProfile.selectedHeroId === currentProfile.selectedHeroId;
+}
+
+export function inspectSaveV2CombatRecord(record) {
+  if (!exactRecord(record, ['formatVersion','revision','profileRevision','combat']) ||
+      record.formatVersion !== SAVE_V2_FORMAT_VERSION || !Number.isSafeInteger(record.revision) || record.revision < 0 ||
+      !Number.isSafeInteger(record.profileRevision) || record.profileRevision < 0 ||
+      !validateG2RCombatState(record.combat) || record.combat.profileRevision !== record.profileRevision) return null;
   return clone(record);
 }
 
@@ -176,8 +194,16 @@ export async function openSaveV2Store({
               outcome = { ok: false, code: 'STALE_REVISION', actualRevision: valid.revision };
               return;
             }
+            if (!validateSaveV2Transition(valid.profile, detachedProfile)) {
+              outcome = new SaveV2StoreError('IMMUTABLE_HERO', 'Permanent hero selection cannot change');
+              return;
+            }
           } else if (expectedRevision !== null) {
             outcome = { ok: false, code: 'STALE_REVISION', actualRevision: null };
+            return;
+          }
+          if (current === undefined && !validateSaveV2Transition(null, detachedProfile)) {
+            outcome = new SaveV2StoreError('INVALID_TRANSITION', 'Save v2 transition is invalid');
             return;
           }
           const revision = expectedRevision === null ? 0 : expectedRevision + 1;
@@ -201,6 +227,58 @@ export async function openSaveV2Store({
         transaction.onabort = () => reject(transactionError(transaction, 'STORAGE_UNAVAILABLE', 'Save v2 write aborted'));
         transaction.onerror = () => {};
         transaction.oncomplete = () => outcome instanceof Error ? reject(outcome) : resolve(outcome);
+      });
+    },
+
+    async loadCombat() {
+      requireOpen();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction('saves', 'readonly');
+        const request = transaction.objectStore('saves').get(SAVE_V2_COMBAT_KEY);
+        let outcome;
+        request.onsuccess = () => outcome = request.result === undefined ? null :
+          inspectSaveV2CombatRecord(request.result) ?? new SaveV2StoreError('RESTORE_CORRUPT','Combat save is corrupt');
+        request.onerror = () => outcome = new SaveV2StoreError('STORAGE_UNAVAILABLE','Combat read failed',request.error);
+        transaction.onabort = () => reject(transactionError(transaction,'STORAGE_UNAVAILABLE','Combat read aborted'));
+        transaction.onerror = () => {};
+        transaction.oncomplete = () => outcome instanceof Error ? reject(outcome) : resolve(outcome);
+      });
+    },
+
+    async compareAndSetCombat(expectedRevision, profileRevision, combat) {
+      requireOpen();
+      if (expectedRevision !== null && (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0))
+        throw new TypeError('expected combat revision is invalid');
+      if (!Number.isSafeInteger(profileRevision) || profileRevision < 0 || !validateG2RCombatState(combat) ||
+          combat.profileRevision !== profileRevision) throw new TypeError('combat state is invalid');
+      const detached = clone(combat);
+      return new Promise((resolve,reject) => {
+        const transaction=database.transaction('saves','readwrite'); const store=transaction.objectStore('saves');
+        const profileRequest=store.get(recordKey); let outcome;
+        profileRequest.onsuccess=()=>{
+          const profileRecord=inspectSaveV2Record(profileRequest.result);
+          if (!profileRecord || profileRecord.revision !== profileRevision ||
+              profileRecord.profile.selectedHeroId !== detached.selectedHeroId ||
+              JSON.stringify(profileRecord.profile.heroProgress.skillRanks) !== JSON.stringify(detached.skillRanks) ||
+              JSON.stringify(profileRecord.profile.party) !== JSON.stringify(detached.party)) {
+            outcome={ok:false,code:'STALE_PROFILE',actualRevision:profileRecord?.revision??null}; return;
+          }
+          const combatRequest=store.get(SAVE_V2_COMBAT_KEY);
+          combatRequest.onsuccess=()=>{
+            const current=combatRequest.result===undefined?null:inspectSaveV2CombatRecord(combatRequest.result);
+            if (combatRequest.result!==undefined && !current) { outcome=new SaveV2StoreError('RESTORE_CORRUPT','Combat save cannot be overwritten'); return; }
+            if ((current?.revision??null)!==expectedRevision) { outcome={ok:false,code:'STALE_REVISION',actualRevision:current?.revision??null}; return; }
+            const revision=expectedRevision===null?0:expectedRevision+1;
+            const put=store.put({formatVersion:SAVE_V2_FORMAT_VERSION,revision,profileRevision,combat:detached},SAVE_V2_COMBAT_KEY);
+            put.onsuccess=()=>outcome={ok:true,revision};
+            put.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Combat write failed',put.error);
+          };
+          combatRequest.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Combat compare failed',combatRequest.error);
+        };
+        profileRequest.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Profile binding read failed',profileRequest.error);
+        transaction.onabort=()=>reject(transactionError(transaction,'STORAGE_UNAVAILABLE','Combat write aborted'));
+        transaction.onerror=()=>{};
+        transaction.oncomplete=()=>outcome instanceof Error?reject(outcome):resolve(outcome);
       });
     },
 

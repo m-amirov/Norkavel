@@ -48,6 +48,8 @@ jobs:
         run: node scripts/save-v2-browser-smoke.mjs
       - name: Browser hero onboarding smoke in headless Chrome
         run: node scripts/onboarding-browser-smoke.mjs
+      - name: Browser G2-R combat smoke in headless Chrome
+        run: node scripts/g2r-combat-browser-smoke.mjs
       - name: Archive captured browser scenes
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,5 +64,13 @@ jobs:
         with:
           name: norkavel-g2r-f02b-browser
           path: artifacts/g2r-f02b-browser/*
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Archive G2R-F02c combat evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: norkavel-g2r-f02c-browser
+          path: artifacts/g2r-f02c-browser/*
           if-no-files-found: ignore
           retention-days: 7
