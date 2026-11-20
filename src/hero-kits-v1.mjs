@@ -121,10 +121,13 @@ function buildEffects(skillId, target, battle, values, rank) {
     ];
     case 'mage.elemental_rift': return [effect('area_damage', enemyIds, primary), ...(affected.length ? [effect('combo_damage', affected, secondary)] : [])];
     case 'duelist.shadow_dash': return [effect('damage', [target.id], primary), ...(target.statuses.weakened ? [effect('combo_damage', [target.id], secondary)] : [])];
-    case 'duelist.vanish': return [effect('evade', ['hero'], primary, duration)];
+    case 'duelist.vanish': return [effect('evade', ['hero'], primary, duration),
+      effect('counter_ready', ['hero'], secondary, duration)];
     case 'duelist.fatal_mark': return [effect('mark', [target.id], primary, duration)];
-    case 'duelist.night_of_blades': return [effect('multi_hit', [target.id], primary)];
-    case 'ranger.aimed_shot': return [effect('damage', [target.id], primary)];
+    case 'duelist.night_of_blades': return Array.from({ length: 4 }, () =>
+      effect('separate_hit', [target.id], primary));
+    case 'ranger.aimed_shot': return [effect('damage', [target.id], primary),
+      effect('mark', [target.id], secondary, duration)];
     case 'ranger.trap': return [effect('slow', [target.id], primary, duration), effect('weaken', [target.id], secondary, duration)];
     case 'ranger.arrow_rain': return [effect('area_damage', enemyIds, primary)];
     case 'ranger.star_barrage': {

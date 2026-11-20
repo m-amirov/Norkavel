@@ -17,8 +17,12 @@ async function until(callback, timeout = 10000, name = 'condition') {
   throw new Error(`Timed out: ${name}`);
 }
 function chromeBinary() {
+  const windows = [`${process.env.ProgramFiles ?? ''}\\Google\\Chrome\\Application\\chrome.exe`,
+    `${process.env['ProgramFiles(x86)'] ?? ''}\\Google\\Chrome\\Application\\chrome.exe`,
+    `${process.env.LOCALAPPDATA ?? ''}\\Google\\Chrome\\Application\\chrome.exe`,
+    `${process.env.ProgramFiles ?? ''}\\Microsoft\\Edge\\Application\\msedge.exe`];
   const candidates = process.env.CHROME_BIN ? [process.env.CHROME_BIN] :
-    ['google-chrome', 'chromium', 'chromium-browser'];
+    [...(process.platform === 'win32' ? windows : []), 'google-chrome', 'chromium', 'chromium-browser'];
   for (const name of candidates) try {
     execFileSync(name, ['--version'], { stdio: 'ignore' });
     return name;

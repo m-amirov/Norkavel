@@ -1,9 +1,9 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Norkavel · G2-R бой</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/g2r-combat.css"></head>
-<body><main id="app">
+<body><link rel="stylesheet" href="/g2r-stage10.css"><main id="app">
   <header><strong>NORKAVEL · G2-R</strong><span id="save-label">Загрузка Save v2…</span></header>
   <section id="gate" hidden><h1 id="gate-title">Бой недоступен</h1><p id="gate-copy"></p><button id="activate-button" hidden>Активировать G2-R профиль</button><a href="/onboarding.html">Выбрать героя</a></section>
   <section id="battle" hidden aria-label="Поле боя">
-    <div class="arena"><div id="allies" class="line allies"></div><div id="enemies" class="line enemies"></div></div>
+    <div class="arena"><div id="boss-warning" hidden role="alert">ОПАСНАЯ АТАКА · реагируйте сейчас</div><div id="allies" class="line allies"></div><div id="enemies" class="line enemies"></div></div>
     <div class="status"><strong id="hero-label"></strong><span id="tick-label"></span><span id="outcome"></span></div>
     <div id="skills" class="skills" aria-label="Способности героя"></div>
     <p class="notice" id="notice">Числа — engineering candidate, не production balance. Награды и XP не начисляются.</p>

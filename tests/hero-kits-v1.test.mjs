@@ -139,7 +139,16 @@ test('G2R-F02a: conditional counters and combos are observable but bounded', () 
 
   const duelist = resolveHeroSkillEffect(profileFor('hero_slot_3', 'ultimate'),
     { effectVersion: 1, skillId: 'duelist.night_of_blades', targetId: 'boss' }, BATTLE, TEST_POLICY);
-  assert.equal(duelist.effects.some(effect => effect.type === 'multi_hit' && effect.value <= TEST_POLICY.maxValue), true);
+  assert.equal(duelist.effects.filter(effect => effect.type === 'separate_hit').length, 4,
+    'night of blades is four bounded hit events');
+
+  const vanish = resolveHeroSkillEffect(profileFor('hero_slot_3', 'skill2'),
+    { effectVersion: 1, skillId: 'duelist.vanish', targetId: 'boss' }, BATTLE, TEST_POLICY);
+  assert.deepEqual(vanish.effects.map(effect => effect.type), ['evade', 'counter_ready']);
+
+  const aimed = resolveHeroSkillEffect(profileFor('hero_slot_4', 'skill1'),
+    { effectVersion: 1, skillId: 'ranger.aimed_shot', targetId: 'raider' }, BATTLE, TEST_POLICY);
+  assert.deepEqual(aimed.effects.map(effect => effect.type), ['damage', 'mark']);
 
   const ranger = resolveHeroSkillEffect(profileFor('hero_slot_4', 'ultimate'),
     { effectVersion: 1, skillId: 'ranger.star_barrage', targetId: 'raider' }, BATTLE, TEST_POLICY);

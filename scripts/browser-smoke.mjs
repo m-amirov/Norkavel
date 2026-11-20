@@ -17,7 +17,11 @@ async function until(callback,timeout=10000,name='condition'){
   throw new Error('Timed out: '+name+(errors.length?' ('+errors.at(-1)+')':''));
 }
 function chromeBinary(){
-  const candidates=process.env.CHROME_BIN?[process.env.CHROME_BIN]:['google-chrome','chromium','chromium-browser'];
+  const windows=[`${process.env.ProgramFiles??''}\\Google\\Chrome\\Application\\chrome.exe`,
+    `${process.env['ProgramFiles(x86)']??''}\\Google\\Chrome\\Application\\chrome.exe`,
+    `${process.env.LOCALAPPDATA??''}\\Google\\Chrome\\Application\\chrome.exe`,
+    `${process.env.ProgramFiles??''}\\Microsoft\\Edge\\Application\\msedge.exe`];
+  const candidates=process.env.CHROME_BIN?[process.env.CHROME_BIN]:[...(process.platform==='win32'?windows:[]),'google-chrome','chromium','chromium-browser'];
   for(const name of candidates)try{execFileSync(name,['--version'],{stdio:'ignore'});return name;}catch{}
   throw new Error('Chromium missing: browser validation NOT_RUN');
 }
