@@ -1,6 +1,6 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02b LOCAL_BROWSER_PASS / AWAITING_CI; после exact-SHA/CI NEXT READY: G2R-F02c.** Four archetypes and four 3+ultimate hero kits OWNER_CONFIRMED (names, art and numerical balance OPEN). Standalone Save v2 onboarding готов локально; G2-R battle runtime NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Старый G2 остаётся действующим runtime.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02b DONE_VERIFIED; NEXT READY: G2R-F02c.** Four archetypes and four 3+ultimate hero kits OWNER_CONFIRMED (names, art and numerical balance OPEN). Standalone Save v2 onboarding verified; G2-R battle runtime NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Не путать проверенную арифметику Economy Balance 0.1 с утверждённым игровым балансом. Старый G2 остаётся действующим runtime.
 
 
 **Дата обновления:** 2026-11-19. Current boundary: **G2R-F01+F03+P01+E01 DOMAIN_FOUNDATION_VERIFIED / FUNCTIONAL_G2-R_RUNTIME_NOT_IMPLEMENTED / G3 BLOCKED**.
@@ -254,9 +254,10 @@
 - Resolver проверяет полный Profile v2, принадлежность навыка выбранному постоянному герою, level-5 gate ultimate, enemy target и exact battle/policy shape; возвращает детерминированные bounded records для damage, protection, control, combos, counters и marked priority. Invalid/non-finite/duplicate input возвращает `null` без мутации.
 - Exact `6aedbfe3dbee5b0335603aedd069aac5c2c927a1`, [CI 44591621250](https://github.com/m-amirov/Norkavel/actions/runs/44591621250) SUCCESS: 82/82 Node, Ludory Core, WFA bootstrap, legacy G2 Chromium и Save v2 transactional Chromium PASS. Legacy combat/UI/save не изменены; F02b–F02d, production balance, boss viability и G2-R browser acceptance остаются NOT_IMPLEMENTED.
 
-## G2R-F02b irreversible onboarding (2026-11-20; AWAITING_CI)
+## G2R-F02b irreversible onboarding (2026-11-20; DONE_VERIFIED)
 
 - Отдельный `/onboarding.html` использует чистый onboarding-controller и существующий IndexedDB Save v2 CAS: preview/cancel ничего не сохраняют, а permanent hero записывается только после явного предупреждения «Выбор останется навсегда». Повторное открытие показывает locked-профиль.
 - Новый профиль и валидный prepared legacy v1 проходят один и тот же transactional flow; исходный v1 checkpoint и его сырые bytes остаются неизменными. Две вкладки с одной revision дают ровно один commit, stale-вкладка перечитывает победителя. Corrupt/future Save v2 fail closed и не перезаписывается.
 - Реальный Chromium smoke покрывает 640×360 и 844×390 landscape, 390×844 и 1024×1366 portrait turn-device block, mouse/touch/keyboard, reload, race и отсутствие console/runtime errors. Локально PASS: 88/88 Node + Ludory Core, onboarding browser, legacy G2 browser и Save v2 browser.
-- `web/main.mjs` и `src/combat.mjs` не импортируют onboarding и не переключены на незавершённый G2-R runtime. Production names/art/balance, actual 1+3 combat, trusted results/rewards и F02c/F02d остаются NOT_IMPLEMENTED. Проведён adversarial SELF_REVIEW; независимый reviewer в этой сессии недоступен. Exact SHA/CI будут внесены после `origin/main` run.
+- `web/main.mjs` и `src/combat.mjs` не импортируют onboarding и не переключены на незавершённый G2-R runtime. Production names/art/balance, actual 1+3 combat, trusted results/rewards и F02c/F02d остаются NOT_IMPLEMENTED. Проведён adversarial SELF_REVIEW; независимый reviewer в этой сессии недоступен.
+- Exact implementation `48720875319d56750cdb7b870550e67fe14cdc3e`, [CI 44672516614](https://github.com/m-amirov/Norkavel/actions/runs/44672516614) SUCCESS: 88/88 Node, Ludory Core, WFA bootstrap, legacy G2 Chromium, Save v2 transactional Chromium и G2R-F02b onboarding Chromium PASS; hashed screenshot artifact загружен.

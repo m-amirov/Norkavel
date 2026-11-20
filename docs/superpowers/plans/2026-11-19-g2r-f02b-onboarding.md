@@ -65,4 +65,4 @@
 
 - [x] Perform code/security/concurrency and visual self-review; label independent review unavailable rather than inventing it.
 - [x] Update local evidence and remaining F02c/F02d boundaries; exact SHA/CI follows integration.
-- [ ] Commit and push verified changes to `main`, wait for exact-HEAD CI, then record final `origin/main` SHA.
+- [x] Commit and push verified changes to `main`, wait for exact-HEAD CI, then record implementation SHA `48720875319d56750cdb7b870550e67fe14cdc3e` / CI `44672516614`.
