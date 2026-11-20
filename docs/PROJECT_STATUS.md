@@ -1,16 +1,16 @@
 # Norkavel — project status
 
-**Codex handoff:** G2R-INT-02 implementation `11feffd` passed the complete local gate set and awaits exact-SHA CI. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
+**Codex handoff:** G2R-INT-02 is DONE_VERIFIED on implementation `11feffd`, evidence `c062b76`, [CI 44722998680](https://github.com/m-amirov/Norkavel/actions/runs/44722998680). Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
 
 
-**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-02 AWAITING_CI / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-02 DONE_VERIFIED / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
 
-## G2R-INT-02 campaign integrity (2026-11-20; AWAITING_CI)
+## G2R-INT-02 campaign integrity (2026-11-20; DONE_VERIFIED)
 - Integration CAS now validates the proposed session against the previous committed state and rejects valid-schema but unreachable transitions, combat forgeries, immutable attempt drift and QA-ledger rollback.
 - Campaign UI explicitly activates prepared legacy profiles through the existing domain function; no hidden activation, hero selection or rewards occur, and the v1 checkpoint remains unchanged.
 - Error UX distinguishes stale profile/session, failed commit, corrupt/unsupported restore and unavailable storage without presenting an uncommitted victory/progress state.
 - A sequential real-engine test clears stages 1–10 without direct ledger injection and verifies `stage-010` → `first-story-boss-v1`. Candidate XP arithmetic reaches level 5 at 243 XP before stage 10, while the QA runtime itself writes no XP.
-- New Chromium integrity smoke covers portrait blocking in every phase, aborted persistence, legacy activation and storage recovery. On implementation `11feffd`, 112/112 Node tests, Ludory and every required browser gate passed locally; exact-SHA CI remains pending.
+- New Chromium integrity smoke covers portrait blocking in every phase, aborted persistence, legacy activation and storage recovery. Implementation `11feffd`, evidence `c062b76`: 112/112 Node tests, Ludory and every required browser gate passed locally and in [CI 44722998680](https://github.com/m-amirov/Norkavel/actions/runs/44722998680).
 
 ## G2R-INT-01 vertical integration slice (2026-11-20; DONE_VERIFIED)
 - A separate chapter-01 QA shell links Campaign v1 stage IDs, a visible 10-node route, marker travel, preview confirmation, actual G2-R combat and local result/return flow.
