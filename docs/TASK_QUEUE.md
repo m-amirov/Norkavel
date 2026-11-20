@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**NEXT: G2R-F02d AWAITING_CI.** **Текущая граница:** stage-010 mechanics, 32-seed matrix и Chromium локально проверены; exact `origin/main` CI обязателен перед `DONE_VERIFIED`. G2 legacy browser остаётся отдельным runtime; F02d outcome не производит trusted settlement, XP или награды. Числа — engineering candidate, G3 art не принят. См. [Stage-010 Balance 0.1](STAGE-010-BALANCE-0.1.md).
+**G2R-F02d DONE_VERIFIED; NEXT G2R-INT remains BLOCKED_DEPENDENCY.** Stage-010 mechanics, 32-seed matrix и Chromium проверены на implementation `bc8c4b2`, [CI 44705431274](https://github.com/m-amirov/Norkavel/actions/runs/44705431274). Outcome не производит trusted settlement, XP или награды; production balance, 50 encounters и G3 art остаются OPEN/BLOCKED. См. [Stage-010 Balance 0.1](STAGE-010-BALANCE-0.1.md).
 
 ## Правила очереди
 
@@ -12,7 +12,7 @@
 | Приоритет | ID | Задача | Зависимости | Текущий статус |
 |---|---|---|---|---|
 | 1 | G2R-F01 | Проверяемый foundation: модель профиля v2 и безопасная совместимость с G2 v1 | действующие GDD/DECISIONS и actual Ludory Core | **DONE_VERIFIED — `27be4dd`, CI 44526368550** |
-| 2 | G2R-F02 | Постоянный выбор 1 из 4 героев + 3 уникальных обычных навыка/ульта каждому в UI и бою | F01/S01 DONE; **4 kits and stable mapping OWNER_CONFIRMED** [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md), names/art/numeric balance OPEN | **F02a/F02b/F02c DONE_VERIFIED; F02d AWAITING_CI** |
+| 2 | G2R-F02 | Постоянный выбор 1 из 4 героев + 3 уникальных обычных навыка/ульта каждому в UI и бою | F01/S01 DONE; **4 kits and stable mapping OWNER_CONFIRMED** [Hero Kits 0.1](HERO-KITS-REVIEW-0.1.md), names/art/numeric balance OPEN | **DONE_VERIFIED — implementation `bc8c4b2`, CI 44705431274** |
 | 3 | G2R-F03 | Roster 5, 3 активных/2 резервных, unlock stage3/10, безопасные first-clear claim receipts | G2R-F01 | **DONE_VERIFIED — `e384e5e`, CI 44531383856** |
 | 4 | G2R-P01 | Отдельная прогрессия героя (lvl1–16, XP за победы, 15 player choices, ultimate lvl5) | G2R-F01; skill effects when moving to combat; economy values remain CANDIDATE | **DONE_VERIFIED — `85114c6`, CI 44535563965** |
 | 5 | G2R-E01 | Ручная прокачка каждого спутника за золото, atomic purchase ledger, denied/double-purchase cases | G2R-F01 + G2R-F03; числа Economy 0.1 **CANDIDATE** | **DONE_VERIFIED — `4af6c6f`, CI 44537806684** |

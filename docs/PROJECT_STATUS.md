@@ -1,9 +1,9 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02d AWAITING_CI:** mechanics/matrix/browser локально проверены; exact `origin/main` CI обязателен перед `DONE_VERIFIED`. Production balance, trusted settlement/rewards и G3 остаются OPEN/BLOCKED; старый G2 — отдельный runtime.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02d DONE_VERIFIED:** implementation `bc8c4b2`, [CI 44705431274](https://github.com/m-amirov/Norkavel/actions/runs/44705431274) SUCCESS. Production balance, trusted settlement/rewards, 50 encounters и G3 остаются OPEN/BLOCKED; старый G2 — отдельный runtime.
 
 
-**Дата обновления:** 2026-11-20. Current boundary: **G2R-F02d LOCAL_VERIFIED_AWAITING_CI / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION_BALANCE_OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-20. Current boundary: **G2R-F02d DONE_VERIFIED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION_BALANCE_OPEN / G3 BLOCKED**.
 
 ## G2R-E01 companion purchase domain (2026-11-19)
 - Exact implementation `4af6c6fb234dac7bfbf1aaecfe4fa2408e80ef3f` adds pure `upgradeCompanion`; legacy combat/UI/save key remain unchanged.
@@ -270,9 +270,9 @@
 - Exact implementation `530d18ec8c3fabe1a490790f753dba51526defdb`, [CI 44677521398](https://github.com/m-amirov/Norkavel/actions/runs/44677521398) SUCCESS: 98/98 Node + Ludory Core, WFA bootstrap, legacy G2, Save v2, onboarding и новый G2-R combat Chromium. Visual/runtime evidence: 844×390, 640×360, 390×844, hashed PNG artifact, console errors отсутствуют. SELF_REVIEW only.
 - Граница: бой не подключён к campaign `begin/settle`, не начисляет XP/gold/unlocks и не является trusted result producer. Stage-10 boss viability/counterplays, 50 encounters, production balance/art, PvP/backend и release gates остаются открыты.
 
-## G2R-F02d first story boss viability (2026-11-20; AWAITING_CI)
+## G2R-F02d first story boss viability (2026-11-20; DONE_VERIFIED)
 
 - `stage-010` имеет отдельный versioned encounter-контракт, телеграф и party-area dangerous attack; control resistance ограничивает длительность/силу, reward mode остаётся `none`. Legacy G2 boss stage 2 не используется.
 - Исправлены kit-gap: aimed shot ставит mark для star barrage; Vanish даёт короткое evade с одноразовой counter readiness; Night of Blades создаёт четыре отдельных bounded hit event. Ard/Mira/Elira/Kair имеют измеримые guard/elemental/heal/offense действия.
 - 32 фиксированных seed × 8 тактик дают 256 побед; 32 × 4 baseline дают 128 поражений. У каждого permanent hero две различающиеся тактики; `control` нигде не входит в party. Полная матрица и ограничения — [Stage-010 Balance 0.1](STAGE-010-BALANCE-0.1.md).
-- Реальный Chromium локально проверил телеграф, victory/defeat, 844×390 и 640×360 landscape, 390×844 portrait block, mouse/touch/keyboard, reload, concurrent tab CAS, immutable hero и отсутствие наград. Production balance, human playtest и independent reviewer остаются NOT_RUN; exact origin/main CI ожидается.
+- Реальный Chromium проверил телеграф, victory/defeat, 844×390 и 640×360 landscape, 390×844 portrait block, mouse/touch/keyboard, reload, concurrent tab CAS, immutable hero и отсутствие наград. Exact implementation `bc8c4b2aafa9791cb1d1290f3d12f79f6873494a`, [CI 44705431274](https://github.com/m-amirov/Norkavel/actions/runs/44705431274) SUCCESS. Production balance, human playtest и independent reviewer остаются NOT_RUN.
