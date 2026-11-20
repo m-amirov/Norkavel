@@ -1,9 +1,9 @@
 # Norkavel — project status
 
-**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02c LOCAL_BROWSER_PASS / AWAITING_CI; после exact-SHA/CI NEXT READY: G2R-F02d.** Four archetypes and all 16 approved abilities now drive a separate real 1+3 G2-R combat slice; names, art and numerical balance remain OPEN. Trusted campaign settlement/rewards and stage-10 viability remain NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Старый G2 остаётся отдельным действующим runtime.
+**Codex handoff:** для короткого «Продолжай Norkavel» действуют [Agent Workflow](AGENT-WORKFLOW.md) и [Task Queue](TASK_QUEUE.md). **F02c DONE_VERIFIED; NEXT READY: G2R-F02d.** Four archetypes and all 16 approved abilities drive a separate real 1+3 G2-R combat slice; names, art and numerical balance remain OPEN. Trusted campaign settlement/rewards and stage-10 viability remain NOT_IMPLEMENTED, G2R-INT BLOCKED_DEPENDENCY. Старый G2 остаётся отдельным действующим runtime.
 
 
-**Дата обновления:** 2026-11-20. Current boundary: **G2R-F02c LOCAL_FUNCTIONAL_RUNTIME / AWAITING_CI / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / G3 BLOCKED**.
+**Дата обновления:** 2026-11-20. Current boundary: **G2R-F02c FUNCTIONAL_RUNTIME_VERIFIED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / G3 BLOCKED**.
 
 ## G2R-E01 companion purchase domain (2026-11-19)
 - Exact implementation `4af6c6fb234dac7bfbf1aaecfe4fa2408e80ef3f` adds pure `upgradeCompanion`; legacy combat/UI/save key remain unchanged.
@@ -262,10 +262,10 @@
 - `web/main.mjs` и `src/combat.mjs` не импортируют onboarding и не переключены на незавершённый G2-R runtime. Production names/art/balance, actual 1+3 combat, trusted results/rewards и F02c/F02d остаются NOT_IMPLEMENTED. Проведён adversarial SELF_REVIEW; независимый reviewer в этой сессии недоступен.
 - Exact implementation `48720875319d56750cdb7b870550e67fe14cdc3e`, [CI 44672516614](https://github.com/m-amirov/Norkavel/actions/runs/44672516614) SUCCESS: 88/88 Node, Ludory Core, WFA bootstrap, legacy G2 Chromium, Save v2 transactional Chromium и G2R-F02b onboarding Chromium PASS; hashed screenshot artifact загружен.
 
-## G2R-F02c functional combat slice (2026-11-20; AWAITING_CI)
+## G2R-F02c functional combat slice (2026-11-20; DONE_VERIFIED)
 
 - `src/g2r-combat-v1.mjs` создаёт отдельный deterministic 1+3 бой из permanent hero и трёх active unlocked companions. Все 16 approved abilities применяют реальные damage/protection/control/combo mechanics; cooldown, timed statuses, boss resistance и level-5 ultimate gate задаются versioned policy, явно помеченной `engineering-candidate`.
 - `/g2r-combat.html` — отдельный runtime/UI, не импортируемый legacy `web/main.mjs`. Mouse/touch/keyboard управляют навыками; portrait полностью останавливает simulation/input, landscape resume сохраняет state. Production art не заявлен.
 - Save v2 хранит battle record отдельным CAS, связанным с profile revision, hero, ranks и party. Concurrent tabs сходятся к committed record; arbitrary valid profile CAS больше не может заменить или очистить `selectedHeroId`. Legacy profile обязан пройти explicit activation; recovery checkpoint остаётся неизменным.
-- Локально PASS: 98/98 Node + Ludory Core; legacy G2, Save v2, onboarding и новый G2-R combat Chromium. Visual/runtime evidence: 844×390, 640×360, 390×844, hashed PNG, console errors отсутствуют. SELF_REVIEW only; exact SHA/CI pending.
+- Exact implementation `530d18ec8c3fabe1a490790f753dba51526defdb`, [CI 44677521398](https://github.com/m-amirov/Norkavel/actions/runs/44677521398) SUCCESS: 98/98 Node + Ludory Core, WFA bootstrap, legacy G2, Save v2, onboarding и новый G2-R combat Chromium. Visual/runtime evidence: 844×390, 640×360, 390×844, hashed PNG artifact, console errors отсутствуют. SELF_REVIEW only.
 - Граница: бой не подключён к campaign `begin/settle`, не начисляет XP/gold/unlocks и не является trusted result producer. Stage-10 boss viability/counterplays, 50 encounters, production balance/art, PvP/backend и release gates остаются открыты.
