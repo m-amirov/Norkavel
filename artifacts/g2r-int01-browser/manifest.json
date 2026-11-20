@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "implementationSha": "c28d0b8c451dfa7133289ee38564264953e95ebb",
+  "browser": "Google Chrome 157.0.8103.79",
+  "receipts": [
+    {
+      "name": "01-map-844x390",
+      "w": 844,
+      "h": 390,
+      "state": "stage-001-available",
+      "sha256": "35cb57e815b1d39a79b44523d70eae230edec40f6175d7aecfe3ad5e8c6042d5"
+    },
+    {
+      "name": "02-preview-844x390",
+      "w": 844,
+      "h": 390,
+      "state": "travel-reload-preview",
+      "sha256": "37e968bd2fafc7fabc2b60eda6e34760ab553d041aa55b8a9aa7b5ebac47debb"
+    },
+    {
+      "name": "03-portrait-390x844",
+      "w": 390,
+      "h": 844,
+      "state": "blocked",
+      "sha256": "8550fba4bd2e3922819ff764660f20a46e9b62180f24f1bba486de7b64d3519b"
+    },
+    {
+      "name": "04-result-640x360",
+      "w": 640,
+      "h": 360,
+      "state": "real-local-result",
+      "sha256": "6b2e6f885daf0339327b5ec5fcc5726e94b6c87320c8b9c106bc664074dfe058"
+    },
+    {
+      "name": "05-return-map-640x360",
+      "w": 640,
+      "h": 360,
+      "state": "qa-progress-only",
+      "sha256": "5e47fd4350eb5df5dc479e8207e87bed40669daddc169c0f6ad3e5e56557ff20"
+    }
+  ]
+}

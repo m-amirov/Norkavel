@@ -1,0 +1,311 @@
+{
+  "schema": 2,
+  "stageId": "stage-010",
+  "candidatePolicy": true,
+  "reachability": {
+    "policyId": "economy-balance-0.1-CANDIDATE",
+    "firstNineStageXp": 243,
+    "heroLevel": 5,
+    "skillRanks": {
+      "skill1": 1,
+      "skill2": 1,
+      "skill3": 1,
+      "ultimate": 1
+    }
+  },
+  "behaviorModel": "reaction-3ticks-command-gap-8ticks",
+  "seeds": [
+    1001,
+    1098,
+    1195,
+    1292,
+    1389,
+    1486,
+    1583,
+    1680,
+    1777,
+    1874,
+    1971,
+    2068,
+    2165,
+    2262,
+    2359,
+    2456,
+    2553,
+    2650,
+    2747,
+    2844,
+    2941,
+    3038,
+    3135,
+    3232,
+    3329,
+    3426,
+    3523,
+    3620,
+    3717,
+    3814,
+    3911,
+    4008
+  ],
+  "rows": [
+    {
+      "strategyId": "defender_interrupt",
+      "heroId": "hero_slot_1",
+      "party": [
+        "sentinel",
+        "ember",
+        "healer"
+      ],
+      "seeds": 32,
+      "wins": 32,
+      "defeats": 0,
+      "minTicks": 456,
+      "maxTicks": 480,
+      "minRemainingHp": 480,
+      "maxRemainingHp": 480,
+      "telegraphs": 206,
+      "dangerousHits": 0,
+      "interrupts": 215,
+      "evades": 0,
+      "reactionDelayTicks": 3,
+      "manualCommandGapTicks": 8,
+      "minUnitHp": {
+        "hero": 180,
+        "sentinel": 100,
+        "ember": 100,
+        "healer": 100
+      },
+      "baseline": {
+        "wins": 0,
+        "defeats": 32
+      }
+    },
+    {
+      "strategyId": "defender_survival",
+      "heroId": "hero_slot_1",
+      "party": [
+        "sentinel",
+        "healer",
+        "ash"
+      ],
+      "seeds": 32,
+      "wins": 32,
+      "defeats": 0,
+      "minTicks": 510,
+      "maxTicks": 528,
+      "minRemainingHp": 480,
+      "maxRemainingHp": 480,
+      "telegraphs": 224,
+      "dangerousHits": 896,
+      "interrupts": 0,
+      "evades": 0,
+      "reactionDelayTicks": 3,
+      "manualCommandGapTicks": 8,
+      "minUnitHp": {
+        "hero": 180,
+        "sentinel": 100,
+        "healer": 100,
+        "ash": 100
+      },
+      "baseline": {
+        "wins": 0,
+        "defeats": 32
+      }
+    },
+    {
+      "strategyId": "mage_weaken",
+      "heroId": "hero_slot_2",
+      "party": [
+        "sentinel",
+        "ember",
+        "healer"
+      ],
+      "seeds": 32,
+      "wins": 32,
+      "defeats": 0,
+      "minTicks": 176,
+      "maxTicks": 180,
+      "minRemainingHp": 358,
+      "maxRemainingHp": 379,
+      "telegraphs": 64,
+      "dangerousHits": 256,
+      "interrupts": 0,
+      "evades": 0,
+      "reactionDelayTicks": 3,
+      "manualCommandGapTicks": 8,
+      "minUnitHp": {
+        "hero": 128,
+        "sentinel": 76,
+        "ember": 74,
+        "healer": 70
+      },
+      "baseline": {
+        "wins": 0,
+        "defeats": 32
+      }
+    },
+    {
+      "strategyId": "mage_controlled_damage",
+      "heroId": "hero_slot_2",
+      "party": [
+        "sentinel",
+        "healer",
+        "ash"
+      ],
+      "seeds": 32,
+      "wins": 32,
+      "defeats": 0,
+      "minTicks": 132,
+      "maxTicks": 156,
+      "minRemainingHp": 358,
+      "maxRemainingHp": 380,
+      "telegraphs": 64,
+      "dangerousHits": 256,
+      "interrupts": 0,
+      "evades": 0,
+      "reactionDelayTicks": 3,
+      "manualCommandGapTicks": 8,
+      "minUnitHp": {
+        "hero": 136,
+        "sentinel": 72,
+        "healer": 70,
+        "ash": 66
+      },
+      "baseline": {
+        "wins": 0,
+        "defeats": 32
+      }
+    },
+    {
+      "strategyId": "duelist_evade",
+      "heroId": "hero_slot_3",
+      "party": [
+        "sentinel",
+        "ember",
+        "healer"
+      ],
+      "seeds": 32,
+      "wins": 24,
+      "defeats": 8,
+      "minTicks": 384,
+      "maxTicks": 430,
+      "minRemainingHp": 0,
+      "maxRemainingHp": 88,
+      "telegraphs": 190,
+      "dangerousHits": 741,
+      "interrupts": 0,
+      "evades": 56,
+      "reactionDelayTicks": 3,
+      "manualCommandGapTicks": 8,
+      "minUnitHp": {
+        "hero": 0,
+        "sentinel": 0,
+        "ember": 0,
+        "healer": 0
+      },
+      "baseline": {
+        "wins": 0,
+        "defeats": 32
+      }
+    },
+    {
+      "strategyId": "duelist_focus",
+      "heroId": "hero_slot_3",
+      "party": [
+        "sentinel",
+        "healer",
+        "ash"
+      ],
+      "seeds": 32,
+      "wins": 32,
+      "defeats": 0,
+      "minTicks": 228,
+      "maxTicks": 276,
+      "minRemainingHp": 208,
+      "maxRemainingHp": 318,
+      "telegraphs": 88,
+      "dangerousHits": 352,
+      "interrupts": 0,
+      "evades": 0,
+      "reactionDelayTicks": 3,
+      "manualCommandGapTicks": 8,
+      "minUnitHp": {
+        "hero": 74,
+        "sentinel": 42,
+        "healer": 40,
+        "ash": 40
+      },
+      "baseline": {
+        "wins": 0,
+        "defeats": 32
+      }
+    },
+    {
+      "strategyId": "ranger_trap",
+      "heroId": "hero_slot_4",
+      "party": [
+        "sentinel",
+        "ember",
+        "healer"
+      ],
+      "seeds": 32,
+      "wins": 32,
+      "defeats": 0,
+      "minTicks": 230,
+      "maxTicks": 251,
+      "minRemainingHp": 237,
+      "maxRemainingHp": 292,
+      "telegraphs": 118,
+      "dangerousHits": 420,
+      "interrupts": 0,
+      "evades": 0,
+      "reactionDelayTicks": 3,
+      "manualCommandGapTicks": 8,
+      "minUnitHp": {
+        "hero": 88,
+        "sentinel": 40,
+        "ember": 41,
+        "healer": 42
+      },
+      "baseline": {
+        "wins": 0,
+        "defeats": 32
+      }
+    },
+    {
+      "strategyId": "ranger_marked_range",
+      "heroId": "hero_slot_4",
+      "party": [
+        "sentinel",
+        "healer",
+        "ash"
+      ],
+      "seeds": 32,
+      "wins": 32,
+      "defeats": 0,
+      "minTicks": 204,
+      "maxTicks": 216,
+      "minRemainingHp": 242,
+      "maxRemainingHp": 296,
+      "telegraphs": 96,
+      "dangerousHits": 376,
+      "interrupts": 0,
+      "evades": 0,
+      "reactionDelayTicks": 3,
+      "manualCommandGapTicks": 8,
+      "minUnitHp": {
+        "hero": 92,
+        "sentinel": 40,
+        "healer": 40,
+        "ash": 36
+      },
+      "baseline": {
+        "wins": 0,
+        "defeats": 32
+      }
+    }
+  ],
+  "implementationSha": "c28d0b8c451dfa7133289ee38564264953e95ebb",
+  "interpretation": "Engineering candidate only. No production win-rate threshold is approved."
+}

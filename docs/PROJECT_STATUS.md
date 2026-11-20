@@ -1,17 +1,17 @@
 # Norkavel — project status
 
-**Codex handoff:** G2R-INT-01 is the active bounded slice; local implementation verification is in progress. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED; legacy G2 stays a separate runtime.
+**Codex handoff:** G2R-INT-01 implementation `c28d0b8` has local gates PASS and awaits exact-SHA CI. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED; legacy G2 stays a separate runtime.
 
 
-**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-01 IN_PROGRESS / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION_BALANCE OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-01 AWAITING_CI / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION_BALANCE OPEN / G3 BLOCKED**.
 
-## G2R-INT-01 vertical integration slice (2026-11-20; CI pending)
+## G2R-INT-01 vertical integration slice (2026-11-20; implementation `c28d0b8`, CI pending)
 - A separate chapter-01 QA shell links Campaign v1 stage IDs, a visible 10-node route, marker travel, preview confirmation, actual G2-R combat and local result/return flow.
 - One profile-bound Save v2 integration CAS record atomically contains navigation, immutable hero/party binding, attempt identity, combat and local outcome. Reload resumes travel or combat; stale tabs converge instead of overwriting.
 - Stages 1–9 use reward-free `engineering-fixture` encounters. `stage-010` resolves only to the existing `first-story-boss-v1`; technical legacy G2 stage 2 is not reused.
 - The result is `local-untrusted`; only an isolated QA cleared-stage ledger advances. Profile v2 gold, XP, unlocks, achievements and first-clear ledger are unchanged. Trusted settlement is proposed separately and NOT_IMPLEMENTED.
 - Stage-010 QA now compares every strategy with a baseline using the same party, applies a 3-tick reaction delay and 8-tick manual-command gap, and records per-unit HP. This is analysis of an engineering candidate, not production balance acceptance.
-- Local Chromium smoke covers 844×390, 640×360, portrait blocking, mouse/touch/keyboard, travel and fight reload, concurrent tabs, route return, legacy-v1 preservation and no profile rewards. Exact implementation SHA/CI receipt pending.
+- Local `npm run check` passed 106/106 Node tests plus Ludory. Legacy, Save v2, onboarding, G2-R combat and campaign Chromium smokes pass; the campaign evidence manifest is bound to exact implementation `c28d0b8`. CI receipt pending.
 
 ## G2R-E01 companion purchase domain (2026-11-19)
 - Exact implementation `4af6c6fb234dac7bfbf1aaecfe4fa2408e80ef3f` adds pure `upgradeCompanion`; legacy combat/UI/save key remain unchanged.
