@@ -1,6 +1,6 @@
 # G2R-INT-02 — Campaign State Integrity & Recovery
 
-Status: implementation verification in progress. This slice does not unblock full G2R-INT.
+Status: AWAITING_CI. Implementation `11feffd` passed 112/112 Node tests, Ludory and all required Chromium gates locally. This slice does not unblock full G2R-INT.
 
 ## Confirmed by executable checks
 
