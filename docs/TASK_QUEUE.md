@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**G2R-INT-03 IN_PROGRESS; full G2R-INT remains BLOCKED_DEPENDENCY.** A separate local-untrusted progression/economy sandbox now exercises candidate XP, gold, manual skill choices, companion purchases and chapter-01 combat without writing production Profile v2. Full gates and exact-SHA CI remain pending.
+**G2R-INT-03 AWAITING_CI; full G2R-INT remains BLOCKED_DEPENDENCY.** Implementation `7dee19c` passed 120/120 Node tests, Ludory, every existing Chromium gate, the new progression sandbox smoke and candidate balance checks locally. Exact-SHA CI remains pending.
 
 ## Правила очереди
 
@@ -21,7 +21,7 @@
 | 7 | G2R-INT | Сведение 4 hero kits / 50 encounter battle balance / все награды / browser UX landscape / migration | Предыдущие задачи + реальный контент и результаты | BLOCKED_DEPENDENCY |
 | 7a | G2R-INT-01 | Chapter-01 QA shell → preview → real combat → local result; atomic session CAS, no profile rewards | C01/S01/F02d | **DONE_VERIFIED — `c28d0b8`, CI 44715870159** |
 | 7b | G2R-INT-02 | Campaign state transition integrity, recovery, explicit legacy activation and sequential QA reachability | G2R-INT-01 | **DONE_VERIFIED — implementation `11feffd`, evidence `c062b76`, CI 44722998680** |
-| 7c | G2R-INT-03 | Isolated DEV PvE progression/economy loop with Profile v2 domain reuse and candidate policy | G2R-INT-02 | **IN_PROGRESS — focused domain, balance and Chromium smoke PASS; full gates pending** |
+| 7c | G2R-INT-03 | Isolated DEV PvE progression/economy loop with Profile v2 domain reuse and candidate policy | G2R-INT-02 | **AWAITING_CI — implementation `7dee19c`; 120/120 + all browser/balance gates PASS locally** |
 | 8 | G3-ART | Production art 4 hero+5 companions+враги/боссы, 50 уникальных полей боя и 5 карт глав | Арт-решения, реальные source/rights assets, отдельная визуальная приёмка | BLOCKED_OWNER / ART_PRODUCTION |
 | 9 | G4–G7 | Полный контент, серверный async PvP, QA и релизный кандидат Яндекс Игр | Настоящие G2-R/G3 gates и platform decisions | BLOCKED_DEPENDENCY |
 

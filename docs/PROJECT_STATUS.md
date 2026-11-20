@@ -1,16 +1,16 @@
 # Norkavel — project status
 
-**Codex handoff:** G2R-INT-03 is the active isolated progression/economy sandbox slice. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
+**Codex handoff:** G2R-INT-03 implementation `7dee19c` passed the complete local gate set and awaits exact-SHA CI. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
 
 
-**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-03 IN_PROGRESS / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-03 AWAITING_CI / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
 
-## G2R-INT-03 DEV progression sandbox (2026-11-20; verification in progress)
+## G2R-INT-03 DEV progression sandbox (2026-11-20; AWAITING_CI)
 - Separate DEV IndexedDB and command CAS hold a clean Profile v2 copy fixed to local-untrusted, engineering-candidate, noncompetitive and non-release metadata.
 - Real G2-R combat can produce a pending local result, survive reload before claim, then apply candidate XP/gold exactly once. Defeat, retry and reduced replay are covered.
 - Manual hero skill choices affect ranks in the next combat; manual companion purchases reuse the existing cost-policy and purchase ledger.
 - Stage 3 and 10 milestones unlock Kair and the controller once. Production Profile v2 and legacy v1 remain unchanged.
-- Chapter-01 arithmetic gives all four heroes level 5 / 310 XP / 840 gold after ten first clears; current companion levels are not yet consumed by combat stats. Full gates and CI pending. See [sandbox report](G2R-INT-03-PROGRESSION-SANDBOX.md).
+- Chapter-01 arithmetic gives all four heroes level 5 / 310 XP / 840 gold after ten first clears; current companion levels are not yet consumed by combat stats. Implementation `7dee19c` passed 120/120 Node, Ludory, all browser and balance gates locally; CI pending. See [sandbox report](G2R-INT-03-PROGRESSION-SANDBOX.md).
 
 ## G2R-INT-02 campaign integrity (2026-11-20; DONE_VERIFIED)
 - Integration CAS now validates the proposed session against the previous committed state and rejects valid-schema but unreachable transitions, combat forgeries, immutable attempt drift and QA-ledger rollback.

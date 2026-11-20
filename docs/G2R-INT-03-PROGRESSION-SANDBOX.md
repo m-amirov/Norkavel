@@ -1,6 +1,6 @@
 # G2R-INT-03 — PvE Progression & Economy Sandbox
 
-Status: implementation verification in progress. Full G2R-INT and trusted settlement remain blocked.
+Status: AWAITING_CI. Implementation `7dee19c` passed 120/120 Node tests, Ludory, all browser gates and candidate balance checks locally. Full G2R-INT and trusted settlement remain blocked.
 
 ## Runtime boundary
 
