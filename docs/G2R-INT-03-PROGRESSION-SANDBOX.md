@@ -1,6 +1,6 @@
 # G2R-INT-03 — PvE Progression & Economy Sandbox
 
-Status: AWAITING_CI. Implementation `7dee19c` passed 120/120 Node tests, Ludory, all browser gates and candidate balance checks locally. Full G2R-INT and trusted settlement remain blocked.
+Status: DONE_VERIFIED. Implementation `7dee19c7d42ed48a13ebf0841134aaf1d9086729` passed 120/120 Node tests, Ludory, all browser gates and candidate balance checks locally; evidence SHA `35d723465ce34b0da0b5cb7675b50f3901f91014` passed [GitHub CI](https://github.com/m-amirov/Norkavel/actions/runs/44773682787). Full G2R-INT and trusted settlement remain blocked.
 
 ## Runtime boundary
 
