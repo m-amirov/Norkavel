@@ -3,90 +3,18 @@
 // Run: node scripts/economy-balance.mjs --json
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
-
-export const VERSION = 'economy-balance-0.1-CANDIDATE';
-export const HERO_LEVEL_CAP = 16;
-export const STAGES = 50;
-export const XP_REPLAY_RATIO = 0.40; // proposed, NOT owner-approved
-export const GOLD_REPLAY_RATIO = 0.50; // proposed, NOT owner-approved
+import {
+  VERSION,HERO_LEVEL_CAP,STAGES,XP_REPLAY_RATIO,GOLD_REPLAY_RATIO,XP_TO_NEXT,XP_THRESHOLDS,xpToNextLevel,
+  heroLevelForXp,stageFirstClearReward,stageReplayReward,battleReward,
+  companionUpgradeCost,companionCostToLevel
+} from '../src/economy-candidate-v1.mjs';
+export { VERSION,HERO_LEVEL_CAP,STAGES,XP_REPLAY_RATIO,GOLD_REPLAY_RATIO,XP_TO_NEXT,XP_THRESHOLDS,xpToNextLevel,
+  heroLevelForXp,stageFirstClearReward,stageReplayReward,battleReward,
+  companionUpgradeCost,companionCostToLevel };
 export const START_COMPANIONS = Object.freeze(['ard', 'mira', 'elira']);
 export const ALL_COMPANIONS = Object.freeze(['ard', 'mira', 'elira', 'kair', 'ice']);
-
-function positiveStage(stage) {
-  if (!Number.isInteger(stage) || stage < 1 || stage > STAGES) throw new RangeError('stage must be 1..50');
-}
-function positiveCompanionLevel(level) {
-  if (!Number.isInteger(level) || level < 1) throw new RangeError('companion level must be >=1');
-}
-
-export function xpToNextLevel(level) {
-  if (!Number.isInteger(level) || level < 1 || level >= HERO_LEVEL_CAP) {
-    throw new RangeError('XP next level is defined only for level 1..15');
-  }
-  const k = level - 1;
-  return 40 + 6 * k + Math.ceil(13 * k * k / 4);
-}
-export const XP_TO_NEXT = Object.freeze(Array.from({ length: 15 }, (_, i) => xpToNextLevel(i + 1)));
-export const XP_THRESHOLDS = Object.freeze(
-  XP_TO_NEXT.reduce((arr, next) => [...arr, arr[arr.length - 1] + next], [0])
-); // index 0 is level 1, index 15 is level 16.
-
-export function heroLevelForXp(xp) {
-  if (!Number.isSafeInteger(xp) || xp < 0) throw new RangeError('hero XP must be a nonnegative safe integer');
-  let level = 1;
-  while (level < HERO_LEVEL_CAP && xp >= XP_THRESHOLDS[level]) level++;
-  return level;
-}
-export function stageFirstClearReward(stage) {
-  positiveStage(stage);
-  const chapterBoss = stage % 10 === 0 ? stage / 10 : 0;
-  const baseXp = 12 + 3 * stage;
-  const baseGold = 32 + 8 * stage;
-  const bossBonusXp = chapterBoss ? 25 * chapterBoss : 0;
-  const bossBonusGold = chapterBoss ? 80 * chapterBoss : 0;
-  return Object.freeze({
-    stage, isBoss: chapterBoss > 0, baseXp, baseGold,
-    bossBonusXp, bossBonusGold,
-    xp: baseXp + bossBonusXp, gold: baseGold + bossBonusGold
-  });
-}
-export function stageReplayReward(stage) {
-  positiveStage(stage);
-  const first = stageFirstClearReward(stage);
-  // Replay does NOT grant one-time boss/milestone bonuses, including companion unlocks.
-  return Object.freeze({
-    stage, xp: Math.max(1, Math.round(first.baseXp * XP_REPLAY_RATIO)),
-    gold: Math.max(1, Math.round(first.baseGold * GOLD_REPLAY_RATIO)),
-    firstClearMilestone: false
-  });
-}
-// Pure reward policy for isolated arithmetic checks. Real firstClear entitlement,
-// result provenance and exactly-once attempt receipts belong to G2-R runtime.
-export function battleReward(stage, outcome, firstClear = false) {
-  positiveStage(stage);
-  if (['defeat', 'abandoned', 'invalid'].includes(outcome)) {
-    return Object.freeze({ stage, outcome, xp: 0, gold: 0, firstClearMilestone: false });
-  }
-  if (outcome !== 'victory') throw new RangeError('Invalid battle outcome');
-  if (typeof firstClear !== 'boolean') throw new TypeError('firstClear must be boolean');
-  const reward = firstClear ? stageFirstClearReward(stage) : stageReplayReward(stage);
-  return Object.freeze({
-    stage, outcome, xp: reward.xp, gold: reward.gold,
-    firstClearMilestone: firstClear
-  });
-}
-export function companionUpgradeCost(fromLevel) {
-  positiveCompanionLevel(fromLevel);
-  return 45 + 12 * fromLevel + 3 * fromLevel * fromLevel;
-}
-export function companionCostToLevel(targetLevel) {
-  positiveCompanionLevel(targetLevel);
-  let sum = 0;
-  for (let level = 1; level < targetLevel; level++) sum += companionUpgradeCost(level);
-  return sum;
-}
 export function scenarioReplayCount(mode, stage) {
-  positiveStage(stage);
+  stageFirstClearReward(stage);
   if (mode === 'normal') return 0;
   if (mode === 'moderate') return stage % 3 === 0 ? 1 : 0;
   if (mode === 'intensive') return 3;
