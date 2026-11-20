@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**G2R-F02d DONE_VERIFIED; NEXT G2R-INT remains BLOCKED_DEPENDENCY.** Stage-010 mechanics, 32-seed matrix и Chromium проверены на implementation `bc8c4b2`, [CI 44705431274](https://github.com/m-amirov/Norkavel/actions/runs/44705431274). Outcome не производит trusted settlement, XP или награды; production balance, 50 encounters и G3 art остаются OPEN/BLOCKED. См. [Stage-010 Balance 0.1](STAGE-010-BALANCE-0.1.md).
+**G2R-INT-01 IN_PROGRESS; full G2R-INT remains BLOCKED_DEPENDENCY.** Первый самостоятельный срез связывает chapter-01 QA shell, Save v2 CAS и реальный G2-R combat без persistent settlement. Stages 1–9 — явно engineering fixtures; stage-010 сохраняет `first-story-boss-v1`. Production rewards, 50 encounters, authority и G3 art остаются OPEN/BLOCKED.
 
 ## Правила очереди
 
@@ -19,6 +19,7 @@
 | 6 | G2R-C01 | Доменная линейная кампания 5×10, 50 stage IDs, 5 chapter map IDs, маршруты/preview/explicit fight/replay | G2R-F01 + G2R-F03, недостающие stage details фиксировать как OPEN | **DONE_VERIFIED — `6813b98`, CI 44577561998** |
 | 6a | G2R-S01 | Независимый browser Save v2 foundation: versioned persistence, безопасная подготовка v1 и защита от stale/parallel writes | G2R-F01/F03/P01/E01/C01 domain; не требует утверждения hero kits или economy | **DONE_VERIFIED — `5cb4700`, CI 44580816549** |
 | 7 | G2R-INT | Сведение 4 hero kits / 50 encounter battle balance / все награды / browser UX landscape / migration | Предыдущие задачи + реальный контент и результаты | BLOCKED_DEPENDENCY |
+| 7a | G2R-INT-01 | Chapter-01 QA shell → preview → real combat → local result; atomic session CAS, no profile rewards | C01/S01/F02d | **IN_PROGRESS — local verification complete, CI pending** |
 | 8 | G3-ART | Production art 4 hero+5 companions+враги/боссы, 50 уникальных полей боя и 5 карт глав | Арт-решения, реальные source/rights assets, отдельная визуальная приёмка | BLOCKED_OWNER / ART_PRODUCTION |
 | 9 | G4–G7 | Полный контент, серверный async PvP, QA и релизный кандидат Яндекс Игр | Настоящие G2-R/G3 gates и platform decisions | BLOCKED_DEPENDENCY |
 

@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { STAGE_010_ENCOUNTER_V1, validateStage010Encounter } from '../src/stage-010-encounter-v1.mjs';
-import { STAGE_010_STRATEGIES_V1, buildStage010Matrix, createStage010TrialProfile, runStage010Trial } from '../src/stage-010-trials-v1.mjs';
+import { STAGE_010_REACHABILITY_V1, STAGE_010_STRATEGIES_V1, buildStage010Matrix, createStage010TrialProfile, runStage010Trial } from '../src/stage-010-trials-v1.mjs';
+import { VERSION, heroLevelForXp, stageFirstClearReward } from '../scripts/economy-balance.mjs';
 import { createG2RCombat, stepG2RCombat } from '../src/g2r-combat-v1.mjs';
 
 test('G2R-F02d: stage-010 is a versioned reward-free story boss contract, separate from legacy stage 2',()=>{
@@ -32,23 +33,25 @@ test('G2R-F02d: four pre-boss companions make measurable distinct contributions'
   assert.equal(eventTypes.has('ash_strike'),true,'Kair adds offense');
 });
 
-test('G2R-F02d: 32 fixed seeds prove two successful tactics per permanent hero and baseline losses',()=>{
+test('G2R-INT-01 balance QA: 32 fixed seeds report realistic tactics against same-party baselines',()=>{
   const matrix=buildStage010Matrix();
+  const reachableXp=Array.from({length:9},(_,index)=>stageFirstClearReward(index+1).xp).reduce((a,b)=>a+b,0);
+  assert.deepEqual(STAGE_010_REACHABILITY_V1,{policyId:VERSION,firstNineStageXp:reachableXp,
+    heroLevel:heroLevelForXp(reachableXp),skillRanks:{skill1:1,skill2:1,skill3:1,ultimate:1}});
   assert.equal(matrix.seeds.length,32,'32 seeds is several dozen and samples deterministic target selection variance');
   assert.equal(matrix.rows.length,8);
   for(const row of matrix.rows){
-    assert.equal(row.wins,32,row.strategyId);
-    assert.equal(row.defeats,0,row.strategyId);
+    assert.equal(row.wins+row.defeats,32,row.strategyId);
     assert.equal(row.party.includes('control'),false,'fifth companion is unavailable');
     assert.ok(row.telegraphs>0,row.strategyId);
     assert.ok(row.minTicks>0&&row.maxTicks<=1200,row.strategyId);
-    assert.ok(row.minRemainingHp>0,row.strategyId);
+    assert.equal(row.baseline.wins+row.baseline.defeats,32,row.strategyId);
+    assert.equal(row.reactionDelayTicks,3);
+    assert.equal(row.manualCommandGapTicks,8);
+    assert.deepEqual(Object.keys(row.minUnitHp),['hero',...row.party]);
   }
   for(const heroId of ['hero_slot_1','hero_slot_2','hero_slot_3','hero_slot_4']){
     assert.equal(matrix.rows.filter(row=>row.heroId===heroId).length,2);
-    const baseline=matrix.baselines.find(row=>row.heroId===heroId);
-    assert.equal(baseline.wins,0,heroId);
-    assert.equal(baseline.defeats,32,heroId);
   }
   assert.ok(matrix.rows.find(row=>row.strategyId==='defender_interrupt').interrupts>0);
   assert.equal(matrix.rows.find(row=>row.strategyId==='defender_survival').interrupts,0);

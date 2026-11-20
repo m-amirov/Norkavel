@@ -1,6 +1,7 @@
 import { HERO_KIT_CATALOG_V1, resolveHeroSkillEffect, validateHeroKitPolicy } from './hero-kits-v1.mjs';
 import { validateProfileV2 } from './profile-v2.mjs';
-import { STAGE_010_ENCOUNTER_V1, validateStage010Encounter } from './stage-010-encounter-v1.mjs';
+import { STAGE_010_ENCOUNTER_V1 } from './stage-010-encounter-v1.mjs';
+import { resolveG2REncounterV1, validateG2REncounterV1 } from './g2r-encounters-v1.mjs';
 
 export const G2R_COMBAT_VERSION = 1;
 const clone = value => structuredClone(value);
@@ -63,17 +64,18 @@ function validStatusMap(statuses) {
 }
 
 export function validateG2RCombatState(state) {
+  const encounter = resolveG2REncounterV1(state?.stageId, state?.encounterId);
   const fields = ['combatVersion','policyId','encounterId','stageId','profileRevision','selectedHeroId','heroLevel','skillRanks',
     'party','seed','rng','tick','phase','units','cooldowns','bossAction','commandSequence','events','outcome'];
   if (!exact(state, fields) || state.combatVersion !== 1 || typeof state.policyId !== 'string' ||
-      state.encounterId !== STAGE_010_ENCOUNTER_V1.encounterId || state.stageId !== 'stage-010' ||
+      !encounter ||
       !integer(state.profileRevision) || !HERO_KIT_CATALOG_V1.some(hero=>hero.id===state.selectedHeroId) || !integer(state.heroLevel,1,16) ||
       !exact(state.skillRanks,['skill1','skill2','skill3','ultimate']) ||
       !Array.isArray(state.party) || state.party.length !== 3 || new Set(state.party).size !== 3 ||
       !state.party.every(id => COMPANIONS.includes(id)) || !integer(state.seed,1) || !integer(state.rng,1) ||
       !integer(state.tick) || !['fight','victory','defeat'].includes(state.phase) ||
       !exact(state.bossAction,['phase','remaining','sequence']) || !['idle','telegraph'].includes(state.bossAction.phase) ||
-      !integer(state.bossAction.remaining,0,STAGE_010_ENCOUNTER_V1.telegraphTicks) || !integer(state.bossAction.sequence) ||
+      !integer(state.bossAction.remaining,0,encounter.telegraphTicks) || !integer(state.bossAction.sequence) ||
       !integer(state.commandSequence) || !Array.isArray(state.events) || state.events.length > 200 ||
       ![null,'victory','defeat'].includes(state.outcome)) return false;
   if (!['skill1','skill2','skill3'].every(id => integer(state.skillRanks[id],0,4)) ||
@@ -100,7 +102,7 @@ export function createG2RCombat(profile, profileRevision, seed, policy = G2R_COM
   encounter = STAGE_010_ENCOUNTER_V1) {
   if (!validateProfileV2(profile) || profile.selectedHeroId === null || profile.phase !== 'setup' ||
       profile.campaignAttempt !== null || (profile.legacyProgress && !profile.legacyProgress.activated) ||
-      !integer(profileRevision) || !integer(seed,1) || !validateG2RCombatPolicy(policy) || !validateStage010Encounter(encounter) ||
+      !integer(profileRevision) || !integer(seed,1) || !validateG2RCombatPolicy(policy) || !validateG2REncounterV1(encounter) ||
       profile.party.length !== 3 || new Set(profile.party).size !== 3 ||
       profile.party.some(id => !profile.unlockedCompanionIds.includes(id))) return null;
   const units = Object.fromEntries([
@@ -208,6 +210,7 @@ function nextRandom(state) {
 export function stepG2RCombat(state, policy = G2R_COMBAT_CANDIDATE_POLICY_V1) {
   if (!validateG2RCombatState(state) || state.phase !== 'fight' || !validateG2RCombatPolicy(policy) ||
       state.policyId !== policy.policyId) return state;
+  const encounter=resolveG2REncounterV1(state.stageId,state.encounterId);
   const next=clone(state); next.tick += 1;
   for (const id of Object.keys(next.cooldowns)) next.cooldowns[id] = Math.max(0,next.cooldowns[id]-1);
   for (const unit of Object.values(next.units)) for (const [name,status] of Object.entries(unit.statuses)) {
@@ -229,15 +232,15 @@ export function stepG2RCombat(state, policy = G2R_COMBAT_CANDIDATE_POLICY_V1) {
     else { const target=enemies[nextRandom(next)%enemies.length]; const value=id==='ash'?9:7; damage(next,target,value,id,id==='ash'?'ash_strike':'elemental'); if(id==='ember')applyStatus(target,'burn',2,12,policy); }
   }
   const boss=next.units.boss;
-  if (boss.hp>0 && next.bossAction.phase==='idle' && next.tick>0 && next.tick%STAGE_010_ENCOUNTER_V1.dangerousAttackInterval===0) {
-    next.bossAction={phase:'telegraph',remaining:STAGE_010_ENCOUNTER_V1.telegraphTicks,sequence:next.bossAction.sequence+1};
+  if (boss.hp>0 && next.bossAction.phase==='idle' && next.tick>0 && next.tick%encounter.dangerousAttackInterval===0) {
+    next.bossAction={phase:'telegraph',remaining:encounter.telegraphTicks,sequence:next.bossAction.sequence+1};
     event(next,'boss_telegraph','boss','party',next.bossAction.remaining);
   } else if (boss.hp>0 && next.bossAction.phase==='telegraph') {
     if (boss.statuses.interrupted) { next.bossAction={...next.bossAction,phase:'idle',remaining:0}; event(next,'boss_interrupted','hero','boss',0); }
     else if (--next.bossAction.remaining===0) {
       const weaken=boss.statuses.weaken?.value??0;
       for(const target of living(next,'ally')) {
-        const raw=Math.max(1,Math.floor(STAGE_010_ENCOUNTER_V1.dangerousAttackDamage*(100-Math.min(80,weaken))/100));
+        const raw=Math.max(1,Math.floor(encounter.dangerousAttackDamage*(100-Math.min(80,weaken))/100));
         if(target.statuses.evade && nextRandom(next)%100<target.statuses.evade.value) {
           event(next,'evade',target.id,'boss',0);
           if(target.statuses.counter_ready){damage(next,boss,target.statuses.counter_ready.value,target.id,'counter');delete target.statuses.counter_ready;}

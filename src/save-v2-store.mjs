@@ -1,11 +1,13 @@
 import { prepareLegacyProfileV2, validateProfileV2 } from './profile-v2.mjs';
 import { validateG2RCombatState } from './g2r-combat-v1.mjs';
+import { validateG2RCampaignSession } from './g2r-campaign-integration-v1.mjs';
 
 export const SAVE_V2_FORMAT_VERSION = 1;
 export const SAVE_V2_DATABASE = 'norkavel.g2r.save.v2';
 export const SAVE_V2_RECORD_KEY = 'profile';
 export const LEGACY_SAVE_KEY = 'norkavel.g2.save.v1';
 export const SAVE_V2_COMBAT_KEY = 'combat';
+export const SAVE_V2_INTEGRATION_KEY = 'g2r-int-01';
 
 const RECORD_FIELDS = Object.freeze(['formatVersion', 'revision', 'commitId', 'profile']);
 
@@ -48,6 +50,14 @@ export function inspectSaveV2CombatRecord(record) {
       record.formatVersion !== SAVE_V2_FORMAT_VERSION || !Number.isSafeInteger(record.revision) || record.revision < 0 ||
       !Number.isSafeInteger(record.profileRevision) || record.profileRevision < 0 ||
       !validateG2RCombatState(record.combat) || record.combat.profileRevision !== record.profileRevision) return null;
+  return clone(record);
+}
+
+export function inspectSaveV2IntegrationRecord(record) {
+  if (!exactRecord(record, ['formatVersion','revision','profileRevision','session']) ||
+      record.formatVersion !== SAVE_V2_FORMAT_VERSION || !Number.isSafeInteger(record.revision) || record.revision < 0 ||
+      !Number.isSafeInteger(record.profileRevision) || record.profileRevision < 0 ||
+      !validateG2RCampaignSession(record.session) || record.session.profileRevision !== record.profileRevision) return null;
   return clone(record);
 }
 
@@ -279,6 +289,51 @@ export async function openSaveV2Store({
         transaction.onabort=()=>reject(transactionError(transaction,'STORAGE_UNAVAILABLE','Combat write aborted'));
         transaction.onerror=()=>{};
         transaction.oncomplete=()=>outcome instanceof Error?reject(outcome):resolve(outcome);
+      });
+    },
+
+    async loadIntegration() {
+      requireOpen();
+      return new Promise((resolve,reject)=>{
+        const transaction=database.transaction('saves','readonly');
+        const request=transaction.objectStore('saves').get(SAVE_V2_INTEGRATION_KEY); let outcome;
+        request.onsuccess=()=>outcome=request.result===undefined?null:
+          inspectSaveV2IntegrationRecord(request.result)??new SaveV2StoreError('RESTORE_CORRUPT','Integration save is corrupt');
+        request.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Integration read failed',request.error);
+        transaction.onabort=()=>reject(transactionError(transaction,'STORAGE_UNAVAILABLE','Integration read aborted'));
+        transaction.onerror=()=>{};transaction.oncomplete=()=>outcome instanceof Error?reject(outcome):resolve(outcome);
+      });
+    },
+
+    async compareAndSetIntegration(expectedRevision, profileRevision, session) {
+      requireOpen();
+      if(expectedRevision!==null&&(!Number.isSafeInteger(expectedRevision)||expectedRevision<0))throw new TypeError('expected integration revision is invalid');
+      if(!Number.isSafeInteger(profileRevision)||profileRevision<0||!validateG2RCampaignSession(session)||session.profileRevision!==profileRevision)
+        throw new TypeError('integration session is invalid');
+      const detached=clone(session);
+      return new Promise((resolve,reject)=>{
+        const transaction=database.transaction('saves','readwrite'),store=transaction.objectStore('saves');let outcome;
+        const profileRequest=store.get(recordKey);
+        profileRequest.onsuccess=()=>{
+          const profileRecord=inspectSaveV2Record(profileRequest.result);
+          if(!profileRecord||profileRecord.revision!==profileRevision||profileRecord.profile.selectedHeroId!==detached.selectedHeroId||
+            JSON.stringify(profileRecord.profile.party)!==JSON.stringify(detached.party)){
+            outcome={ok:false,code:'STALE_PROFILE',actualRevision:profileRecord?.revision??null};return;
+          }
+          const request=store.get(SAVE_V2_INTEGRATION_KEY);
+          request.onsuccess=()=>{
+            const current=request.result===undefined?null:inspectSaveV2IntegrationRecord(request.result);
+            if(request.result!==undefined&&!current){outcome=new SaveV2StoreError('RESTORE_CORRUPT','Integration save cannot be overwritten');return;}
+            if((current?.revision??null)!==expectedRevision){outcome={ok:false,code:'STALE_REVISION',actualRevision:current?.revision??null};return;}
+            const revision=expectedRevision===null?0:expectedRevision+1;
+            const put=store.put({formatVersion:SAVE_V2_FORMAT_VERSION,revision,profileRevision,session:detached},SAVE_V2_INTEGRATION_KEY);
+            put.onsuccess=()=>outcome={ok:true,revision};put.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Integration write failed',put.error);
+          };
+          request.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Integration compare failed',request.error);
+        };
+        profileRequest.onerror=()=>outcome=new SaveV2StoreError('STORAGE_UNAVAILABLE','Profile binding read failed',profileRequest.error);
+        transaction.onabort=()=>reject(transactionError(transaction,'STORAGE_UNAVAILABLE','Integration write aborted'));
+        transaction.onerror=()=>{};transaction.oncomplete=()=>outcome instanceof Error?reject(outcome):resolve(outcome);
       });
     },
 
