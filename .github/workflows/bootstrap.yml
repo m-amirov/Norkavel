@@ -56,6 +56,8 @@ jobs:
         run: node scripts/g2r-campaign-integrity-browser-smoke.mjs
       - name: Browser G2-R DEV progression sandbox smoke in headless Chrome
         run: npm run test:g2r-progression-sandbox-browser
+      - name: Browser G2-R combat recovery smoke in headless Chrome
+        run: npm run test:g2r-combat-recovery-browser
       - name: Archive captured browser scenes
         if: always()
         uses: actions/upload-artifact@v4

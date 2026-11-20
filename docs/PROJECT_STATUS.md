@@ -1,9 +1,15 @@
 # Norkavel — project status
 
-**Codex handoff:** G2R-INT-03 implementation `7dee19c7d42ed48a13ebf0841134aaf1d9086729` passed the complete local gate set; evidence SHA `35d723465ce34b0da0b5cb7675b50f3901f91014` passed [exact-SHA CI](https://github.com/m-amirov/Norkavel/actions/runs/44773682787). Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
+**Codex handoff:** G2R-INT-04a combat persistence and recovery are implemented locally and await exact-SHA CI. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
 
 
-**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-03 DONE_VERIFIED / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-20. Current boundary: **G2R-INT-04a AWAITING_CI / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+
+## G2R-INT-04a combat persistence (2026-11-20; AWAITING_CI)
+- Sandbox format v2 atomically binds campaign attempt and initial G2-R combat, then CAS-commits engine-derived casts/ticks and terminal pending result.
+- Restore replays the bounded operation log and rejects schema-valid HP, tick, RNG, outcome, hero, ranks, party, stage or encounter drift.
+- Format-v1 active attempts enter explicit `legacy_missing_combat` recovery; only a confirmed idempotent defeat with zero rewards can close them.
+- Chromium recovery covers exact state comparison across reload, boss telegraph, stale tabs, tab close, transaction abort, defeat/retry/replay, portrait and production isolation. See [recovery report](G2R-INT-04A-COMBAT-RECOVERY.md).
 
 ## G2R-INT-03 DEV progression sandbox (2026-11-20; DONE_VERIFIED)
 - Separate DEV IndexedDB and command CAS hold a clean Profile v2 copy fixed to local-untrusted, engineering-candidate, noncompetitive and non-release metadata.

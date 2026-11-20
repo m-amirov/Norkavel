@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**G2R-INT-03 DONE_VERIFIED; full G2R-INT remains BLOCKED_DEPENDENCY.** Implementation `7dee19c7d42ed48a13ebf0841134aaf1d9086729` passed 120/120 Node tests, Ludory, every existing Chromium gate, the new progression sandbox smoke and candidate balance checks locally. Evidence SHA `35d723465ce34b0da0b5cb7675b50f3901f91014` passed [exact-SHA CI](https://github.com/m-amirov/Norkavel/actions/runs/44773682787).
+**G2R-INT-04a AWAITING_CI; full G2R-INT remains BLOCKED_DEPENDENCY.** Combat checkpoint persistence/replay validation and v1 zero-reward recovery are implemented; exact-SHA CI remains required.
 
 ## Правила очереди
 
@@ -22,6 +22,7 @@
 | 7a | G2R-INT-01 | Chapter-01 QA shell → preview → real combat → local result; atomic session CAS, no profile rewards | C01/S01/F02d | **DONE_VERIFIED — `c28d0b8`, CI 44715870159** |
 | 7b | G2R-INT-02 | Campaign state transition integrity, recovery, explicit legacy activation and sequential QA reachability | G2R-INT-01 | **DONE_VERIFIED — implementation `11feffd`, evidence `c062b76`, CI 44722998680** |
 | 7c | G2R-INT-03 | Isolated DEV PvE progression/economy loop with Profile v2 domain reuse and candidate policy | G2R-INT-02 | **DONE_VERIFIED — implementation `7dee19c`; exact-SHA CI SUCCESS on evidence `35d7234`** |
+| 7d | G2R-INT-04a | Atomic combat checkpoint persistence, reload/recovery and terminal-result integrity for DEV sandbox | G2R-INT-03 | **AWAITING_CI — local regression and Chromium recovery evidence pending final gate set** |
 | 8 | G3-ART | Production art 4 hero+5 companions+враги/боссы, 50 уникальных полей боя и 5 карт глав | Арт-решения, реальные source/rights assets, отдельная визуальная приёмка | BLOCKED_OWNER / ART_PRODUCTION |
 | 9 | G4–G7 | Полный контент, серверный async PvP, QA и релизный кандидат Яндекс Игр | Настоящие G2-R/G3 gates и platform decisions | BLOCKED_DEPENDENCY |
 
