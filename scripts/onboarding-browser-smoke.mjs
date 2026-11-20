@@ -205,7 +205,12 @@ async function main() {
     assert.equal(new Set(raceIds).size, 1, 'both tabs converge to the immutable winner');
 
     // Valid legacy data remains byte-identical while its prepared profile is committed to Save v2.
-    const legacy = await newPage(`${origins[2]}/`, 844, 390);
+    // Seed from a same-origin inert resource so the legacy G2 boot cannot race
+    // and overwrite the fixture before onboarding reads it (observable on Linux CI).
+    const legacy = await newPage(`${origins[2]}/onboarding.css`, 844, 390);
+    await delay(150);
+    assert.ok(errors.every(message => message.includes('404')), 'inert fixture produced an unexpected browser error');
+    errors.length = 0;
     const legacyRaw = await legacy.js(`import('/src/combat.mjs').then(m=>{const raw=JSON.stringify({schemaVersion:1,gameId:'norkavel',gameVersion:'0.1.0',revision:7,state:{...m.initialState(),gold:155,level:8,party:['sentinel','ember','ash'],claimed:[1,2]}});localStorage.setItem('norkavel.g2.save.v1',raw);return raw})`);
     await legacy.send('Page.navigate', { url: `${origins[2]}/onboarding.html` });
     await until(() => legacy.js('window.__norkavelOnboardingDebug?.getStatus()==="ready"'), 10000, 'legacy candidate ready');
