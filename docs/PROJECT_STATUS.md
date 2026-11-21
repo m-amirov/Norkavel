@@ -1,15 +1,15 @@
 # Norkavel — project status
 
-**Codex handoff:** G2R-INT-04a.1 implementation `8065ba01d23c1fda7251b8bdac046cd2022b129b` passed 126/126 Node tests, Ludory and all Chromium gates locally; exact-final-SHA CI is pending. Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
+**Codex handoff:** G2R-INT-04a.1 implementation `8065ba01d23c1fda7251b8bdac046cd2022b129b` passed 126/126 Node tests, Ludory and all Chromium gates locally and in [CI 44867004138](https://github.com/m-amirov/Norkavel/actions/runs/44867004138). Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
 
 
-**Дата обновления:** 2026-11-21. Current boundary: **G2R-INT-04a.1 AWAITING_CI / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-21. Current boundary: **G2R-INT-04a.1 DONE_VERIFIED / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
 
-## G2R-INT-04a.1 checkpoint hardening (2026-11-21; AWAITING_CI)
+## G2R-INT-04a.1 checkpoint hardening (2026-11-21; DONE_VERIFIED)
 
 - Checkpoint v2 is accepted only when its complete genesis equals a fresh real-engine `createG2RCombat` result for the bound stage/encounter/profile/hero/party/ranks/seed/policy. Valid checkpoint v1 receives an atomic revision-incrementing migration.
 - IndexedDB commands now validate the complete next sandbox state before `put`; a journal beyond 2000 operations returns `INVALID_NEXT_STATE` without changing the committed revision. Policy v1 permits at most 1303 legal operations, so no compaction was added.
-- Local gates: 126/126 Node, Ludory and all eight Chromium smoke commands PASS. See [hardening report](G2R-INT-04A1-CHECKPOINT-INTEGRITY.md). Independent review remains NOT_RUN.
+- Local gates and [CI 44867004138](https://github.com/m-amirov/Norkavel/actions/runs/44867004138): 126/126 Node, Ludory and all eight Chromium smoke commands PASS. See [hardening report](G2R-INT-04A1-CHECKPOINT-INTEGRITY.md). Independent review remains NOT_RUN.
 
 ## G2R-INT-04a combat persistence (2026-11-20; DONE_VERIFIED)
 - Sandbox format v2 atomically binds campaign attempt and initial G2-R combat, then CAS-commits engine-derived casts/ticks and terminal pending result.

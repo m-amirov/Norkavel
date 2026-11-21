@@ -1,6 +1,6 @@
 # G2R-INT-04a.1 — Combat Checkpoint Integrity Hardening
 
-Status: AWAITING_CI. Implementation `8065ba01d23c1fda7251b8bdac046cd2022b129b` passed 126/126 Node tests, Ludory and all eight Chromium smoke commands locally. `DONE_VERIFIED` requires exact-final-SHA CI SUCCESS.
+Status: DONE_VERIFIED. Implementation `8065ba01d23c1fda7251b8bdac046cd2022b129b` passed 126/126 Node tests, Ludory and all eight Chromium smoke commands locally and on evidence SHA `aa8d31aa4c1034076b8bb3d84bc95d7ad1df562b` in [CI 44867004138](https://github.com/m-amirov/Norkavel/actions/runs/44867004138).
 
 ## Reproduced root causes
 
