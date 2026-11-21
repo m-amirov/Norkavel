@@ -5,11 +5,15 @@ import { initialState } from '../src/combat.mjs';
 import { HERO_KIT_CATALOG_V1 } from '../src/hero-kits-v1.mjs';
 import {
   G2R_SANDBOX_COMPANION_POLICY_V1, G2R_SANDBOX_POLICY_ID, G2R_SANDBOX_XP_POLICY_V1,
+  G2R_SANDBOX_MAX_LEGAL_OPERATIONS, G2R_SANDBOX_MAX_OPERATIONS,
   applyG2RProgressionSandboxCommand, createG2RProgressionSandbox,
-  migrateG2RProgressionSandboxV1, replayG2RCombatCheckpoint,
+  migrateG2RProgressionSandboxCheckpointV1, migrateG2RProgressionSandboxV1,
+  replayG2RCombatCheckpoint,
   sandboxReward, validateG2RProgressionSandbox
 } from '../src/g2r-progression-sandbox-v1.mjs';
-import { inspectG2RSandboxRecord } from '../src/g2r-progression-sandbox-store-v1.mjs';
+import {
+  inspectG2RSandboxRecord, prepareG2RSandboxCommandCommit
+} from '../src/g2r-progression-sandbox-store-v1.mjs';
 
 const production = hero => ({ revision:4, profile:selectPermanentHero(createProfileV2(),hero) });
 const command = (state, type, values={}) => applyG2RProgressionSandboxCommand(state,{type,...values},true);
@@ -134,6 +138,57 @@ test('G2R-INT-04a: casts and ticks persist exact engine transitions and reject f
   ]) assert.equal(validateG2RProgressionSandbox(forged),false);
   const stale={...state,combat:{...state.combat,operations:state.combat.operations.slice(0,-1)}};
   assert.equal(validateG2RProgressionSandbox(stale),false);
+});
+
+test('G2R-INT-04a.1: checkpoint genesis must equal a canonical engine-created combat',()=>{
+  const state=command(createG2RProgressionSandbox(production('hero_slot_4')),'begin',
+    {attemptId:'pve:1:genesis',stageId:1,seed:7101});
+  const forge=(mutate)=>{const checkpoint=structuredClone(state.combat);mutate(checkpoint.initialState);
+    checkpoint.state=structuredClone(checkpoint.initialState);return{...state,combat:checkpoint}};
+  for(const [label,forged] of [
+    ['hp',forge(initial=>{initial.units.hero.hp-=1})],
+    ['maxHp',forge(initial=>{initial.units.hero.maxHp+=1;initial.units.hero.hp+=1})],
+    ['shield',forge(initial=>{initial.units.hero.shield=5})],
+    ['status',forge(initial=>{initial.units.hero.statuses.mitigation={value:5,remaining:3}})],
+    ['seed-rng',forge(initial=>{initial.seed+=1;initial.rng+=1})],
+    ['profile-revision',forge(initial=>{initial.profileRevision+=1})],
+    ['hero',forge(initial=>{initial.selectedHeroId='hero_slot_1'})],
+    ['party',forge(initial=>{initial.party=['sentinel','ember','ash'];initial.units.ash={...initial.units.healer,id:'ash'};delete initial.units.healer})],
+    ['ranks',forge(initial=>{initial.skillRanks.skill1=1})]
+  ]) assert.equal(validateG2RProgressionSandbox(forged),false,label);
+  const wrongEncounter=structuredClone(state);wrongEncounter.combat.encounterId='stage-010-first-story-boss-v1';
+  wrongEncounter.combat.initialState.encounterId=wrongEncounter.combat.encounterId;
+  wrongEncounter.combat.state.encounterId=wrongEncounter.combat.encounterId;
+  assert.equal(validateG2RProgressionSandbox(wrongEncounter),false);
+  const consistentTerminal=structuredClone(state);
+  for(const id of ['boss','raider','wisp'])consistentTerminal.combat.initialState.units[id].hp=0;
+  consistentTerminal.combat.operations=[{type:'tick',count:1}];
+  consistentTerminal.combat.state=replayG2RCombatCheckpoint(consistentTerminal.combat);
+  consistentTerminal.pendingResult={attemptSequence:1,attemptId:'pve:1:genesis',stageId:1,
+    outcome:'victory',source:'local-untrusted'};
+  assert.equal(consistentTerminal.combat.state.phase,'victory');
+  assert.equal(validateG2RProgressionSandbox(consistentTerminal),false,'consistent forged genesis and terminal');
+  assert.equal(validateG2RProgressionSandbox(state),true,'existing canonical empty-log checkpoint remains valid');
+  const old=structuredClone(state);old.combat.checkpointVersion=1;delete old.combat.seed;
+  const migrated=migrateG2RProgressionSandboxCheckpointV1(old);
+  assert.equal(migrated.combat.checkpointVersion,2);assert.equal(migrated.combat.seed,7101);
+  assert.equal(validateG2RProgressionSandbox(migrated),true);
+});
+
+test('G2R-INT-04a.1: invalid next state is rejected before commit and keeps revision',()=>{
+  const state=command(createG2RProgressionSandbox(production('hero_slot_2')),'begin',
+    {attemptId:'pve:1:commit-gate',stageId:1,seed:7201});
+  const record={formatVersion:2,revision:9,state};
+  const oversized=prepareG2RSandboxCommandCommit(record,9,{type:'combat_tick',count:1},current=>({
+    ...structuredClone(current),combat:{...structuredClone(current.combat),
+      operations:Array.from({length:G2R_SANDBOX_MAX_OPERATIONS+1},()=>({type:'tick',count:1}))}
+  }));
+  assert.deepEqual(oversized,{ok:false,code:'INVALID_NEXT_STATE',actualRevision:9});
+  assert.equal(record.revision,9);assert.equal(record.state.combat.operations.length,0);
+  assert.equal(G2R_SANDBOX_MAX_LEGAL_OPERATIONS,1303);
+  assert.ok(G2R_SANDBOX_MAX_OPERATIONS>G2R_SANDBOX_MAX_LEGAL_OPERATIONS);
+  assert.deepEqual(prepareG2RSandboxCommandCommit(record,8,{type:'combat_tick',count:1}),
+    {ok:false,code:'STALE_REVISION',actualRevision:9});
 });
 
 test('G2R-INT-04a: only a real terminal checkpoint creates one pending result and settlement',()=>{
