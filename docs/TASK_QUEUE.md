@@ -3,7 +3,7 @@
 **Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
-**G2R-INT-04a DONE_VERIFIED; full G2R-INT remains BLOCKED_DEPENDENCY.** Implementation `9b2b3492d66b018971c20e197817a850fe83a671` passed 124/124 Node tests, Ludory, all browser gates and dedicated recovery Chromium smoke locally and in [exact-SHA CI](https://github.com/m-amirov/Norkavel/actions/runs/44795549860).
+**G2R-INT-04a.1 AWAITING_CI; full G2R-INT remains BLOCKED_DEPENDENCY.** Implementation `8065ba01d23c1fda7251b8bdac046cd2022b129b` adds canonical genesis and mandatory next-state pre-commit validation; 126/126 Node, Ludory and all browser gates pass locally. See [integrity report](G2R-INT-04A1-CHECKPOINT-INTEGRITY.md).
 
 ## Правила очереди
 
@@ -23,6 +23,7 @@
 | 7b | G2R-INT-02 | Campaign state transition integrity, recovery, explicit legacy activation and sequential QA reachability | G2R-INT-01 | **DONE_VERIFIED — implementation `11feffd`, evidence `c062b76`, CI 44722998680** |
 | 7c | G2R-INT-03 | Isolated DEV PvE progression/economy loop with Profile v2 domain reuse and candidate policy | G2R-INT-02 | **DONE_VERIFIED — implementation `7dee19c`; exact-SHA CI SUCCESS on evidence `35d7234`** |
 | 7d | G2R-INT-04a | Atomic combat checkpoint persistence, reload/recovery and terminal-result integrity for DEV sandbox | G2R-INT-03 | **DONE_VERIFIED — implementation `9b2b349`; exact-SHA CI 44795549860 SUCCESS** |
+| 7e | G2R-INT-04a.1 | Canonical combat genesis and mandatory next-state validation before sandbox IndexedDB commit | G2R-INT-04a | **AWAITING_CI — implementation `8065ba0`; local 126/126 + all Chromium PASS** |
 | 8 | G3-ART | Production art 4 hero+5 companions+враги/боссы, 50 уникальных полей боя и 5 карт глав | Арт-решения, реальные source/rights assets, отдельная визуальная приёмка | BLOCKED_OWNER / ART_PRODUCTION |
 | 9 | G4–G7 | Полный контент, серверный async PvP, QA и релизный кандидат Яндекс Игр | Настоящие G2-R/G3 gates и platform decisions | BLOCKED_DEPENDENCY |
 
