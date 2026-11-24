@@ -1,9 +1,11 @@
 # Norkavel — единая очередь исполняемых задач
 
-**Состояние:** 2026-11-19 · главный рабочий источник для команд «Продолжай».  
+**Состояние:** 2026-11-24 · главный рабочий источник для команд «Продолжай».  
 **Правило:** первый элемент с `READY`, выполненными зависимостями и минимальными неопределённостями. Задачи разбивать на **реальные проверяемые срезы**; запись DONE — только после проверки на exact SHA в `origin/main`.
 
 **G2R-INT-04a.1 DONE_VERIFIED; full G2R-INT remains BLOCKED_DEPENDENCY.** Implementation `8065ba01d23c1fda7251b8bdac046cd2022b129b` adds canonical genesis and mandatory next-state pre-commit validation; 126/126 Node, Ludory and all browser gates passed locally and in [CI 44867004138](https://github.com/m-amirov/Norkavel/actions/runs/44867004138). See [integrity report](G2R-INT-04A1-CHECKPOINT-INTEGRITY.md).
+
+**Active handoff:** G2R-INT-04b.1 implemented as an isolated companion-stats candidate foundation; local focused tests 5/5 PASS, exact-SHA CI AWAITING_CI. Next: G2R-INT-04b.2 after verifying CI. See [candidate report](G2R-INT-04B1-COMPANION-STATS.md).
 
 ## Правила очереди
 
@@ -24,6 +26,9 @@
 | 7c | G2R-INT-03 | Isolated DEV PvE progression/economy loop with Profile v2 domain reuse and candidate policy | G2R-INT-02 | **DONE_VERIFIED — implementation `7dee19c`; exact-SHA CI SUCCESS on evidence `35d7234`** |
 | 7d | G2R-INT-04a | Atomic combat checkpoint persistence, reload/recovery and terminal-result integrity for DEV sandbox | G2R-INT-03 | **DONE_VERIFIED — implementation `9b2b349`; exact-SHA CI 44795549860 SUCCESS** |
 | 7e | G2R-INT-04a.1 | Canonical combat genesis and mandatory next-state validation before sandbox IndexedDB commit | G2R-INT-04a | **DONE_VERIFIED — implementation `8065ba0`; CI 44867004138 SUCCESS** |
+| 7f | G2R-INT-04b.1 | Versioned candidate companion stat resolver and active-three snapshot, no runtime switch | G2R-INT-04a.1 | **AWAITING_CI — focused Node 5/5 local PASS** |
+| 7g | G2R-INT-04b.2 | Explicit new combat policy, real companion scaling and bounded ice control; preserve old-policy genesis and replay | G2R-INT-04b.1 verified | BLOCKED_DEPENDENCY (next after exact-SHA CI) |
+| 7h | G2R-INT-04b.3 | Sandbox runtime/persistence integration, real browser and all-party balance/performance matrix | G2R-INT-04b.2 | BLOCKED_DEPENDENCY |
 | 8 | G3-ART | Production art 4 hero+5 companions+враги/боссы, 50 уникальных полей боя и 5 карт глав | Арт-решения, реальные source/rights assets, отдельная визуальная приёмка | BLOCKED_OWNER / ART_PRODUCTION |
 | 9 | G4–G7 | Полный контент, серверный async PvP, QA и релизный кандидат Яндекс Игр | Настоящие G2-R/G3 gates и platform decisions | BLOCKED_DEPENDENCY |
 

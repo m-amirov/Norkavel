@@ -3,7 +3,13 @@
 **Codex handoff:** G2R-INT-04a.1 implementation `8065ba01d23c1fda7251b8bdac046cd2022b129b` passed 126/126 Node tests, Ludory and all Chromium gates locally and in [CI 44867004138](https://github.com/m-amirov/Norkavel/actions/runs/44867004138). Full G2R-INT, trusted settlement/rewards, 50 approved encounters and G3 remain OPEN/BLOCKED.
 
 
-**Дата обновления:** 2026-11-21. Current boundary: **G2R-INT-04a.1 DONE_VERIFIED / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+**Дата обновления:** 2026-11-24. Current boundary: **G2R-INT-04a.1 DONE_VERIFIED / FULL G2R-INT BLOCKED / TRUSTED_SETTLEMENT_NOT_IMPLEMENTED / PRODUCTION BALANCE OPEN / G3 BLOCKED**.
+
+## G2R-INT-04b.1 candidate companion stats (2026-11-24; AWAITING_CI)
+
+- Implemented an isolated versioned stat resolver and active-three snapshot for all five stable companion IDs, levels 1–100 (DEV candidate cap only). Four existing level-one roles retain their numerical baseline; the proposed controller has bounded slow and weaken parameters, not runtime effects.
+- Focused Node 22 suite 5/5 PASS, including all 500 role/level pairs and negative roster cases. Full repository CI and independent review not yet verified for this change.
+- Existing combat v1, saves, UI, economy, rewards and production remain unchanged. Next: explicit version-aware runtime integration, preserving all old checkpoint replay semantics. See [candidate report](G2R-INT-04B1-COMPANION-STATS.md).
 
 ## G2R-INT-04a.1 checkpoint hardening (2026-11-21; DONE_VERIFIED)
 
